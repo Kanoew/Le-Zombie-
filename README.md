@@ -1,49 +1,43 @@
-# Le Zombie — prototype Canvas 2D
+# Le Zombie · Les Cendres — alpha 0.2
 
-Essai technique inspiré du cahier des charges survival cyberpunk de Kanoew. JavaScript natif, Canvas 2D et serveur Node sans dépendances. Phaser reste une option pour la suite ; ce premier essai ne l'utilise pas.
+Survival cyberpunk en JavaScript / Canvas 2D natif, sans dépendance. Première boucle d'expédition du projet Android de Kanoew. Aucun asset tiers : décor et personnages sont dessinés par le code, encore provisoires.
 
-## Lancer
+## Jouer sur téléphone
 
-Node.js 22 ou supérieur :
+Site prévu : https://kanoew.github.io/Le-Zombie-/ (GitHub Pages doit être activé sur main, dossier /docs ou racine). L'interface s'adapte au portrait et au paysage. Bouton plein écran si le navigateur le permet.
+
+- Rejoindre la sortie à l'est du refuge, puis Interagir pour partir.
+- Fouiller les cinq caisses du quartier (sac limité à 12). Un sac plein laisse le surplus dans la caisse.
+- Combattre les quatre infectés avec la machette, ou les éviter. Un cercle annonce leur attaque ; l'esquive consomme de l'endurance. La nuit accroît vitesse et dégâts.
+- Revenir par l'entrée ouest du quartier. Au noyau du refuge, Interagir dépose le sac et restaure la vie.
+- Renforcer la machette à l'atelier (10 ferrailles, dégâts 30 → 45), puis construire des murs (2 ferrailles). Bâtir active la grille : toucher une case pour poser ou démonter.
+- Le chien suit et contourne les murs. La minicarte montre position, obstacles, accès et caches.
+
+Clavier : ZQSD / WASD / flèches, espace pour frapper, Maj pour esquiver, E pour interagir. Sur téléphone, joystick et boutons fonctionnent avec des pointeurs distincts.
+
+## Progression et limites
+
+Les caisses, ennemis vaincus, ressources, amélioration, heure, constructions, position et vie sont enregistrés ensemble en localStorage. Sauvegarde après les transactions, toutes les 15 secondes et au passage en arrière-plan. Copie précédente et migration de l'ancien prototype v1. Pause lors d'un changement d'onglet ; aucune simulation permanente en arrière-plan.
+
+Règle alpha affichée : la mort renvoie au refuge et retire la moitié du sac, sans sac récupérable pour l'instant. Le refuge est sûr. Le contenu du quartier est fini, sans renouvellement pour cet essai. Pas encore de raid, défenseur, artisanat complet, personnalisation, boss, PWA ou APK. La sauvegarde navigateur ne remplace pas encore l'écriture atomique sur fichier de la future application. Effacer les données du site efface la partie.
+
+## Développement et publication
+
+Node.js 22+ :
 
 ```sh
-cd /workspace/Le-Zombie-
 npm run dev
-```
-
-Le serveur écoute sur le port 3000 (`PORT` permet de le changer). Pour tester sur téléphone, il faut une URL HTTPS accessible ou un accès réseau au serveur ; une adresse locale au cloud n'est pas accessible depuis le téléphone. Aucune publication distante n'est effectuée par ces commandes.
-
-## Jouer
-
-- Joystick tactile ou ZQSD / WASD / flèches pour se déplacer.
-- Attaquer / espace ; esquive / Maj. Ces actions consomment de l'endurance.
-- Trois ennemis de test : éliminer un infecté donne 3 ferrailles.
-- Le chien suit en contournant les murs via une recherche de chemin sur grille.
-- Construire : toucher une case pour poser un mur (2 ferrailles) ou le démonter (remboursement complet dans ce prototype).
-- Le cycle d'essai dure 12 minutes de jour et 6 de nuit. Un bouton permet de tester la nuit immédiatement.
-- Sauvegarde automatique toutes les 15 secondes et lors de la mise en arrière-plan, ou bouton Sauvegarder. Recharger restaure le joueur, le chien, les murs, l'heure et les ressources. Les ennemis sont réinitialisés.
-
-La sauvegarde est propre au navigateur et à l'origine du site. Une copie précédente est conservée et utilisée si la sauvegarde courante est invalide. Ce stockage navigateur n'est pas encore le système de fichiers atomique requis pour l'APK. Les onglets masqués mettent le jeu en pause.
-
-## Vérification
-
-```sh
 npm test
 npm run check
+npm run build
 ```
 
-Tests : navigation après modification d'un mur, transactions de construction et validation des sauvegardes. Un essai Chromium mobile vérifie également le chargement, la nuit, la construction et la reprise. Les performances et les commandes simultanées restent à valider sur un vrai téléphone Android.
+Le serveur écoute sur le port 3000 (`PORT` peut le modifier). `npm run build` intègre CSS et JavaScript dans `docs/index.html` pour Pages et dans `dist/le-zombie.html` pour un fichier autonome. Inclure `docs/` dans chaque commit de publication. La page source utilise aussi des chemins relatifs afin de fonctionner sous le sous-chemin GitHub du dépôt.
 
-## Limites de cet essai
+Dans Settings → Pages : Deploy from a branch, main, /docs (recommandé). Une configuration existante à la racine fonctionne également. Le déploiement est exécuté par GitHub après le push.
 
-Une seule carte, formes pixelisées provisoires, une arme, aucun asset externe. Pas encore de défenseur, porte, fouille, inventaire, raid, PWA, APK ou export Godot. La mort rétablit le joueur au refuge sans perte. Les ennemis n'attaquent pas encore les murs ; le camp fermé n'est donc pas un test de défense complet. Ce prototype constitue une première partie de l'étape A, pas sa validation finale.
+## Validation
 
-## Version autonome pour téléphone
+Tests Node : navigation, construction et protection des accès, collecte partielle, dépôt et amélioration sans double débit, conservation des caisses et ennemis entre cartes, sauvegarde et migration. Tests Chromium mobile en 390×844 et 844×390 sur la racine et le bundle Pages : chargement du style, transitions, fouille, dépôt et amélioration via les commandes, absence d'erreur JavaScript. Les scénarios positionnent le joueur via les sauvegardes pour tester chaque interaction séparément.
 
-`npm run build` génère `dist/le-zombie.html`, avec le CSS et le JavaScript intégrés. Télécharger ce fichier et l’ouvrir dans un navigateur Android acceptant les fichiers HTML locaux. Aucune connexion ni installation nécessaire pour le jeu. La disponibilité de la sauvegarde locale dépend du navigateur et du mode d’ouverture. Si Android ne propose pas de navigateur pour le fichier, utiliser un hébergement HTTPS statique ; aucun hébergement n’est configuré automatiquement.
-
-## Publication GitHub Pages
-
-`npm run build` produit aussi `docs/index.html`, autonome et compatible avec le sous-chemin du dépôt. Après une modification du jeu, reconstruire puis inclure `docs/` dans le commit.
-
-Dans les paramètres GitHub du dépôt, section Pages : sélectionner **Deploy from a branch**, branche **main**, dossier **/docs**, puis enregistrer. GitHub déploie ensuite les mises à jour poussées sur cette branche. L'adresse attendue après activation est `https://kanoew.github.io/Le-Zombie-/`.
+Restent à mesurer sur téléphone Android réel : confort tactile, navigation prolongée, fluidité, reprise après interruption système et session de 30 minutes. Cette alpha ne valide pas encore toutes les étapes A et B du cahier des charges.
