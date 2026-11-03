@@ -1,4 +1,4 @@
-# Le Zombie · Les Cendres — alpha 0.3
+# Le Zombie · Les Cendres — alpha 0.4
 
 Survival cyberpunk en JavaScript / Canvas 2D natif, sans dépendance. Première boucle d'expédition du projet Android de Kanoew. Aucun asset tiers : décor et personnages sont dessinés par le code, encore provisoires.
 
@@ -63,3 +63,15 @@ python3 test/raid_mobile.py
 ```
 
 Ces scénarios utilisent des sauvegardes préparées pour atteindre les interactions. Ils couvrent l'exploration, le multitouch, l'invocation, la reprise d'un raid et l'absence de double récompense, en portrait et paysage. Les 11 tests Node comprennent aussi une simulation avec enceinte fermée et une avec défenseur. Les performances sur téléphone réel restent à mesurer.
+
+## Alpha 0.4 — présentation et confort
+
+Refonte de l'écran d'accueil, des commandes, du journal et de la minicarte. Décors, équipements et personnages redessinés en pixel art procédural original, sans images ni polices externes. Le terrain statique est mis en cache dans des canvas hors écran ; les personnages, les lumières, la pluie et les retours d'attaque sont rendus séparément. La caméra est plus proche et accompagne le joueur. Les panneaux respectent les marges de sécurité du téléphone.
+
+La construction fonctionne maintenant en deux touches : sélectionner la case pour voir l'aperçu et le coût, puis toucher la même case pour confirmer. Un placement refusé est indiqué par un aperçu rouge et un message. Aucun coût n'est appliqué pendant l'aperçu.
+
+L'option **Effets : réduits** coupe la pluie et les mouvements décoratifs et supprime l'interpolation de caméra. Elle respecte la préférence système au premier lancement, puis mémorise le choix sur cet appareil. Les indicateurs d'attaque restent visibles. Les commandes et règles détaillées sont accessibles dans le menu. Échap ouvre/ferme la pause ou ferme le rapport.
+
+Les sauvegardes restent en version 3 : aucun changement au contenu de la partie. Publication avec `npm run build`, incluant le renderer dans le HTML autonome et les URL versionnées des fichiers source.
+
+Vérification supplémentaire : `python3 test/design_mobile.py` couvre les formats 390×844, 844×390, 568×320 et 360×640, la préférence d'effets après rechargement et le débit de construction uniquement après confirmation. La qualité et la fluidité sur appareil Android réel restent à apprécier lors des essais.

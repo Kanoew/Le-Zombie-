@@ -1,17 +1,44 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080e18"><title>Le Zombie · Les Cendres</title><style>:root{color-scheme:dark;font-family:Inter,system-ui,sans-serif;color:#e2efea;background:#080f17}*{box-sizing:border-box}body{margin:0;overflow:hidden}button{font:inherit;color:inherit;cursor:pointer;border:1px solid #637d7960;background:#0b1b23eb;border-radius:8px;padding:12px;touch-action:none;user-select:none}button:active,button.active{border-color:#a0ffd3;background:#245448}button:focus-visible{outline:2px solid #a0ffd3}#app{height:100svh;min-height:340px;position:relative;overflow:hidden}canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;touch-action:none}header{position:absolute;top:max(12px,env(safe-area-inset-top));left:max(18px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right));display:flex;justify-content:space-between;align-items:center}.brand{font-weight:800;font-size:12px;letter-spacing:.16em}.brand small{font-size:8px;color:#7d9c9d;margin-left:6px}.dot{display:inline-block;width:7px;height:7px;background:#a5f8c5;border-radius:50%;box-shadow:0 0 12px #a5f8c5;margin-right:8px}.header-actions{display:flex;gap:6px}.header-actions button{padding:7px 12px;font-size:20px}.hud{position:absolute;top:68px;left:18px;right:18px;display:flex;gap:18px;pointer-events:none}.hud>div{width:110px;display:flex;flex-direction:column;gap:4px}.hud small,#mission small{font-size:8px;letter-spacing:.16em;color:#8baba9}.hud span{font-size:12px;font-weight:700}meter{height:5px;width:100%;appearance:none;border:0;background:#273a43}meter::-webkit-meter-bar{background:#273a43;border:0}meter::-webkit-meter-optimum-value{background:#a6e9bc}#spbar::-webkit-meter-optimum-value{background:#cbb57e}.hud .clock{margin-left:auto;width:auto;text-align:right}#mission{position:absolute;top:135px;left:18px;max-width:250px;display:flex;flex-direction:column;gap:5px;padding:10px 12px;border-left:2px solid #a4e8bd;background:#09141dd4;pointer-events:none}#objective{font-size:11px;line-height:1.5}#message{position:absolute;bottom:205px;left:20px;right:20px;text-align:center;font-size:12px;color:#d6e7db;text-shadow:0 2px 4px #000;pointer-events:none}#inventory{position:absolute;bottom:170px;left:20px;right:20px;display:flex;justify-content:center;gap:16px;font-size:10px;color:#a3b9b4;pointer-events:none}.controls{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));left:max(24px,env(safe-area-inset-left));right:max(20px,env(safe-area-inset-right));display:flex;justify-content:space-between;align-items:end;pointer-events:none}.controls>*{pointer-events:auto}#stick{width:110px;height:110px;border:1px solid #95c9bb45;border-radius:50%;background:#0c202a80;position:relative;touch-action:none}#knob{position:absolute;inset:33px;border-radius:50%;border:1px solid #b3e1cda0;background:#6ba99466;pointer-events:none}#stick span{position:absolute;top:119px;width:100%;text-align:center;font-size:7px;letter-spacing:.16em;color:#86a19a;pointer-events:none}.actions{display:flex;flex-direction:column;align-items:end;gap:10px}.actions>div{display:flex;align-items:end;gap:10px}#attack{width:86px;height:86px;border-radius:50%;background:#623a37cc;border-color:#f2b09c99;text-transform:uppercase;font-size:11px;font-weight:bold}#dodge{border-radius:50%;width:62px;height:62px;font-size:10px}#interact{font-size:11px;border-color:#a6d9bd80;max-width:190px}#camp-tools{position:absolute;bottom:135px;left:20px;display:flex;gap:6px}#camp-tools button{font-size:10px;padding:8px}.overlay{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(115deg,#07101afa,#07121ce8 60%,#1d3d36df);overflow:auto;padding:28px;z-index:10}.overlay[hidden]{display:none}.panel{width:min(100%,480px)}.eyebrow{color:#9dc6b2;font-size:9px;letter-spacing:.2em}h1{font-size:clamp(44px,10vw,76px);line-height:.96;letter-spacing:-.045em;margin:25px 0}h1 em{font-style:normal;color:#b3eac5}.panel p{font-size:13px;line-height:1.8;color:#9db2af}.brief{display:grid;grid-template-columns:25px 1fr;gap:10px;font-size:11px;color:#a8bdb8;margin:24px 0}.brief b{color:#b8e8c5}.primary{width:100%;background:#bae9cb;color:#142920;border:0;font-weight:800;padding:17px}.menu-tools{display:flex;gap:8px;margin:10px 0 18px}.menu-tools button{flex:1;font-size:11px}.hint{font-size:9px;color:#7e9893;line-height:1.7;display:block}button:disabled{opacity:.45}@media(orientation:landscape) and (max-height:600px){.hud{top:55px}.hud>div{width:100px}#mission{top:112px;max-width:210px}#message{bottom:38px;left:150px;right:230px;font-size:11px}#inventory{bottom:15px;left:150px;right:230px;gap:10px}#camp-tools{bottom:90px;left:auto;right:125px}#camp-tools button{padding:7px}.overlay{padding:20px}.panel{width:min(92%,700px);display:grid;grid-template-columns:1fr 1fr;column-gap:32px}.eyebrow{grid-column:1/-1}h1{grid-column:1;grid-row:2/5;font-size:64px}.panel p{grid-column:2;grid-row:2;margin:5px 0}.brief{grid-column:2;grid-row:3;margin:8px 0}.primary{grid-column:2;grid-row:4;padding:12px}.menu-tools{grid-column:2;margin:8px 0}.hint{grid-column:1/-1}.brand small{display:none}}
-[hidden]{display:none!important}
-#raid-status{font-size:10px;color:#a5c9b1;line-height:1.5}.danger{color:#ffb096!important}#camp-tools{max-width:240px;flex-wrap:wrap;bottom:145px}#camp-tools button{padding:6px 8px;font-size:9px}.utility{display:flex;align-items:center;gap:6px}#dog-action{font-size:10px;padding:12px 8px}.report-panel{max-width:460px}.report-panel p{line-height:1.9;color:#a8c1b4;font-size:14px}.report-panel h2{font-size:32px;color:#b3eac5}.menu-tools{flex-wrap:wrap}.menu-tools button{min-width:80px}#message{bottom:235px}#inventory{bottom:205px}@media(orientation:landscape) and (max-height:600px){#camp-tools{bottom:106px;max-width:240px;right:20px}#message{bottom:38px}#inventory{bottom:15px}.utility{max-width:230px}#mission{max-width:230px}.hint{font-size:8px}.brief{font-size:10px}.menu-tools{margin:6px 0}}
-#camp-tools{pointer-events:none}#camp-tools button{pointer-events:auto}@media(orientation:landscape) and (max-height:600px){#camp-tools{top:14px;bottom:auto;left:270px;right:125px;max-width:none;gap:4px}}
-</style></head><body>
-<main id="app"><canvas id="game" aria-label="Jeu de survie cyberpunk vu du dessus"></canvas>
-<header><div class="brand"><span class="dot"></span> LE ZOMBIE <small>ALPHA 0.3</small></div><div class="header-actions"><button id="fullscreen" aria-label="Plein écran">⛶</button><button id="pause" aria-label="Menu et pause">☰</button></div></header>
-<section class="hud"><div><small>VITALITÉ</small><span id="health">100 / 100</span><meter id="hpbar" max="100" value="100"></meter></div><div><small>ENDURANCE</small><span id="stamina">100</span><meter id="spbar" max="100" value="100"></meter></div><div class="clock"><small id="zone">REFUGE</small><span id="time">Jour</span></div></section>
-<aside id="mission"><small>PROCHAIN OBJECTIF</small><span id="objective">Récupérer des ressources dans le quartier</span><span id="raid-status">Menace 0/60</span></aside>
-<div id="message" role="status">Bienvenue au refuge.</div><div id="inventory"><span id="stock">Réserve 8</span><span id="bag">Sac 0/12</span><span id="weapon">Machette</span></div>
-<section class="controls"><div id="stick" aria-label="Joystick de déplacement"><div id="knob"></div><span>DÉPLACEMENT</span></div><div class="actions"><div class="utility"><button id="dog-action">Chien</button><button id="interact">Interagir</button></div><div><button id="dodge">Esquive</button><button id="attack">Frapper</button></div></div></section>
-<nav id="camp-tools"><button id="build">Bâtir · 2</button><button id="forge">Renforcer · 10</button><button id="summon">Invoquer Écho · 6</button><button id="repair">Réparer · 0</button></nav>
-<section id="menu" class="overlay"><div class="panel"><small class="eyebrow">SURVIVAL CYBERPUNK / CHAPITRE ZÉRO</small><h1>LES<br><em>CENDRES.</em></h1><p>Un refuge. Une lame. Un compagnon.<br>Ramène de quoi tenir une nuit de plus.</p><div class="brief"><b>01</b><span>Rejoins la sortie lumineuse à l’est du refuge.</span><b>02</b><span>Fouille les caisses du quartier. Évite ou affronte les infectés.</span><b>03</b><span>Dépose au noyau, invoque Écho-01 et défends le refuge.</span></div><button id="play" class="primary">Commencer l’expédition →</button><div class="menu-tools"><button id="report-open">Rapport de raid</button><button id="save">Sauvegarder</button><button id="load">Recharger</button></div><small class="hint">Paysage conseillé · tactile ou ZQSD / flèches<br>E : interagir · espace : frapper · Maj : esquiver<br>Mort : retour au refuge, perte de la moitié du sac.<br>Raid : alerte de 45 s après 8 ressources livrées et 60 de menace.<br>Absence : jeu en pause, aucun raid hors session dans cette alpha.</small></div></section>
-<section id="report" class="overlay" hidden><div class="report-panel"><small class="eyebrow">RAPPORT DE DÉFENSE</small><h2 id="report-title"></h2><p id="report-body"></p><button id="report-close" class="primary">Continuer</button></div></section><noscript>Active JavaScript pour jouer.</noscript></main><script type="module">const COLS = 30, ROWS = 18, TILE = 32;
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b1420"><title>Les Cendres · Le Zombie</title><style>:root{color-scheme:dark;--ink:#0b1420;--panel:#0c1b28eb;--line:#88b7ad30;--mint:#b9e8c9;--muted:#8ca3a7;--amber:#d9be88;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#e7eee9;background:var(--ink)}
+*{box-sizing:border-box}body{margin:0;overflow:hidden}button{font:inherit;color:inherit;cursor:pointer;border:1px solid var(--line);background:linear-gradient(150deg,#1b3039ed,#101f2aed);border-radius:9px;padding:12px;touch-action:none;user-select:none;min-height:40px;box-shadow:inset 0 1px #ffffff06,0 4px 12px #0002;transition:background .15s,border-color .15s,transform .15s}
+button:active{transform:translateY(1px);background:#345c55}button.active{border-color:var(--mint);background:#31544b}button:focus-visible{outline:2px solid var(--mint);outline-offset:3px}button:disabled{opacity:.45;cursor:default;box-shadow:none}[hidden]{display:none!important}
+#app{height:100svh;min-height:300px;position:relative;overflow:hidden;isolation:isolate}#game{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;touch-action:none}
+header{position:absolute;top:max(16px,env(safe-area-inset-top));left:max(18px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right));display:flex;justify-content:space-between;align-items:center;pointer-events:none}.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:12px;letter-spacing:.14em;text-shadow:0 2px 8px #000}.brand small{display:block;margin-top:4px;color:#829d9d;font:7px monospace;letter-spacing:.15em}.logo-mark{font-size:27px;color:var(--mint);font-weight:400}.header-actions{display:flex;gap:7px;pointer-events:auto}.header-actions button{width:40px;height:40px;padding:0;font-size:20px;background:#0b1a26d9}
+.hud{position:absolute;top:78px;left:18px;right:18px;display:flex;gap:14px;pointer-events:none}.hud>div{width:104px;display:grid;grid-template-columns:1fr auto;gap:6px}.hud small{font:8px monospace;letter-spacing:.09em;color:#a5bbb7;grid-column:1/-1}.hud span{font-size:11px;font-weight:700;grid-column:1/-1}.hud meter{grid-column:1/-1}.hud .clock{margin-left:auto;width:auto;text-align:right;align-content:start;gap:5px}.clock #zone{font-size:7px;color:#c4d4cd}.clock #time{font-size:10px;font-weight:500;color:#c2c7b7}meter{height:5px;width:100%;appearance:none;border:0;background:#263d44;border-radius:2px;overflow:hidden}meter::-webkit-meter-bar{background:#263d44;border:0;border-radius:2px}meter::-webkit-meter-optimum-value{background:linear-gradient(90deg,#719d89,#c5f0cd)}meter::-moz-meter-bar{background:#b9e8c9}#spbar::-webkit-meter-optimum-value{background:linear-gradient(90deg,#a18760,#e6d29d)}
+#mission{position:absolute;top:150px;left:18px;width:212px;display:flex;flex-direction:column;gap:8px;padding:12px;border:1px solid #86a69b1a;border-left:2px solid #9abfa8;background:linear-gradient(110deg,#0d1d2bdc,#0b1a25aa);border-radius:0 7px 7px 0;pointer-events:none;box-shadow:0 8px 24px #0001}#mission>small{font:7px monospace;letter-spacing:.13em;color:#afc7b3}.objective-dot{display:inline-block;width:4px;height:4px;background:#bfd5a6;transform:rotate(45deg);margin-right:5px}#objective{font-size:10px;line-height:1.65;color:#d4e0d7}#raid-status{font:8px monospace;line-height:1.6;color:#859f9b;padding-top:6px;border-top:1px solid #9ac5b315}.danger{color:#edb38e!important}.under-attack #mission{border-left-color:#e3a180;background:linear-gradient(110deg,#302229e8,#16202adc)}
+.map-panel{position:absolute;top:150px;right:18px;width:110px;padding:5px;border:1px solid #a6c1bd30;border-radius:5px;background:#0c1b28e6;pointer-events:none;box-shadow:0 8px 24px #0003}#map{display:block;width:100%;height:auto;image-rendering:pixelated}.map-panel small{font:6px monospace;display:flex;justify-content:space-between;letter-spacing:.08em;color:#8aa5a0;padding-top:5px}.map-panel small span{color:#b1d7ad;font-size:5px}
+#message{position:absolute;bottom:302px;left:24px;right:24px;margin:auto;max-width:470px;min-height:35px;padding:10px 14px;text-align:center;font-size:11px;line-height:1.6;color:#dae8dc;background:#0a1826e6;border:1px solid #9db5a828;border-radius:6px;box-shadow:0 6px 20px #0002;opacity:0;transition:opacity .25s;pointer-events:none}#message.visible{opacity:1}#inventory{position:absolute;bottom:267px;left:18px;right:18px;display:flex;justify-content:center;gap:6px;pointer-events:none}#inventory span{font:9px monospace;color:#bed0c7;padding:7px 9px;background:#0c1b27d9;border:1px solid #7caaa51c;border-radius:4px}#stock::before{content:'◇ ';color:var(--amber)}#bag::before{content:'▤ ';color:#8dbbab}#weapon::before{content:'╱ ';color:#b9c8db}
+.controls{position:absolute;bottom:max(28px,env(safe-area-inset-bottom));left:max(22px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right));display:flex;justify-content:space-between;align-items:end;pointer-events:none}.controls>*{pointer-events:auto}#stick{width:110px;height:110px;border:1px solid #a9c4bc40;border-radius:50%;background:radial-gradient(circle,#243f4844,#09182566);box-shadow:inset 0 0 0 9px #aecac306,inset 0 0 0 10px #aecac30b;position:relative;touch-action:none}#stick::after{content:'';position:absolute;inset:19px;border:1px dashed #94b9ac24;border-radius:50%;pointer-events:none}.stick-cross{position:absolute;inset:49px 12px;border-top:1px solid #94b9ac20;pointer-events:none}.stick-cross::after{content:'';position:absolute;width:1px;height:86px;background:#94b9ac20;left:41px;top:-42px}#knob{position:absolute;inset:34px;border-radius:50%;border:1px solid #cee6d47a;background:radial-gradient(circle at 35% 25%,#96c3ab9c,#375f60ad);box-shadow:0 3px 12px #0005,inset 0 1px #e5fbe55c;pointer-events:none;z-index:1}#stick>span{position:absolute;top:120px;left:0;width:100%;text-align:center;font:6px monospace;letter-spacing:.18em;color:#8aa6a2;pointer-events:none}
+.actions{display:flex;flex-direction:column;align-items:end;gap:11px}.utility{display:flex;align-items:center;gap:7px}.utility button{font-size:10px;min-height:40px}.utility #dog-action{width:49px;padding:9px 2px;color:#c8bda5}.utility #interact{max-width:180px;padding:10px 12px;font-size:10px;color:#d2ddce;border-color:#b9d3b83d}.utility #interact.ready{border-color:#b4d5b46b;background:linear-gradient(130deg,#29483cdb,#152e2be8)}.combat{display:flex;align-items:end;gap:12px}#attack{width:88px;height:88px;min-height:88px;border-radius:50%;background:radial-gradient(circle at 35% 25%,#8e6452ee,#422e36f0);border:1px solid #dcbd8b96;box-shadow:inset 0 0 0 5px #b8916014,0 6px 20px #0005;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:9px;font-weight:750;text-transform:uppercase;letter-spacing:.09em;color:#ffe9c8}#attack svg{width:28px;height:28px;fill:none;stroke:#f7dfb7;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}#attack:active{background:#936c53;transform:scale(.96)}#dodge{width:59px;height:59px;border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center;font-size:8px;padding:5px;border-color:#8da4b45e;color:#cad5de;background:radial-gradient(circle at 35% 25%,#354958e8,#172735f2)}#dodge span{font-size:23px;line-height:23px;color:#b1c6d8}
+#camp-tools{position:absolute;bottom:177px;left:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;width:232px;pointer-events:none}#camp-tools button{pointer-events:auto;font-size:9px;padding:9px 5px;min-height:38px;white-space:nowrap;background:#0c1c29df;border-color:#6e9c9836}#build::before{content:'⊞ ';color:#a0cab7}#forge::before{content:'╱ ';color:#d2bd8b}#summon::before{content:'◈ ';color:#baa8d4}#repair::before{content:'⌁ ';color:#98b7c4}#build-hint{position:absolute;left:18px;right:18px;bottom:349px;text-align:center;color:#c6e2c9;font:8px monospace;letter-spacing:.1em;pointer-events:none}#build-hint span{display:block;margin-top:6px;letter-spacing:0;color:#9cafa6;font-size:9px}
+.overlay{position:absolute;inset:0;display:grid;place-items:center;padding:32px 24px;overflow:auto;z-index:10;background:linear-gradient(110deg,#081320e8 12%,#0a1827c4 55%,#152b2ce8);backdrop-filter:blur(3px)}.panel{width:min(100%,980px);display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}.eyebrow{font:8px monospace;letter-spacing:.13em;color:#9ebbb2}.menu-tag{display:flex;align-items:center;gap:7px;font:7px monospace;letter-spacing:.13em;color:#b6ccb6;margin-top:35px}.menu-tag i{width:5px;height:5px;display:inline-block;background:#b9ddb2;border-radius:50%;box-shadow:0 0 10px #92d8b7}h1{font-size:clamp(54px,8vw,98px);font-weight:850;line-height:.93;letter-spacing:-.065em;margin:22px 0;color:#f0eee2;text-shadow:0 6px 22px #0002}h1 em{font-style:normal;color:#bad9bc}h1 em span{color:#d0b687}.menu-intro>p{font-size:16px;color:#9eb6b2;line-height:1.7;margin:24px 0}.world-caption{display:flex;align-items:center;gap:12px;border-top:1px solid #9eb9af25;padding-top:22px;margin-top:40px}.world-caption>span{font:32px monospace;color:#c3b58c}.world-caption>div{font:8px monospace;letter-spacing:.12em;color:#b2c5bc}.world-caption small{display:block;font-size:7px;color:#779695;margin-top:7px;letter-spacing:0}.menu-card{padding:26px;background:linear-gradient(145deg,#152834e8,#0d1e2aeb);border:1px solid #9fb3ac35;border-radius:12px;box-shadow:0 18px 70px #0004,inset 0 1px #ffffff05}.menu-card h2{font-size:23px;letter-spacing:-.04em;font-weight:650;margin:12px 0;color:#e3e9db}.menu-card>p{font-size:11px;color:#92aaa7;line-height:1.7}.brief{display:grid;grid-template-columns:24px 1fr;gap:16px 8px;margin:26px 0;color:#879f9d;font-size:10px;line-height:1.7}.brief b{font:9px monospace;color:#b9cba9;padding-top:3px}.brief strong{display:block;color:#c9d8cc;font-weight:600;font-size:11px;margin-bottom:2px}.primary{width:100%;background:linear-gradient(120deg,#b6d7b3,#d4dfb7);border:1px solid #e3e6c7;color:#21362e;font-size:12px;font-weight:750;padding:16px;border-radius:7px;box-shadow:0 4px 20px #98c29c16}.primary:active{background:#91b5a0}.menu-tools{display:flex;gap:6px;margin:10px 0}.menu-tools button{flex:1;font-size:9px;padding:9px 4px;min-height:36px;background:#0d1d27bd}.setting{width:100%;font:9px monospace;color:#a1b8ae;background:transparent;border:0;box-shadow:none;min-height:31px;padding:8px}.hint{display:block;font-size:8px;color:#8ba49f;line-height:1.8;margin-top:10px}.menu-footer{position:absolute;bottom:16px;left:26px;right:26px;display:flex;justify-content:space-between;pointer-events:none;font:7px monospace;letter-spacing:.13em;color:#8ba19b}.report-panel{width:min(100%,450px);padding:30px;border:1px solid #a4c5ae38;border-radius:12px;background:#10222fe8;box-shadow:0 20px 80px #0005}.report-emblem{font-size:55px;color:var(--mint);margin:18px 0}.report-panel h2{font-size:31px;letter-spacing:-.045em;color:#c7e1bd;margin:8px 0}.report-panel p{font-size:12px;color:#a9bdb4;line-height:2;margin:18px 0 25px}
+@media(max-width:650px) and (orientation:portrait){.overlay{display:block;padding:30px 22px 48px}.panel{display:block;max-width:440px;margin:auto}.menu-intro{position:relative}.menu-tag{margin-top:21px}h1{font-size:68px;margin:18px 0}.menu-intro>p{font-size:13px;margin:16px 0}.world-caption{position:absolute;right:0;bottom:5px;padding-top:10px;margin:0;max-width:155px;gap:8px}.world-caption>span{font-size:25px}.world-caption>div{font-size:6px;line-height:1.6}.world-caption small{font-size:6px}.menu-card{margin-top:22px;padding:20px}.menu-card h2{font-size:21px}.brief{margin:19px 0;gap:11px 8px}.menu-footer{position:relative;left:auto;right:auto;bottom:auto;margin-top:25px;font-size:6px;gap:10px}.report-panel{margin:10vh auto}.report-emblem{margin:12px 0}}
+@media(orientation:landscape) and (max-height:600px){header{top:12px}.brand{font-size:11px}.brand small{font-size:6px}.logo-mark{font-size:24px}.hud{top:66px;gap:14px}.hud>div{width:100px}.hud small{font-size:7px}.hud span{font-size:10px}#mission{top:126px;width:210px;padding:10px;gap:6px}#objective{font-size:9px}.map-panel{top:126px;width:104px}#message{bottom:48px;left:150px;right:238px;font-size:10px;max-width:400px;padding:8px 10px}#inventory{bottom:14px;left:150px;right:238px;gap:4px}#inventory span{font-size:8px;padding:6px}.controls{bottom:25px}.utility #interact{max-width:180px}#camp-tools{top:14px;bottom:auto;left:245px;right:118px;width:auto;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}#camp-tools button{font-size:8px;min-height:36px;padding:7px 3px}#build-hint{bottom:100px;left:150px;right:238px;font-size:7px}#build-hint span{font-size:8px}.overlay{padding:18px 30px 30px}.panel{gap:35px;max-width:850px}.menu-tag{margin-top:17px}h1{font-size:65px;margin:16px 0}.menu-intro>p{font-size:12px;margin:15px 0}.world-caption{margin-top:20px;padding-top:15px}.world-caption>span{font-size:25px}.menu-card{padding:18px}.menu-card h2{font-size:19px;margin:7px 0}.menu-card>p{font-size:9px;margin:6px 0}.brief{margin:12px 0;gap:7px 6px;font-size:9px}.brief strong{font-size:10px;margin:0}.primary{padding:12px;font-size:11px}.menu-tools{margin:6px 0}.menu-tools button{font-size:8px;min-height:30px;padding:6px 2px}.hint{font-size:7px;margin-top:5px;line-height:1.6}.setting{font-size:8px;min-height:24px;padding:5px}.menu-footer{bottom:10px;font-size:6px}.report-panel{padding:20px;max-width:470px}.report-emblem{display:none}.report-panel h2{font-size:27px}.report-panel p{font-size:11px;margin:12px 0 17px;line-height:1.8}}
+@media(orientation:landscape) and (max-width:700px){.brand{font-size:9px;letter-spacing:.07em}.brand small{font-size:5px}.logo-mark{font-size:19px}.header-actions button{width:34px;height:36px}#camp-tools{left:172px;right:104px;gap:3px}#camp-tools button{font-size:7px}#mission{width:172px;top:123px}#objective{max-height:28px;overflow:hidden;font-size:8px}#raid-status{font-size:7px}.map-panel{width:87px}.utility #interact{max-width:150px;font-size:8px}#message{right:210px;font-size:8px}#inventory{right:210px}#inventory span{font-size:7px}.overlay{padding:18px 20px 30px}.panel{gap:22px}h1{font-size:51px}.world-caption{margin-top:14px}.menu-card{padding:14px}.brief span{font-size:8px}.menu-intro>p{font-size:10px}.eyebrow{font-size:6px}.menu-tag{font-size:6px}.menu-card h2{font-size:17px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+.help{margin-top:10px;border-top:1px solid #abc3b31a;padding-top:10px}.help summary{font-size:9px;color:#9eb5ac;cursor:pointer;min-height:18px}.reduced-motion *{transition:none!important}@media(orientation:landscape) and (max-height:600px){.help{margin-top:6px;padding-top:6px}.help summary{font-size:8px}.menu-card>p{display:none}.overlay{align-items:start}.hint{padding-bottom:4px}.menu-footer{background:#0b172544}}
+.hud{left:max(18px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right))}#mission{left:max(18px,env(safe-area-inset-left))}.map-panel{right:max(18px,env(safe-area-inset-right))}.reduced-motion .overlay{backdrop-filter:none}
+@media(orientation:landscape) and (max-height:600px){.menu-footer{display:none}}
+@media(orientation:landscape) and (max-height:360px){.overlay{padding:12px 20px}.world-caption{display:none}.menu-intro h1{font-size:48px}.menu-card{padding:12px}.menu-card h2{font-size:16px}.brief{margin:10px 0;gap:6px}.brief span{font-size:0}.brief strong{font-size:9px;line-height:1.5}.brief b{font-size:8px}.menu-tools button{min-height:28px}.primary{min-height:36px;padding:9px}.setting{min-height:20px}.help{margin-top:4px;padding-top:4px}}
+</style></head>
+<body><main id="app">
+<canvas id="game" aria-label="Jeu de survie cyberpunk vu du dessus"></canvas>
+<header><div class="brand"><span class="logo-mark" aria-hidden="true">◈</span><div>LES CENDRES<small>LE ZOMBIE · ALPHA 0.4</small></div></div><div class="header-actions"><button id="fullscreen" aria-label="Plein écran" title="Plein écran">⛶</button><button id="pause" aria-label="Menu et pause" title="Menu">☰</button></div></header>
+<section class="hud" aria-label="État du personnage"><div class="vital"><small>✚ VITALITÉ</small><span id="health">100 / 100</span><meter id="hpbar" max="100" value="100"></meter></div><div class="energy"><small>ϟ ENDURANCE</small><span id="stamina">100</span><meter id="spbar" max="100" value="100"></meter></div><div class="clock"><small id="zone">STATION 07</small><span id="time">Jour</span></div></section>
+<aside id="mission"><small><span class="objective-dot"></span> JOURNAL DE SURVIE</small><span id="objective">Ramène des ressources au refuge.</span><span id="raid-status">Menace 0/60</span></aside>
+<aside class="map-panel" aria-label="Minicarte"><canvas id="map" width="120" height="72"></canvas><small>SECTEUR LOCAL <span>●</span></small></aside>
+<div id="message" class="visible" role="status">Bienvenue à la station 07.</div>
+<div id="inventory"><span id="stock">Réserve 8</span><span id="bag">Sac 0/12</span><span id="weapon">Machette</span></div>
+<nav id="camp-tools" aria-label="Gestion du refuge"><button id="build">Bâtir · 2</button><button id="forge">Renforcer · 10</button><button id="summon">Invoquer Écho · 6</button><button id="repair">Réparer · 0</button></nav>
+<div id="build-hint" hidden>CONSTRUCTION <span>Choisir une case → toucher à nouveau pour confirmer</span></div>
+<section class="controls" aria-label="Commandes tactiles"><div id="stick" aria-label="Joystick de déplacement"><div class="stick-cross" aria-hidden="true"></div><div id="knob"></div><span>DÉPLACEMENT</span></div><div class="actions"><div class="utility"><button id="dog-action">Chien</button><button id="interact">Interagir</button></div><div class="combat"><button id="dodge"><span aria-hidden="true">↝</span>Esquive</button><button id="attack"><svg aria-hidden="true" viewBox="0 0 32 32"><path d="m9 25 17-19 1 7-14 15M7 20l9 8M5 28l5-5"/></svg>Frapper</button></div></div></section>
+<section id="menu" class="overlay"><div class="panel"><div class="menu-intro"><small class="eyebrow">TRANSMISSION 007 / ALPHA 0.4</small><div class="menu-tag"><i></i> UN REFUGE DANS LES RUINES</div><h1>LES<br><em>CENDRES<span>.</span></em></h1><p>Le monde s’est éteint.<br>Pas toi.</p><div class="world-caption"><span>07</span><div>STATION DE REPLI<small>Réseau autonome · secteur des Cendres</small></div></div></div>
+<div class="menu-card"><small class="eyebrow">TON PROCHAIN DÉPART</small><h2>Tenir une nuit de plus.</h2><p>Une lame, un compagnon et ce qu’il reste de la ville.</p><div class="brief"><b>01</b><span><strong>Explore les ruines</strong>Fouille les caches, surveille ton sac.</span><b>02</b><span><strong>Reviens en vie</strong>Dépose tes ressources et renforce ta lame.</span><b>03</b><span><strong>Protège ton refuge</strong>Invoque Écho-01 et repousse les assauts.</span></div><button id="play" class="primary">Commencer l’expédition →</button><div class="menu-tools"><button id="report-open">Rapport de raid</button><button id="save">Sauvegarder</button><button id="load">Recharger</button></div><button id="motion" class="setting">Effets : complets</button><details class="help"><summary>Commandes et règles de survie</summary><small class="hint">Tactile ou ZQSD / flèches · E : interagir · espace : frapper · Maj : esquiver.<br>Mort : perte de la moitié du sac. Raid : alerte à 60 de menace après 8 ressources livrées. Aucun raid hors session dans cette alpha.</small></details></div></div><div class="menu-footer"><span>LE ZOMBIE / ALPHA 0.4</span><span>PIXEL SURVIVAL · SOLO</span></div></section>
+<section id="report" class="overlay" hidden><div class="report-panel"><small class="eyebrow">STATION 07 / RAPPORT DE DÉFENSE</small><div class="report-emblem" aria-hidden="true">◈</div><h2 id="report-title"></h2><p id="report-body"></p><button id="report-close" class="primary">Retour au refuge →</button></div></section>
+<noscript>Active JavaScript pour jouer.</noscript>
+</main><script type="module">const COLS = 30, ROWS = 18, TILE = 32;
 const key = (x, y) => `${x},${y}`;
 const entity = (x, y, hp = 60) => ({ x, y, hp, windup: 0, cooldown: 0 });
 const crateLayout = [[208,208,4],[720,144,5],[752,400,4],[304,432,5],[560,272,4]];
@@ -285,17 +312,190 @@ function commandDog(s) {
   return 'Le chien interrompt l’infecté · 12 secondes de recharge.';
 }
 
+
+// Original procedural pixel art. Static terrain is cached; actors and lighting remain dynamic.
+const terrainCache = new Map();
+const pixel = (c,x,y,w,h,color) => { c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),w,h); };
+function label(c,value,x,y,color='#a3b9bd',size=9) {
+  c.font=`${size}px monospace`;c.fillStyle=color;c.fillText(value,Math.round(x),Math.round(y));
+}
+function light(c,x,y,r,color) {
+  const g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,color);g.addColorStop(1,'transparent');
+  c.fillStyle=g;c.fillRect(x-r,y-r,r*2,r*2);
+}
+function ellipse(c,x,y,rx,ry,color) {
+  c.fillStyle=color;c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill();
+}
+function terrain(zone) {
+  if(terrainCache.has(zone))return terrainCache.get(zone);
+  const layer=document.createElement('canvas');layer.width=960;layer.height=576;
+  const c=layer.getContext('2d'),camp=zone==='camp';
+  pixel(c,0,0,960,576,camp?'#1b2930':'#17212e');
+  for(let y=0;y<18;y++)for(let x=0;x<30;x++) {
+    const n=(x*139+y*89)%31,px=x*32,py=y*32;
+    pixel(c,px,py,31,31,camp?(n<9?'#23343b':'#203038'):(n<9?'#202e3b':'#1b2835'));
+    pixel(c,px+1,py+1,29,1,'#8da5a70c');
+    if(n<7){pixel(c,px+6,py+8,2,2,'#7b92932b');pixel(c,px+20,py+23,5,1,'#07141e77');}
+    if(n===3||n===17){pixel(c,px+3,py+12,24,12,'#0e202c');pixel(c,px+7,py+15,17,2,'#3c687343');}
+    if(n===22){for(let i=0;i<5;i++)pixel(c,px+5+i*4,py+5,2,20,'#0f1b26');}
+  }
+  // Inlaid service routes, cables, painted pavement and drainage remain walkable.
+  if(camp) {
+    pixel(c,400,218,288,170,'#101f29');
+    for(let y=224;y<383;y+=16)for(let x=405;x<685;x+=32){pixel(c,x,y,30,14,'#2a3b42');pixel(c,x+2,y+2,26,1,'#52636833');}
+    for(let x=408;x<690;x+=16){pixel(c,x,214,9,3,'#c4a25c77');pixel(c,x,389,9,3,'#c4a25c77');}
+    pixel(c,450,305,407,2,'#0b161f');pixel(c,450,308,407,1,'#5f9b8b66');
+    pixel(c,546,337,2,132,'#10212a');pixel(c,549,337,1,132,'#aa915f66');
+    label(c,'07',688,257,'#456068',30);label(c,'STATION // RESCUE NETWORK',405,207,'#81a597',8);
+    for(let y=280;y<336;y+=13)pixel(c,794,y,18,3,'#8eaa7e4a');
+  } else {
+    pixel(c,55,270,850,73,'#111e2c');pixel(c,55,272,850,2,'#57656c');pixel(c,55,339,850,2,'#57656c');
+    for(let x=65;x<900;x+=52)pixel(c,x,305,25,3,'#baa97977');
+    for(let x=105;x<182;x+=15)pixel(c,x,278,9,56,'#71818a42');
+    for(let i=0;i<9;i++){pixel(c,540+i*3,347+i*2,2,1,'#97cedf33');}
+    label(c,'CENDRES / SECTEUR 04',332,260,'#718692',10);
+    // Reclaimed planter beds, rubble and drain covers are flat ground markings.
+    for(const [x,y] of [[180,94],[590,440],[835,445]]) {
+      pixel(c,x,y,42,13,'#152b2c');for(let i=0;i<8;i++)pixel(c,x+i*5,y+(i%3)*3,4,4,['#354a40','#566450','#716c51'][i%3]);
+    }
+  }
+  // Raised perimeter fences, lamps and signs define the actual collision boundary.
+  for(let x=0;x<960;x+=32)for(const y of [0,544]) {
+    pixel(c,x,y,31,30,'#0e1a24');pixel(c,x+1,y+2,29,5,'#3a4a52');pixel(c,x+3,y+9,25,15,'#23363f');
+    if(x%128===0)pixel(c,x+10,y+12,12,3,'#88b6ab');
+  }
+  for(let y=32;y<544;y+=32)for(const x of [0,928]){pixel(c,x,y,31,32,'#142630');pixel(c,x+4,y+1,5,30,'#384b53');pixel(c,x+12,y+2,2,27,'#71888544');}
+  terrainCache.set(zone,layer);return layer;
+}
+function wall(c,id,camp,health) {
+  const [x,y]=id.split(',').map(Number),px=x*32,py=y*32;
+  pixel(c,px+5,py+12,31,29,'#020b14a0');pixel(c,px,py-5,32,34,camp?'#233b45':'#253244');
+  pixel(c,px+1,py-7,30,7,camp?'#6f8684':'#697787');pixel(c,px+2,py-6,28,1,'#adbbb233');
+  pixel(c,px+3,py+2,26,18,camp?'#39545d':'#3b485b');pixel(c,px+5,py+4,22,1,'#79938a44');
+  pixel(c,px+3,py+23,26,4,health?'#b78b60':camp?'#77b8a4':'#a37190');
+  pixel(c,px+4,py+9,2,2,'#131c2c');pixel(c,px+26,py+9,2,2,'#131c2c');
+  if(!camp&&(x+y)%3===0){pixel(c,px+9,py+5,13,9,'#161c31');pixel(c,px+10,py+6,4,7,'#b87d9a');pixel(c,px+16,py+6,5,7,'#7b95b0');}
+  if(health){pixel(c,px+16,py+1,2,8,'#111f29');pixel(c,px+12,py+8,5,2,'#111f29');pixel(c,px+10,py+10,2,7,'#111f29');}
+}
+function consoleProp(c,x,y,type,time) {
+  ellipse(c,x,y+14,28,12,'#020a1280');
+  if(type==='core') {
+    pixel(c,x-24,y-13,48,36,'#152c36');pixel(c,x-20,y-18,40,9,'#72918c');pixel(c,x-19,y-8,38,24,'#3a5b61');
+    pixel(c,x-13,y-6,26,16,'#091c28');pixel(c,x-10,y-3,20,7,'#78dbc5');pixel(c,x-8,y+6,8,2,'#82a97a');
+    pixel(c,x-24,y+17,48,6,'#0b1a25');pixel(c,x-16,y+20,5,5,'#687e7b');pixel(c,x+11,y+20,5,5,'#687e7b');
+    light(c,x,y,75,'#61e9c51a');label(c,'NOYAU',x-15,y+39,'#8fc9b7',8);
+  } else if(type==='forge') {
+    pixel(c,x-21,y-10,42,25,'#3d3533');pixel(c,x-24,y-13,48,6,'#8b7e69');pixel(c,x-20,y-12,40,1,'#b7a27d');
+    pixel(c,x-18,y+13,5,9,'#2a3035');pixel(c,x+13,y+13,5,9,'#2a3035');pixel(c,x-5,y-21,9,10,'#64797c');
+    pixel(c,x+8,y-16,8,4,'#b7b0a0');pixel(c,x+5,y-14,2,11,'#87979a');pixel(c,x-15,y-10,9,9,'#282c33');
+    pixel(c,x-13,y-8,5,3,'#d7a466');light(c,x-11,y,40,'#dca25a18');label(c,'ATELIER',x-21,y+37,'#c4b18b',8);
+  } else {
+    pixel(c,x-18,y-17,36,43,'#243149');pixel(c,x-15,y-21,30,7,'#79869c');pixel(c,x-12,y-11,24,26,'#101f36');
+    for(let i=0;i<4;i++)pixel(c,x-8,y-7+i*6,16,2,i===Math.floor(time%4)?'#c5b4ec':'#546a8c');
+    pixel(c,x-15,y+20,30,4,'#9b9abd');light(c,x,y,64,'#a18ed71f');label(c,'RELAIS ÉCHO',x-29,y+40,'#b8abd4',8);
+  }
+}
+function sprite(c,a,type,clock,facing,walking,hurt) {
+  const enemy=type==='enemy',dog=type==='dog',guard=type==='guard';
+  const step=Math.sin(clock*11)* (walking?2:0),x=Math.round(a.x),y=Math.round(a.y);
+  ellipse(c,x,y+13,dog?17:13,6,'#020a12a0');
+  c.save();c.translate(x,y);
+  if(dog) {
+    pixel(c,-14,-3,25,13,'#836e56');pixel(c,-10,-6,18,5,'#ac9470');pixel(c,7,-11,12,14,'#a48c67');
+    pixel(c,8,-15,4,8,'#665343');pixel(c,16,-14,3,6,'#665343');pixel(c,14,-5,6,5,'#353944');
+    pixel(c,10,-7,3,2,'#9ad6ba');pixel(c,7,1,10,3,'#346b67');pixel(c,10,2,2,3,'#8ae3c6');
+    pixel(c,-12,8,4,9+step,'#544c43');pixel(c,4,8,4,9-step,'#544c43');pixel(c,-20,-7,9,4,'#938066');
+  } else {
+    const jacket=enemy?'#685262':guard?'#69718e':'#3d7777',skin=enemy?'#999881':'#c3a58b';
+    pixel(c,-7,6,6,12+step,'#1a2836');pixel(c,2,6,6,12-step,'#1a2836');
+    pixel(c,-9,16+step,8,3,'#0a121e');pixel(c,2,16-step,9,3,'#0a121e');
+    pixel(c,-9,-9,18,20,hurt&&!enemy&&!guard?'#cba08e':jacket);
+    pixel(c,-7,-7,4,15,enemy?'#806671':'#568e8a');pixel(c,4,-7,3,15,'#142c3d');
+    pixel(c,-12,-5,4,13+step,enemy?'#867d74':'#324b56');pixel(c,9,-5,4,13-step,enemy?'#867d74':'#324b56');
+    pixel(c,-12,7+step,4,4,skin);pixel(c,9,7-step,4,4,skin);
+    pixel(c,-6,-20,12,13,skin);pixel(c,-7,-22,14,6,enemy?'#393c49':'#232638');
+    pixel(c,-7,-18,3,7,'#232638');pixel(c,-5,-18,11,3,'#384252');
+    if(!enemy&&!guard&&facing.y<-.5){pixel(c,-6,-18,12,10,'#283240');pixel(c,-5,-12,10,3,'#333c4a');}
+    else{const sx=!enemy&&!guard?facing.x:0;pixel(c,sx>.5?0:-6,-14,Math.abs(sx)>.5?6:12,3,enemy?'#e99e96':guard?'#d0b9e1':'#8ef3d6');}
+    pixel(c,-7,-2,14,3,'#152838');pixel(c,-4,-6,3,4,enemy?'#9b7881':'#bea877');
+    pixel(c,-8,8,16,3,'#191e2a');pixel(c,-1,8,3,3,'#a9a58b');
+    if(!enemy){const angle=guard?.4:Math.atan2(facing.y,facing.x);c.save();c.rotate(angle);pixel(c,15,-17,3,22,'#dce2cc');pixel(c,16,-19,2,4,'#f7f3dc');pixel(c,12,4,9,2,'#a58963');pixel(c,15,6,3,6,'#252d36');c.restore();}
+    if(enemy&&a.windup>0){c.strokeStyle='#ffb084';c.lineWidth=2;c.beginPath();c.arc(0,0,42,0,Math.PI*2);c.stroke();label(c,'!',-3,-36,'#ffdfbb',16);}
+  }
+  c.restore();
+}
+function renderScene(c,s,view,cam,fx) {
+  c.imageSmoothingEnabled=false;
+  pixel(c,0,0,view.w,view.h,'#0c1724');
+  c.save();c.translate(-Math.round(cam.x),-Math.round(cam.y));
+  const camp=s.zone==='camp',clock=fx.reduced?0:s.time;
+  c.drawImage(terrain(s.zone),0,0);
+  // Lamps, warning paint and a shallow gate indicate the two traversable exits.
+  const gx=camp?864:80;
+  pixel(c,gx-19,268,38,72,'#1a3f42');pixel(c,gx-21,265,5,76,'#557977');pixel(c,gx+17,265,5,76,'#557977');
+  pixel(c,gx-18,272,3,61,'#90ebcc');pixel(c,gx+15,272,3,61,'#90ebcc');
+  for(let y=277;y<336;y+=10)pixel(c,gx-10,y,20,3,'#598e8377');
+  light(c,gx,303,95,'#7ce4c425');label(c,camp?'VERS LES CENDRES →':'← STATION 07',gx-47,360,'#a8d9c5',8);
+  for(const id of activeWalls(s))wall(c,id,camp,s.wallHealth[id]);
+  if(camp) {
+    consoleProp(c,464,304,'core',clock);consoleProp(c,560,336,'forge',clock);consoleProp(c,624,304,'echo',clock);
+    // Small motion and lighting details are decoration, not additional collision obstacles.
+    light(c,310,176,100,'#a0c9d010');light(c,720,422,110,'#c5995010');
+    if(s.raid.phase==='active'){pixel(c,440,268,48,4,'#162832');pixel(c,440,268,48*s.raid.core/100,4,'#e9c184');}
+  } else {
+    for(const crate of s.crates){const x=crate.x,y=crate.y,full=crate.amount>0;
+      ellipse(c,x+3,y+15,22,8,'#020a1499');pixel(c,x-17,y-10,34,26,full?'#77674b':'#303b44');
+      pixel(c,x-18,y-14,36,7,full?'#c1a578':'#65717a');pixel(c,x-14,y-5,28,17,full?'#917957':'#435059');
+      pixel(c,x-11,y-12,4,26,'#2b3439');pixel(c,x+8,y-12,4,26,'#2b3439');pixel(c,x-3,y,6,5,full?'#efd397':'#152a35');
+      if(full){light(c,x,y,45,'#d7ad5915');label(c,'◇',x-3,y-25,'#efd397',12);}
+    }
+    for(const [x,y,color,name] of [[320,106,'#bd82a6','CLINIQUE'],[570,180,'#8daccd','NO SIGNAL'],[815,114,'#d3b777','04']]) {
+      pixel(c,x-28,y-19,64,18,'#121c2b');label(c,name,x-24,y-7,color,9);pixel(c,x-28,y,64,2,color);light(c,x,y,76,color+'1a');
+    }
+  }
+  if(fx.building&&camp){c.strokeStyle='#b7e9cf30';c.lineWidth=1;for(let x=1;x<30;x++){c.beginPath();c.moveTo(x*32,32);c.lineTo(x*32,544);c.stroke();}for(let y=1;y<18;y++){c.beginPath();c.moveTo(32,y*32);c.lineTo(928,y*32);c.stroke();}}
+  if(fx.blueprint&&fx.building){
+    const b=fx.blueprint,exists=s.walls.includes(`${b.x},${b.y}`),color=!b.valid?'#e29889':exists?'#d6b47f':'#9ce3c3';
+    pixel(c,b.x*32,b.y*32,32,32,!b.valid?'#e2988944':exists?'#d6b47f44':'#9ce3c344');c.strokeStyle=color;c.lineWidth=2;c.strokeRect(b.x*32+1,b.y*32+1,30,30);label(c,exists?'+2':'−2',b.x*32+8,b.y*32-10,color,11);
+  }
+  const actors=[{a:s.player,t:'player'},{a:s.dog,t:'dog'},...(camp&&s.defender.recruited?[{a:s.defender,t:'guard'}]:[]),...activeEnemies(s).filter(e=>e.hp>0).map(a=>({a,t:'enemy'}))].sort((a,b)=>a.a.y-b.a.y);
+  for(const {a,t} of actors){sprite(c,a,t,clock,fx.facing,t==='player'?fx.moving:t==='enemy'?a.cooldown===0:t==='guard'?s.raid.phase==='active'&&a.hp>0:Math.hypot(a.x-s.player.x,a.y-s.player.y)>42,fx.hurt);
+    if(t==='enemy'){pixel(c,a.x-12,a.y-30,24,2,'#322b39');pixel(c,a.x-12,a.y-30,24*Math.max(0,a.hp)/90,2,'#d9a39b');}
+    if(t==='guard')label(c,a.hp>0?'ÉCHO-01':'BLESSÉ',a.x-22,a.y-34,'#c2b9dc',8);
+  }
+  if(fx.attackTimer>0){const a=Math.atan2(fx.facing.y,fx.facing.x);c.strokeStyle='#e6f2cf';c.lineWidth=4;c.beginPath();c.arc(s.player.x,s.player.y,44,a-.9,a+.9);c.stroke();}
+  for(const f of fx.particles)pixel(c,f.x,f.y,3,3,f.color);
+  if(s.time%1080>=720){pixel(c,0,0,960,576,'#070b2344');light(c,s.player.x,s.player.y,125,'#b7d9ce15');}
+  c.restore();
+  // Sparse rain, kept outside the simulation and disabled with reduced motion.
+  if(!fx.reduced){c.strokeStyle='#acc8da19';c.lineWidth=1;for(let i=0;i<35;i++){const x=(i*137+clock*19)%view.w,y=(i*79+clock*160)%view.h;c.beginPath();c.moveTo(x,y);c.lineTo(x-3,y+10);c.stroke();}}
+  const g=c.createLinearGradient(0,0,0,view.h);g.addColorStop(0,'#050b17a8');g.addColorStop(.25,'transparent');g.addColorStop(.72,'transparent');g.addColorStop(1,'#050c17a6');c.fillStyle=g;c.fillRect(0,0,view.w,view.h);
+}
+function renderMiniMap(c,s) {
+  pixel(c,0,0,120,72,'#0b1925');
+  c.strokeStyle='#1d3540';c.strokeRect(3,3,114,66);
+  for(const id of activeWalls(s)){const [x,y]=id.split(',').map(Number);pixel(c,x*4,y*4,3,3,'#506973');}
+  pixel(c,(s.zone==='camp'?27:2)*4,9*4,4,5,'#d4b97d');
+  if(s.zone==='street')for(const crate of s.crates)if(crate.amount)pixel(c,crate.x/8,crate.y/8,2,2,'#caae7a');
+  for(const e of activeEnemies(s))if(e.hp>0)pixel(c,e.x/8,e.y/8,2,2,'#d78e8e');
+  pixel(c,s.player.x/8-1,s.player.y/8-1,4,4,'#b7f3ce');
+}
+
 const $=id=>document.getElementById(id),canvas=$('game'),ctx=canvas.getContext('2d');
-let state=createWorld(),paused=true,building=false,keys=new Set(),joystick={x:0,y:0},facing={x:1,y:0},attackTimer=0,cooldown=0,dash=0,hurt=0,last=performance.now(),autosave=0,stickPointer=null,cam={x:0,y:0},view={w:480,h:800},particles=[],messageTimer=0;
+let state=createWorld(),paused=true,building=false,keys=new Set(),joystick={x:0,y:0},facing={x:1,y:0},attackTimer=0,cooldown=0,dash=0,hurt=0,last=performance.now(),autosave=0,stickPointer=null,cam={x:0,y:0},view={w:480,h:800},particles=[],messageTimer=0,moving=false,pendingBuild=null;
+let reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+try{const value=localStorage.getItem('zombie.motion');if(value!==null)reduced=value==='reduced';}catch{}
+$('app').classList.toggle('reduced-motion',reduced);$('motion').textContent=reduced?'Effets : réduits':'Effets : complets';
+$('motion').onclick=()=>{reduced=!reduced;$('app').classList.toggle('reduced-motion',reduced);$('motion').textContent=reduced?'Effets : réduits':'Effets : complets';try{localStorage.setItem('zombie.motion',reduced?'reduced':'full');}catch{}};
 const cell=a=>[Math.floor(a.x/TILE),Math.floor(a.y/TILE)];
 const say=t=>{$('message').textContent=t;messageTimer=5;};
 function persist(notify=false){try{const current=localStorage.getItem('zombie.save');if(current){try{if(migrateSave(JSON.parse(current)))localStorage.setItem('zombie.backup',current);}catch{}}localStorage.setItem('zombie.save',JSON.stringify(state));if(notify)say('Partie sauvegardée sur cet appareil.');return true;}catch{say('Stockage indisponible : la progression ne sera pas conservée.');return false;}}
-function load(notify=true){for(const name of ['zombie.save','zombie.backup']){try{const data=migrateSave(JSON.parse(localStorage.getItem(name)));if(data){state=data;if(notify)say(name.endsWith('backup')?'Copie précédente restaurée.':'Partie restaurée.');return true;}}catch{}}if(notify)say('Aucune sauvegarde valide disponible.');return false;}
+function load(notify=true){for(const name of ['zombie.save','zombie.backup']){try{const data=migrateSave(JSON.parse(localStorage.getItem(name)));if(data){state=data;cameraReady=false;pendingBuild=null;building=false;$('build').classList.remove('active');if(notify)say(name.endsWith('backup')?'Copie précédente restaurée.':'Partie restaurée.');return true;}}catch{}}if(notify)say('Aucune sauvegarde valide disponible.');return false;}
 function clearInput(){keys.clear();joystick={x:0,y:0};stickPointer=null;$('knob').style.transform='';}
 function pause(value){paused=value;$('menu').hidden=!value;$('play').textContent='Reprendre l’expédition →';clearInput();if(value)persist();}
 $('pause').onclick=()=>pause(!paused);$('play').onclick=()=>pause(false);$('save').onclick=()=>persist(true);$('load').onclick=()=>load();
 $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('app').requestFullscreen();}catch{say('Plein écran indisponible dans ce navigateur.');}};
-$('build').onclick=()=>{if(state.raid.phase==='active'){say('Construction verrouillée pendant le raid.');return;}building=!building;$('build').classList.toggle('active',building);say(building?'Touche une case : mur −2 · démontage +2.':'Mode exploration.');};
+$('build').onclick=()=>{if(state.raid.phase==='active'){say('Construction verrouillée pendant le raid.');return;}building=!building;pendingBuild=null;$('build').classList.toggle('active',building);say(building?'Choisis une case, puis touche-la à nouveau pour confirmer.':'Mode exploration.');};
 $('forge').onclick=()=>{say(upgrade(state));persist();};
 $('summon').onclick=()=>{say(recruitDefender(state));persist();};
 $('repair').onclick=()=>{say(repairWalls(state));persist();};
@@ -318,14 +518,19 @@ function target(){const p=state.player,near=a=>Math.hypot(a.x-p.x,a.y-p.y)<65;
 }
 function interact(){if(paused)return;const t=target();if(!t)return;say(t.run());building=false;$('build').classList.remove('active');persist();}
 $('interact').onpointerdown=e=>{e.preventDefault();interact();};$('attack').onpointerdown=e=>{e.preventDefault();attack();};$('dodge').onpointerdown=e=>{e.preventDefault();dodge();};
-window.addEventListener('keydown',e=>{if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();if(paused)return;keys.add(e.code);if(!e.repeat&&e.code==='Space')attack();if(!e.repeat&&e.code==='KeyE')interact();if(!e.repeat&&e.code.startsWith('Shift'))dodge();});
+window.addEventListener('keydown',e=>{if(e.code==='Escape'){if(!$('report').hidden)$('report-close').click();else pause(!paused);return;}if(paused)return;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();keys.add(e.code);if(!e.repeat&&e.code==='Space')attack();if(!e.repeat&&e.code==='KeyE')interact();if(!e.repeat&&e.code.startsWith('Shift'))dodge();});
 window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',()=>pause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});
 const stick=$('stick');function stickMove(e){if(e.pointerId!==stickPointer||paused)return;const r=stick.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,d=Math.max(38,Math.hypot(dx,dy));joystick={x:dx/d,y:dy/d};$('knob').style.transform=`translate(${joystick.x*30}px,${joystick.y*30}px)`;}
 stick.onpointerdown=e=>{if(stickPointer!==null||paused)return;stickPointer=e.pointerId;stick.setPointerCapture(e.pointerId);stickMove(e);};stick.onpointermove=stickMove;function release(e){if(e.pointerId===stickPointer){stickPointer=null;joystick={x:0,y:0};$('knob').style.transform='';}}stick.onpointerup=release;stick.onpointercancel=release;stick.onlostpointercapture=release;
-canvas.onpointerdown=e=>{if(!building||paused||state.zone!=='camp')return;const r=canvas.getBoundingClientRect(),x=Math.floor(((e.clientX-r.left)/r.width*view.w+cam.x)/32),y=Math.floor(((e.clientY-r.top)/r.height*view.h+cam.y)/32);say(toggleWall(state,x,y,[state.player,state.dog,...(state.defender.recruited?[state.defender]:[]),...state.raid.enemies.filter(e=>e.hp>0)]));persist();};
+canvas.onpointerdown=e=>{
+ if(!building||paused||state.zone!=='camp')return;
+ const r=canvas.getBoundingClientRect(),x=Math.floor(((e.clientX-r.left)/r.width*view.w+cam.x)/32),y=Math.floor(((e.clientY-r.top)/r.height*view.h+cam.y)/32);
+ if(!pendingBuild||pendingBuild.x!==x||pendingBuild.y!==y){const probe=structuredClone(state),before=probe.stock,result=toggleWall(probe,x,y,[state.player,state.dog,...(state.defender.recruited?[state.defender]:[])]);pendingBuild={x,y,valid:probe.stock!==before};say(!pendingBuild.valid?result:state.walls.includes(key(x,y))?'Démonter · +2 ferrailles · retouche pour confirmer.':'Construire · −2 ferrailles · retouche pour confirmer.');return;}
+ say(toggleWall(state,x,y,[state.player,state.dog,...(state.defender.recruited?[state.defender]:[]),...state.raid.enemies.filter(e=>e.hp>0)]));pendingBuild=null;persist();
+};
 function move(a,dx,dy){const walls=activeWalls(state);if(canStand(walls,a.x+dx,a.y))a.x+=dx;if(canStand(walls,a.x,a.y+dy))a.y+=dy;}
 function follow(a,t,speed,dt,stop){if(Math.hypot(a.x-t.x,a.y-t.y)<stop)return;const path=pathTo(activeWalls(state),cell(a),cell(t));if(!path.length)return;let p=path.length>1?{x:(path[1][0]+.5)*32,y:(path[1][1]+.5)*32}:t;const center={x:(path[0][0]+.5)*32,y:(path[0][1]+.5)*32};if(path.length>1&&((path[1][0]!==path[0][0]&&Math.abs(a.y-center.y)>1)||(path[1][1]!==path[0][1]&&Math.abs(a.x-center.x)>1)))p=center;const dx=p.x-a.x,dy=p.y-a.y,d=Math.hypot(dx,dy);if(d)move(a,dx/d*Math.min(speed*dt,d),dy/d*Math.min(speed*dt,d));}
-function update(dt){state.time+=dt;state.dog.cooldown=Math.max(0,state.dog.cooldown-dt);autosave+=dt;if(autosave>15){persist();autosave=0;}messageTimer=Math.max(0,messageTimer-dt);cooldown=Math.max(0,cooldown-dt);attackTimer=Math.max(0,attackTimer-dt);hurt=Math.max(0,hurt-dt);const p=state.player;p.stamina=Math.min(100,p.stamina+dt*15);let x=joystick.x,y=joystick.y;if(keys.has('KeyW')||keys.has('KeyZ')||keys.has('ArrowUp'))y--;if(keys.has('KeyS')||keys.has('ArrowDown'))y++;if(keys.has('KeyA')||keys.has('KeyQ')||keys.has('ArrowLeft'))x--;if(keys.has('KeyD')||keys.has('ArrowRight'))x++;const d=Math.hypot(x,y);if(d){x/=Math.max(1,d);y/=Math.max(1,d);facing={x:x/Math.hypot(x,y),y:y/Math.hypot(x,y)};}if(dash>0){dash-=dt;move(p,facing.x*340*dt,facing.y*340*dt);}else move(p,x*125*dt,y*125*dt);follow(state.dog,p,145,dt,42);
+function update(dt){state.time+=dt;state.dog.cooldown=Math.max(0,state.dog.cooldown-dt);autosave+=dt;if(autosave>15){persist();autosave=0;}messageTimer=Math.max(0,messageTimer-dt);cooldown=Math.max(0,cooldown-dt);attackTimer=Math.max(0,attackTimer-dt);hurt=Math.max(0,hurt-dt);const p=state.player;p.stamina=Math.min(100,p.stamina+dt*15);let x=joystick.x,y=joystick.y;if(keys.has('KeyW')||keys.has('KeyZ')||keys.has('ArrowUp'))y--;if(keys.has('KeyS')||keys.has('ArrowDown'))y++;if(keys.has('KeyA')||keys.has('KeyQ')||keys.has('ArrowLeft'))x--;if(keys.has('KeyD')||keys.has('ArrowRight'))x++;const d=Math.hypot(x,y);moving=d>.05;if(d){x/=Math.max(1,d);y/=Math.max(1,d);facing={x:x/Math.hypot(x,y),y:y/Math.hypot(x,y)};}if(dash>0){dash-=dt;move(p,facing.x*340*dt,facing.y*340*dt);}else move(p,x*125*dt,y*125*dt);follow(state.dog,p,145,dt,42);
  const raidPhase=state.raid.phase,raidMessage=tickRaid(state,dt);
  if(raidMessage){say(raidMessage);if(state.raid.phase==='active'){building=false;$('build').classList.remove('active');}persist();if(raidPhase==='active'&&state.raid.phase==='idle')showReport();}
  if(state.zone==='street')for(const e of state.enemies){if(e.hp<=0)continue;e.cooldown=Math.max(0,e.cooldown-dt);const dist=Math.hypot(e.x-p.x,e.y-p.y);if(e.windup>0){e.windup=Math.max(0,e.windup-dt);if(!e.windup){e.cooldown=1.1;if(dist<48&&!hurt&&dash<=0){p.hp-=state.time%1080>=720?18:12;hurt=.7;burst(p.x,p.y,'#f7cbb9');say('Touché ! Esquive au signal rouge.');}}}else if(dist<44&&!e.cooldown)e.windup=.65;else if(dist<240)follow(e,p,state.time%1080>=720?54:40,dt,32);if(p.hp<=0){state.zone='street';transition(state);p.x=464;p.y=304;p.hp=100;p.stamina=100;state.dog.x=464;state.dog.y=304;const loss=Math.ceil(state.bag/2);state.bag-=loss;hurt=2;say(`Retour au refuge · ${loss} ferrailles perdues (règle alpha : moitié du sac).`);persist();break;}}
@@ -335,26 +540,22 @@ function update(dt){state.time+=dt;state.dog.cooldown=Math.max(0,state.dog.coold
  if(p.hp<=0){finishRaid(state,false);p.x=464;p.y=304;p.hp=100;state.dog.x=p.x;state.dog.y=p.y;persist();showReport();}
  for(const f of particles){f.x+=f.vx*dt;f.y+=f.vy*dt;f.t-=dt;}particles=particles.filter(f=>f.t>0);
 }
-function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h);}
-function text(s,x,y,color='#8eaaa7',size=10){ctx.font=`${size}px monospace`;ctx.fillStyle=color;ctx.fillText(s,x,y);}
-function glow(x,y,r,color){const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,color);g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(x-r,y-r,r*2,r*2);}
-function actor(a,type){const x=Math.round(a.x),y=Math.round(a.y),walk=Math.sin(state.time*12)*2;rect(x-12,y+9,25,7,'#040a10aa');if(type==='dog'){rect(x-12,y-2,24,12,'#8c7960');rect(x+7,y-8,10,12,'#c5ad80');rect(x+8,y-11,4,6,'#65513d');rect(x+11,y-4,4,2,'#9bf2c1');rect(x-10,y+8,4,6,'#4e493e');rect(x+6,y+8,4,6,'#4e493e');rect(x-17,y-4,8,4,'#b0a078');return;}
- const enemy=type==='enemy',body=enemy?'#73545c':type==='guard'?'#8793bc':hurt?'#cf9185':'#497d79';rect(x-7,y+7,5,9+walk,'#151d2a');rect(x+3,y+7,5,9-walk,'#151d2a');rect(x-9,y-7,18,19,body);rect(x-11,y-3,4,14,enemy?'#87716b':'#294b50');rect(x+8,y-3,4,14,enemy?'#87716b':'#294b50');rect(x-6,y-17,12,12,enemy?'#9d9b7f':'#b99b85');rect(x-7,y-19,14,5,enemy?'#49434a':'#252531');rect(x-6,y-12,12,3,enemy?'#e4a38f':'#96e5d3');if(!enemy){rect(x-8,y-3,16,3,'#273b40');rect(x-4,y,3,5,'#bac7a0');rect(x+facing.x*16-2,y+facing.y*16-10,3,21,'#d9d7bd');}if(enemy&&a.windup>0){ctx.strokeStyle='#ff9c7d';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,42,0,Math.PI*2);ctx.stroke();text('!',x-3,y-30,'#ffd9b3',17);}}
-function resize(){const r=canvas.getBoundingClientRect(),w=Math.round(r.width),h=Math.round(r.height);const scale=w<600?1.1:1;view={w:Math.round(w*scale),h:Math.round(h*scale)};if(canvas.width!==view.w||canvas.height!==view.h){canvas.width=view.w;canvas.height=view.h;}cam.x=Math.max(-32,Math.min(960-view.w+32,state.player.x-view.w/2));cam.y=Math.max(-64,Math.min(576-view.h+64,state.player.y-view.h*.48));if(view.w>960)cam.x=(960-view.w)/2;if(view.h>576)cam.y=(576-view.h)/2;}
-function draw(){resize();ctx.imageSmoothingEnabled=false;rect(0,0,view.w,view.h,'#08121a');ctx.save();ctx.translate(-Math.round(cam.x),-Math.round(cam.y));const camp=state.zone==='camp',walls=activeWalls(state);
- for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){const n=(x*173+y*71)%19;rect(x*32,y*32,32,32,camp?(n<4?'#233137':'#1c2a30'):(n<5?'#222c35':'#18232d'));rect(x*32,y*32,31,1,'#30404755');if(n<3)rect(x*32+5,y*32+19,8,2,'#58645a55');if(!x||!y||x===29||y===17){rect(x*32,y*32,32,30,'#273a43');rect(x*32+3,y*32+3,26,3,'#41545a');}}
- // Embedded cables, road markings and environmental details.
- if(!camp){rect(65,286,825,38,'#2a3440');for(let x=90;x<890;x+=55)rect(x,303,22,2,'#aa9d6266');for(let y=80;y<520;y+=64){rect(460,y,20,3,'#52736d44');}text('QUARTIER DES CENDRES',330,75,'#7ba4a0',14);}
- for(const id of walls){const [x,y]=id.split(',').map(Number),px=x*32,py=y*32;rect(px+3,py+8,31,31,'#060d15aa');rect(px,py,31,29,camp?'#41555c':'#30404e');rect(px+2,py+2,27,5,camp?'#718580':'#5b6b77');rect(px+3,py+23,25,3,camp?(state.wallHealth[id]?'#df987b':'#8ab69c'):'#755669');if(!camp&&(x+y)%3===0){rect(px+9,py+10,12,8,'#9f6883');glow(px+14,py+14,32,'#ad4c7b22');}}
- if(camp){text('STATION 07 // REFUGE',365,128,'#a3cfb7',13);rect(440,280,48,48,'#2a4445');rect(447,285,34,31,'#5d7771');rect(452,290,24,8,'#b8e8b5');glow(464,302,90,'#92e8ae22');text('NOYAU',446,348);rect(541,320,38,26,'#6d6250');rect(545,318,30,5,'#c8b28a');rect(550,327,12,8,'#272b32');text('ATELIER',538,366);rect(850,270,30,68,'#365f53');rect(854,274,4,60,'#a4e5b5');glow(863,305,80,'#a0e9c52b');text('SORTIE →',822,360,'#b6dfbd');}
- else{rect(64,274,30,64,'#375f58');glow(80,302,65,'#95edbe33');text('← REFUGE',42,361,'#b1e6c4');for(const c of state.crates){rect(c.x-16,c.y-10,32,26,c.amount?'#72694e':'#353e40');rect(c.x-13,c.y-7,26,5,c.amount?'#ccb783':'#53605e');rect(c.x-2,c.y-8,4,22,'#252e32');if(c.amount){glow(c.x,c.y,40,'#dfb36c18');text('FOUILLE',c.x-20,c.y-20,'#d8c893',8);}}}
- if(building&&camp){ctx.strokeStyle='#96d9b74a';ctx.lineWidth=1;for(let x=1;x<30;x++){ctx.beginPath();ctx.moveTo(x*32,32);ctx.lineTo(x*32,544);ctx.stroke();}for(let y=1;y<18;y++){ctx.beginPath();ctx.moveTo(32,y*32);ctx.lineTo(928,y*32);ctx.stroke();}}
- if(camp){rect(610,286,28,32,'#35465c');text('ÉCHO-01',603,346,'#b7c3e2',9);if(state.raid.phase==='active'){rect(440,271,48,4,'#263b3d');rect(440,271,48*state.raid.core/100,4,'#e6d599');}}
- const actors=[{a:state.player,t:'player'},{a:state.dog,t:'dog'},...(camp&&state.defender.recruited?[{a:state.defender,t:'guard'}]:[]),...activeEnemies(state).filter(e=>e.hp>0).map(a=>({a,t:'enemy'}))].sort((a,b)=>a.a.y-b.a.y);for(const {a,t} of actors){actor(a,t);if(t==='guard'){text(a.hp>0?'ÉCHO-01':'BLESSÉ',a.x-20,a.y-30,'#c1c9e6',8);}if(t==='enemy'){rect(a.x-12,a.y-26,24,2,'#382c35');rect(a.x-12,a.y-26,24*Math.max(0,a.hp)/90,2,'#d49b8a');}}
- const p=state.player;if(attackTimer>0){ctx.strokeStyle='#e9efd0';ctx.lineWidth=4;ctx.beginPath();const a=Math.atan2(facing.y,facing.x);ctx.arc(p.x,p.y,45,a-.9,a+.9);ctx.stroke();}for(const f of particles)rect(f.x,f.y,3,3,f.color);ctx.restore();
- if(state.time%1080>=720){rect(0,0,view.w,view.h,'#090c2440');glow(p.x-cam.x,p.y-cam.y,130,'#a1d6cb16');}
- const vignette=ctx.createRadialGradient(view.w/2,view.h/2,view.w*.2,view.w/2,view.h/2,Math.max(view.w,view.h)*.75);vignette.addColorStop(0,'transparent');vignette.addColorStop(1,'#030a13c0');ctx.fillStyle=vignette;ctx.fillRect(0,0,view.w,view.h);
- const mx=view.w-110,my=130;rect(mx-5,my-5,100,64,'#08141cdd');for(const id of walls){const [x,y]=id.split(',').map(Number);rect(mx+x*3,my+y*3,3,3,'#527066');}rect(mx+(camp?27:2)*3,my+9*3,4,4,'#d9d299');if(!camp)for(const c of state.crates)if(c.amount)rect(mx+c.x/32*3,my+c.y/32*3,2,2,'#d9b783');rect(mx+p.x/32*3-1,my+p.y/32*3-1,4,4,'#c4f4ce');
+let cameraReady=false,lastZone=state.zone;
+function resize(){
+ const r=canvas.getBoundingClientRect();
+ const zoom=r.width<600?.84:.88;
+ const next={w:Math.round(r.width*zoom),h:Math.round(r.height*zoom)};
+ if(canvas.width!==next.w||canvas.height!==next.h){canvas.width=next.w;canvas.height=next.h;cameraReady=false;}
+ view=next;
+ const tx=view.w>960?(960-view.w)/2:Math.max(-16,Math.min(960-view.w+16,state.player.x-view.w/2));
+ const ty=view.h>576?(576-view.h)/2:Math.max(-32,Math.min(576-view.h+32,state.player.y-view.h*.48));
+ if(!cameraReady||lastZone!==state.zone||reduced){cam.x=tx;cam.y=ty;cameraReady=true;lastZone=state.zone;}
+ else{cam.x+=(tx-cam.x)*.15;cam.y+=(ty-cam.y)*.15;}
+}
+function draw(){
+ resize();const p=state.player,camp=state.zone==='camp';
+ renderScene(ctx,state,view,cam,{facing,hurt,attackTimer,particles,building,moving,reduced,blueprint:pendingBuild});
+ renderMiniMap($('map').getContext('2d'),state);
  const r=state.raid;
  $('raid-status').textContent=r.phase==='active'?`RAID · noyau ${r.core}/100 · ${r.enemies.filter(e=>e.hp>0).length} assaillants`:r.phase==='warning'?`RAID · ${Math.ceil(r.remaining)} s${state.zone==='street'?' · débute au retour':''}`:`Menace ${Math.floor(state.threat)}/60 · ${state.delivered<8?'protection tutoriel':'refuge en veille'}`;
  $('raid-status').classList.toggle('danger',r.phase!=='idle');
@@ -363,7 +564,7 @@ function draw(){resize();ctx.imageSmoothingEnabled=false;rect(0,0,view.w,view.h,
  $('dog-action').disabled=state.dog.cooldown>0;
  $('report-open').disabled=!r.result;
  $('repair').textContent=`Réparer · ${Object.keys(state.wallHealth).length}`;
- $('health').textContent=`${Math.ceil(p.hp)} / 100`;$('hpbar').value=p.hp;$('stamina').textContent=Math.floor(p.stamina);$('spbar').value=p.stamina;$('stock').textContent=`Réserve ${state.stock}`;$('bag').textContent=`Sac ${state.bag}/12`;$('weapon').textContent=state.weapon===2?'Machette renforcée':'Machette';$('zone').textContent=camp?'STATION 07':'LES CENDRES';$('time').textContent=state.time%1080>=720?'Nuit · danger accru':state.time%1080>=660?'Crépuscule · rentre vite':'Jour';$('camp-tools').hidden=!camp;$('objective').textContent=r.phase==='active'?'Défends le noyau ! Les murs peuvent céder.':r.phase==='warning'?'Invoque Écho-01 et prépare le refuge.':!state.delivered?'Ramène des ferrailles au noyau du refuge.':state.weapon===1?'Renforce ta machette à l’atelier · 10 ferrailles.':'Construis tes défenses · explore les dernières caches.';const t=target();$('interact').textContent=t?t.label:'Approche une caisse / un accès';$('interact').disabled=!t;$('message').style.opacity=messageTimer>0?'1':'.35';
+ $('health').textContent=`${Math.ceil(p.hp)} / 100`;$('hpbar').value=p.hp;$('stamina').textContent=Math.floor(p.stamina);$('spbar').value=p.stamina;$('stock').textContent=`Réserve ${state.stock}`;$('bag').textContent=`Sac ${state.bag}/12`;$('weapon').textContent=state.weapon===2?'Machette renforcée':'Machette';$('zone').textContent=camp?'STATION 07':'LES CENDRES';$('time').textContent=state.time%1080>=720?'Nuit · danger accru':state.time%1080>=660?'Crépuscule · rentre vite':'Jour';$('camp-tools').hidden=!camp;$('objective').textContent=r.phase==='active'?'Défends le noyau ! Les murs peuvent céder.':r.phase==='warning'?'Invoque Écho-01 et prépare le refuge.':!state.delivered?'Ramène des ferrailles au noyau du refuge.':state.weapon===1?'Renforce ta machette à l’atelier · 10 ferrailles.':'Construis tes défenses · explore les dernières caches.';const t=target();$('interact').textContent=t?t.label:'Approche une caisse / un accès';$('interact').disabled=!t;$('message').classList.toggle('visible',messageTimer>0);$('interact').classList.toggle('ready',!!t);$('build-hint').hidden=!building;$('app').classList.toggle('under-attack',r.phase==='active');
 }
 load(false);function frame(now){const dt=Math.min((now-last)/1000,.04);last=now;if(!paused)update(dt);draw();requestAnimationFrame(frame);}requestAnimationFrame(frame);
 </script></body></html>
