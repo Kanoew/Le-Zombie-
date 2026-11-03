@@ -139,11 +139,11 @@ export function renderScene(c,s,view,cam,fx) {
   c.restore();
   if(camp)for(const id of activeWalls(s))wall(c,id,camp,s.wallHealth[id]);
   if(camp) {
-    consoleProp(c,464,304,'core',clock);
-    for(const [id,m] of Object.entries(campModules)){if(!s.camp.built[id]){pixel(c,m.x-24,m.y-8,48,12,'#46636533');label(c,'+ '+m.name,m.x-30,m.y+18,'#789590',7);}}consoleProp(c,560,336,'forge',clock);consoleProp(c,624,304,'echo',clock);
+    consoleProp(c,464,272,'core',clock);
+    for(const [id,m] of Object.entries(campModules)){if(!s.camp.built[id]){pixel(c,m.x-24,m.y-8,48,12,'#46636533');label(c,'+ '+m.name,m.x-30,m.y+18,'#789590',7);}}consoleProp(c,560,304,'forge',clock);consoleProp(c,624,272,'echo',clock);
     // Small motion and lighting details are decoration, not additional collision obstacles.
     light(c,310,176,100,'#a0c9d010');light(c,720,422,110,'#c5995010');
-    if(s.raid.phase==='active'){pixel(c,440,268,48,4,'#162832');pixel(c,440,268,48*s.raid.core/100,4,'#e9c184');}
+    if(s.raid.phase==='active'){pixel(c,440,236,48,4,'#162832');pixel(c,440,236,48*s.raid.core/100,4,'#e9c184');}
   } else {
     for(const crate of s.crates){const x=crate.x,y=crate.y,full=crate.amount>0;
       ellipse(c,x+3,y+15,22,8,'#020a1499');pixel(c,x-17,y-10,34,26,full?'#77674b':'#303b44');
