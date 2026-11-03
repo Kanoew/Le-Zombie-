@@ -1,0 +1,15 @@
+{
+  "name": "le-zombie-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "test": "node test/world.test.js",
+    "check": "node --check src/game.js && node --check src/world.js",
+    "build": "node scripts/bundle.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,6 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createWorld,pathTo,toggleWall,validSave,canStand} from '../src/world.js';
+test('le chien peut contourner un mur et la route change après construction',()=>{const s=createWorld();const before=pathTo(s.walls,[10,7],[10,3]);assert.ok(before.length>5);assert.ok(before.every(p=>!s.walls.includes(p.join(','))));toggleWall(s,10,6);const after=pathTo(s.walls,[10,7],[10,3]);assert.ok(after.length);assert.ok(after.every(p=>!s.walls.includes(p.join(','))));});
+test('construction : coût unique, refus sur occupant, remboursement',()=>{const s=createWorld();toggleWall(s,14,9);assert.equal(s.stock,20);toggleWall(s,12,9,[{x:400,y:304}]);assert.equal(s.stock,20);toggleWall(s,20,10);assert.equal(s.stock,18);assert.equal(canStand(s.walls,656,336),false);toggleWall(s,20,10);assert.equal(s.stock,20);});
+test('sauvegarde : aller-retour et rejet des états invalides',()=>{const s=createWorld();assert.ok(validSave(JSON.parse(JSON.stringify(s))));assert.equal(validSave({...s,version:2}),false);assert.equal(validSave({...s,stock:-1}),false);assert.equal(validSave({...s,player:{...s.player,x:NaN}}),false);assert.equal(validSave({...s,walls:['900,900']}),false);});

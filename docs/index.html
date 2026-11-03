@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080e18"><title>Le Zombie — prototype</title><style>:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#080e18;color:#dbe9ec}*{box-sizing:border-box}body{margin:0;padding:16px max(16px,env(safe-area-inset-right)) 16px max(16px,env(safe-area-inset-left));max-width:1100px;margin:auto}header{display:flex;align-items:center;justify-content:space-between;gap:12px}small{color:#66e6cd;letter-spacing:.15em;font-size:10px}h1{font-size:clamp(18px,4vw,28px);margin:6px 0 15px}button{border:1px solid #385264;background:#132534;color:#def5ef;border-radius:9px;padding:12px 16px;font-weight:650;cursor:pointer;touch-action:none}button:active,button.active{background:#236457;border-color:#75ffcb}button:focus-visible{outline:2px solid #75ffcb}.hud{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13px;padding:12px;background:#11202b;border-top:2px solid #63dabe}#viewport{position:relative}canvas{display:block;width:100%;image-rendering:pixelated;background:#101824;touch-action:none}#paused{position:absolute;inset:0;background:#080e18b8;place-content:center;text-align:center;font-size:24px;letter-spacing:.2em}#paused:not([hidden]){display:grid}#message{min-height:22px;font-size:13px;color:#8ddacb}.tools{display:flex;gap:8px;flex-wrap:wrap}.controls{display:flex;align-items:center;justify-content:space-between;padding:12px 20px}#stick{width:112px;height:112px;border:1px solid #406278;border-radius:50%;background:#12212e;position:relative;touch-action:none}#knob{position:absolute;width:44px;height:44px;left:33px;top:33px;background:#72d4bf;border:8px solid #2c726c;border-radius:50%;pointer-events:none}.actions{display:flex;gap:12px;align-items:center}#attack{width:94px;height:94px;border-radius:50%;border-color:#f48ab2;background:#44263d}footer{color:#8799ac;font-size:12px;line-height:1.6}@media(orientation:landscape) and (max-height:600px){body{padding-top:5px}header h1{font-size:17px;margin:0 0 6px}.hud{padding:5px}#viewport{max-width:740px;margin:auto}.controls{position:fixed;bottom:max(12px,env(safe-area-inset-bottom));left:12px;right:12px;pointer-events:none;padding:0}.controls>*{pointer-events:auto;opacity:.85}canvas{max-height:64vh;margin:auto;width:auto;max-width:100%}footer{display:none}.tools button{padding:7px 12px}#message{margin:5px 0}}
+/* Keep touch controls in document flow so they never cover the toolbar. */
+@media(orientation:landscape) and (max-height:600px){.controls{position:relative;inset:auto;padding:8px 20px}.controls>*{opacity:1}#stick{width:96px;height:96px}#knob{left:25px;top:25px}#attack{width:76px;height:76px}}
+</style></head>
+<body><header><div><small>LE ZOMBIE / ESSAI TECHNIQUE 01</small><h1>Refuge sous néons</h1></div><button id="pause">Pause</button></header>
+<main><section class="hud"><span id="health">Vie 100</span><span id="stamina">Endurance 100</span><span id="time">Jour</span><span id="stock">Ferraille 20</span></section><div id="viewport"><canvas id="game" width="960" height="576" aria-label="Camp cyberpunk : déplacez-vous avec le joystick ou les flèches"></canvas><div id="paused" hidden>EN PAUSE</div></div><p id="message" role="status">Explore le camp. Le chien contourne les murs pour te suivre.</p><nav class="tools"><button id="build">Construire : non</button><button id="night">Tester la nuit</button><button id="save">Sauvegarder</button><button id="load">Recharger</button></nav><section class="controls"><div id="stick" aria-label="Joystick de déplacement"><div id="knob"></div></div><div class="actions"><button id="dodge">Esquive</button><button id="attack">Attaquer</button></div></section><footer>Déplacement : joystick · ZQSD / WASD / flèches · Attaque : espace · Esquive : Maj<br>Construction : touche une case pour poser un mur (2 ferrailles) ou le démonter (+2). Visuels provisoires.</footer></main><script type="module">const COLS = 30, ROWS = 18, TILE = 32;
+const key = (x,y) => `${x},${y}`;
+function createWorld() {
+  const walls = [];
+  for (let x=8;x<=16;x++) walls.push(key(x,5));
+  for (let y=6;y<=11;y++) walls.push(key(8,y));
+  return {version:1,player:{x:464,y:304,hp:100,stamina:100},dog:{x:400,y:336},walls,stock:20,time:0};
+}
+function blocked(walls,x,y) { return x<1 || y<1 || x>=COLS-1 || y>=ROWS-1 || walls.includes(key(x,y)); }
+function canStand(walls,x,y,r=10) {
+  return [[-r,-r],[r,-r],[-r,r],[r,r]].every(([dx,dy])=>!blocked(walls,Math.floor((x+dx)/TILE),Math.floor((y+dy)/TILE)));
+}
+function pathTo(walls,from,to) {
+  const queue=[from], seen=new Map([[key(...from),null]]);
+  for(let i=0;i<queue.length;i++) {
+    const p=queue[i];
+    if(p[0]===to[0] && p[1]===to[1]) {
+      const path=[];let at=p;
+      while(at) {path.unshift(at);at=seen.get(key(...at));}return path;
+    }
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+      const n=[p[0]+dx,p[1]+dy], id=key(...n);
+      if(!seen.has(id)&&!blocked(walls,...n)){seen.set(id,p);queue.push(n);}
+    }
+  } return [];
+}
+function toggleWall(state,x,y,actors=[]) {
+  const id=key(x,y), index=state.walls.indexOf(id);
+  if(index>=0){state.walls.splice(index,1);state.stock+=2;return 'Mur démonté : +2 ferrailles.';}
+  if(blocked([],x,y)) return 'Hors de la zone constructible.';
+  if(x===14&&y===9) return 'Arrivée du refuge protégée.';
+  if(actors.some(a=>Math.abs(a.x-(x+.5)*TILE)<26 && Math.abs(a.y-(y+.5)*TILE)<26)) return 'Un occupant bloque cette case.';
+  if(state.stock<2)return 'Il faut 2 ferrailles.';
+  state.walls.push(id);state.stock-=2;return 'Mur construit : −2 ferrailles.';
+}
+function validSave(s) {
+  return s?.version===1 && Array.isArray(s.walls) && s.walls.length<=COLS*ROWS && new Set(s.walls).size===s.walls.length && s.walls.every(id=> typeof id==='string' && /^\d+,\d+$/.test(id) && !blocked([],...id.split(',').map(Number))) && Number.isInteger(s.stock)&&s.stock>=0&&Number.isFinite(s.time)&&s.time>=0 && [s.player,s.dog].every(a=>a&&Number.isFinite(a.x)&&Number.isFinite(a.y)&&canStand(s.walls,a.x,a.y)) && Number.isFinite(s.player.hp)&&s.player.hp>0&&s.player.hp<=100&&Number.isFinite(s.player.stamina)&&s.player.stamina>=0&&s.player.stamina<=100;
+}
+
+const $=id=>document.getElementById(id), canvas=$('game'), ctx=canvas.getContext('2d');
+let state=createWorld(), paused=false, building=false, keys=new Set(), joystick={x:0,y:0}, facing={x:1,y:0}, attackTimer=0, cooldown=0, dash=0, hurt=0, last=performance.now(), autosave=0;
+const enemies=[{x:784,y:400,hp:60},{x:752,y:144,hp:60},{x:176,y:432,hp:60}];
+const say=t=>$('message').textContent=t;
+function persist(){try{const current=localStorage.getItem('zombie.save');if(current){try{if(validSave(JSON.parse(current)))localStorage.setItem('zombie.backup',current);}catch{}}localStorage.setItem('zombie.save',JSON.stringify(state));say('Camp sauvegardé sur cet appareil.');}catch{say('Stockage indisponible : sauvegarde impossible.');}}
+function load(){for(const name of ['zombie.save','zombie.backup']){try{const raw=localStorage.getItem(name);if(raw){const data=JSON.parse(raw);if(validSave(data)){state=data;say(name.endsWith('backup')?'Copie précédente restaurée.':'Camp restauré. Les ennemis de test sont réinitialisés.');enemies.forEach(e=>e.hp=60);return;}}}catch{}}say('Aucune sauvegarde valide disponible.');}
+function pause(value){paused=value;$('paused').hidden=!value;$('pause').textContent=value?'Reprendre':'Pause';keys.clear();joystick={x:0,y:0};$('knob').style.transform='';}
+$('pause').onclick=()=>pause(!paused);$('save').onclick=persist;$('load').onclick=load;
+$('build').onclick=()=>{building=!building;$('build').textContent=`Construire : ${building?'oui':'non'}`;$('build').classList.toggle('active',building);say(building?'Touche une case vide : coût 2 ferrailles. Touche un mur pour le démonter.':'Mode exploration.');};
+$('night').onclick=()=>{state.time=state.time%1080<720?720:0;};
+function attack(){if(paused||cooldown>0||state.player.stamina<18)return;state.player.stamina-=18;attackTimer=.2;cooldown=.45;for(const e of enemies){const dx=e.x-state.player.x,dy=e.y-state.player.y,d=Math.hypot(dx,dy);if(e.hp>0&&d<66&&(dx*facing.x+dy*facing.y)>0){const path=pathTo(state.walls,cell(state.player),cell(e));if(path.length>0&&path.length<=4){e.hp-=30;if(e.hp<=0){state.stock+=3;say('Infecté neutralisé : +3 ferrailles.');}}}}}
+function dodge(){if(!paused&&state.player.stamina>=30&&dash<=0){state.player.stamina-=30;dash=.16;}}
+$('attack').onpointerdown=e=>{e.preventDefault();attack();};$('dodge').onpointerdown=e=>{e.preventDefault();dodge();};
+window.addEventListener('keydown',e=>{if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();keys.add(e.code);if(!e.repeat&&e.code==='Space')attack();if(!e.repeat&&e.code.startsWith('Shift'))dodge();});
+window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',()=>pause(true));
+document.addEventListener('visibilitychange',()=>{if(document.hidden){persist();pause(true);}});
+let stickPointer=null;const stick=$('stick');
+function stickMove(e){if(e.pointerId!==stickPointer)return;const r=stick.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,d=Math.max(38,Math.hypot(dx,dy));joystick={x:dx/d,y:dy/d};$('knob').style.transform=`translate(${joystick.x*32}px,${joystick.y*32}px)`;}
+stick.onpointerdown=e=>{if(stickPointer!==null)return;stickPointer=e.pointerId;stick.setPointerCapture(e.pointerId);stickMove(e);};stick.onpointermove=stickMove;
+function release(e){if(e.pointerId===stickPointer){stickPointer=null;joystick={x:0,y:0};$('knob').style.transform='';}}stick.onpointerup=release;stick.onpointercancel=release;stick.onlostpointercapture=release;
+canvas.onpointerdown=e=>{if(!building||paused)return;const r=canvas.getBoundingClientRect();const result=toggleWall(state,Math.floor((e.clientX-r.left)/r.width*COLS),Math.floor((e.clientY-r.top)/r.height*ROWS),[state.player,state.dog,...enemies.filter(e=>e.hp>0)]);persist();say(result);};
+function cell(a){return [Math.floor(a.x/TILE),Math.floor(a.y/TILE)];}
+function move(a,dx,dy){if(canStand(state.walls,a.x+dx,a.y))a.x+=dx;if(canStand(state.walls,a.x,a.y+dy))a.y+=dy;}
+function follow(a,target,speed,dt,stop){if(Math.hypot(a.x-target.x,a.y-target.y)<stop)return;const path=pathTo(state.walls,cell(a),cell(target));const p=path.length>1?{x:(path[1][0]+.5)*TILE,y:(path[1][1]+.5)*TILE}:path.length?target:null;if(p){const dx=p.x-a.x,dy=p.y-a.y,d=Math.hypot(dx,dy);if(d>0)move(a,dx/d*Math.min(speed*dt,d),dy/d*Math.min(speed*dt,d));}}
+function update(dt){state.time+=dt;autosave+=dt;if(autosave>15){persist();autosave=0;}cooldown=Math.max(0,cooldown-dt);attackTimer=Math.max(0,attackTimer-dt);hurt=Math.max(0,hurt-dt);const p=state.player;p.stamina=Math.min(100,p.stamina+dt*14);let x=joystick.x,y=joystick.y;if(keys.has('KeyW')||keys.has('KeyZ')||keys.has('ArrowUp'))y--;if(keys.has('KeyS')||keys.has('ArrowDown'))y++;if(keys.has('KeyA')||keys.has('KeyQ')||keys.has('ArrowLeft'))x--;if(keys.has('KeyD')||keys.has('ArrowRight'))x++;const d=Math.hypot(x,y);if(d>0){x/=Math.max(1,d);y/=Math.max(1,d);facing={x:x/Math.hypot(x,y),y:y/Math.hypot(x,y)};}if(dash>0){dash-=dt;move(p,facing.x*350*dt,facing.y*350*dt);}else move(p,x*115*dt,y*115*dt);follow(state.dog,p,120,dt,42);for(const e of enemies){if(e.hp<=0)continue;const dist=Math.hypot(e.x-p.x,e.y-p.y);if(dist<230)follow(e,p,state.time%1080>=720?48:32,dt,26);if(dist<29&&hurt===0&&dash<=0){p.hp-=state.time%1080>=720?12:8;hurt=1;say('Touché ! Éloigne-toi ou esquive.');if(p.hp<=0){p.x=464;p.y=304;p.hp=100;p.stamina=100;say('Retour au refuge. Aucune pénalité dans cet essai.');persist();}}}}
+function rect(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(Math.round(x),Math.round(y),w,h);}
+function actor(a,color,dog=false){const x=Math.round(a.x),y=Math.round(a.y);rect(x-10,y+8,23,5,'#070b12');rect(x-7,y-5,dog?20:14,dog?12:18,color);rect(x-5,y-14,10,10,dog?'#c59c72':'#cca88e');if(!dog){rect(x-5,y-10,10,3,'#79ffe3');rect(x-6,y+12,4,6,'#141c2a');rect(x+3,y+12,4,6,'#141c2a');}}
+function draw(){ctx.clearRect(0,0,960,576);for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){rect(x*32,y*32,32,32,(x+y)%2?'#17212b':'#192530');rect(x*32,y*32,31,1,'#23313c');if(x===0||y===0||x===COLS-1||y===ROWS-1)rect(x*32,y*32,31,31,'#293c4a');}rect(370,70,170,12,'#233944');rect(380,73,150,4,'#59e7ca');ctx.font='12px monospace';ctx.fillStyle='#79ffe3';ctx.fillText('REFUGE // SECTEUR 01',370,63);rect(448,288,32,32,'#24483e');for(const id of state.walls){const [x,y]=id.split(',').map(Number);rect(x*32,y*32,31,31,'#4b6172');rect(x*32+2,y*32+2,27,5,'#8297a1');rect(x*32+4,y*32+24,24,2,'#e578ad');}if(building){ctx.strokeStyle='#56cfaa55';for(let x=1;x<COLS;x++){ctx.beginPath();ctx.moveTo(x*32,32);ctx.lineTo(x*32,544);ctx.stroke();}for(let y=1;y<ROWS;y++){ctx.beginPath();ctx.moveTo(32,y*32);ctx.lineTo(928,y*32);ctx.stroke();}}
+for(const e of enemies)if(e.hp>0){actor(e,'#91516e');rect(e.x-10,e.y-22,20*e.hp/60,3,'#f496ad');}actor(state.dog,'#ae8154',true);actor(state.player,hurt>0?'#e0a0b0':'#45a79b');const p=state.player;rect(p.x+facing.x*14-2,p.y+facing.y*14-4,4,17,'#d6e8e9');if(attackTimer>0){ctx.strokeStyle='#e0f5c2';ctx.lineWidth=5;ctx.beginPath();const a=Math.atan2(facing.y,facing.x);ctx.arc(p.x,p.y,43,a-.8,a+.8);ctx.stroke();}if(state.time%1080>=720){rect(0,0,960,576,'#09082866');} $('health').textContent=`Vie ${Math.ceil(p.hp)} / 100`;$('stamina').textContent=`Endurance ${Math.floor(p.stamina)}`;$('stock').textContent=`Ferraille ${state.stock}`;$('time').textContent=state.time%1080>=720?'Nuit · danger accru':'Jour · refuge';}
+function frame(now){const dt=Math.min((now-last)/1000,.04);last=now;if(!paused)update(dt);draw();requestAnimationFrame(frame);}requestAnimationFrame(frame);
+</script></body></html>
