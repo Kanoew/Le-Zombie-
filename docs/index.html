@@ -22,34 +22,45 @@ header{position:absolute;top:max(16px,env(safe-area-inset-top));left:max(18px,en
 .hud{left:max(18px,env(safe-area-inset-left));right:max(18px,env(safe-area-inset-right))}#mission{left:max(18px,env(safe-area-inset-left))}.map-panel{right:max(18px,env(safe-area-inset-right))}.reduced-motion .overlay{backdrop-filter:none}
 @media(orientation:landscape) and (max-height:600px){.menu-footer{display:none}}
 @media(orientation:landscape) and (max-height:360px){.overlay{padding:12px 20px}.world-caption{display:none}.menu-intro h1{font-size:48px}.menu-card{padding:12px}.menu-card h2{font-size:16px}.brief{margin:10px 0;gap:6px}.brief span{font-size:0}.brief strong{font-size:9px;line-height:1.5}.brief b{font-size:8px}.menu-tools button{min-height:28px}.primary{min-height:36px;padding:9px}.setting{min-height:20px}.help{margin-top:4px;padding-top:4px}}
+/* Alpha 0.5: leave the world visible; refuge management is opened on demand. */
+#camp-tools.collapsed{display:none}#arsenal-open{position:absolute;right:max(18px,env(safe-area-inset-right));top:248px;width:104px;min-height:43px;display:flex;align-items:center;gap:8px;font-size:9px;background:#101e29b8}#arsenal-open>span:first-child{font-size:19px;color:#d7b87e}#arsenal-open #weapon{font-size:8px}.map-panel{pointer-events:auto;top:78px;width:104px;min-height:0}.hud .clock{display:none}.hud{right:136px;top:72px}.hud>div{width:88px}.brand{font-size:10px}.brand small{font-size:6px}.header-actions{gap:4px}.header-actions button{width:34px;height:36px;min-height:36px}#mission{top:160px;background:linear-gradient(90deg,#0c1823a8,transparent);border:0;border-left:1px solid #a2b8a54d;box-shadow:none;width:218px;padding:8px 10px;gap:5px}#mission>small{font-size:6px}#objective{font-size:9px}#raid-status{font-size:7px;padding-top:4px}#inventory{top:122px;bottom:auto;right:auto;justify-content:start;left:18px;gap:4px}#inventory span{border:0;background:#0c1b2766;font-size:8px;padding:5px 7px}.controls{bottom:max(25px,env(safe-area-inset-bottom))}#message{bottom:190px;max-width:360px;left:22px;right:22px;background:#0a1825c7;font-size:10px}#camp-tools{bottom:178px;background:#0c1b28ed;padding:9px;width:247px;border:1px solid #9ab8ae33;border-radius:9px}#build-hint{bottom:280px}#menu-hero{width:160px;height:190px;position:absolute;right:-15px;top:40px;pointer-events:none;filter:drop-shadow(0 12px 20px #020b1380)}.menu-intro{position:relative}.menu-intro h1{position:relative;z-index:1;font-size:54px}.menu-intro .menu-tag{position:relative;z-index:1}.menu-intro>p{position:relative;z-index:1}#asset-status{font-size:8px;color:#a8b9aa;margin:8px 0}.arsenal-panel,.world-panel{width:min(100%,680px);padding:24px;background:#0d1e2def;border:1px solid #a6bbad33;border-radius:15px;box-shadow:0 15px 60px #0005}.sheet-heading{display:flex;align-items:start;justify-content:space-between;gap:12px}.sheet-heading h2{font-size:26px;letter-spacing:-.045em;margin:9px 0 0;color:#e1e4d7}.sheet-heading>button{width:38px;min-height:38px;padding:8px}.arsenal-panel>p,.world-panel>p{font-size:10px;line-height:1.8;color:#90a69f}#hero-preview{display:block;width:200px;height:150px;margin:0 auto}.weapon-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.weapon-list button{padding:12px 6px;border-radius:10px;text-align:left}.weapon-list button.selected{border-color:#ddbf88;background:#4b3d2d8c}.weapon-list canvas{width:100%;height:auto;max-width:115px;display:block;margin:auto}.weapon-list strong{display:block;font-size:12px;margin:8px}.weapon-list small{display:block;font-size:8px;line-height:1.7;color:#b4bdb0;margin:8px}#world-map{display:block;width:100%;height:auto;margin-top:20px;border:1px solid #a5b8aa33;border-radius:6px}.overlay{backdrop-filter:blur(2px)}
+@media(orientation:landscape) and (max-height:600px){.hud{top:66px;right:auto}.hud>div{width:90px}#mission{top:135px;width:210px}.map-panel{top:66px;width:100px}#arsenal-open{top:158px;width:100px}#inventory{top:106px;bottom:auto;left:18px;right:auto}#message{bottom:25px;left:150px;right:240px}#camp-tools{top:54px;bottom:auto;left:245px;right:126px;width:auto;grid-template-columns:repeat(2,minmax(0,1fr))}#build-hint{bottom:94px}#menu-hero{width:130px;height:170px;top:30px;right:-5px}.menu-intro h1{font-size:49px}.arsenal-panel{padding:18px;position:relative}.arsenal-panel .sheet-heading{max-width:100%}.arsenal-panel .sheet-heading h2{font-size:21px}#hero-preview{position:absolute;left:15px;top:90px;width:170px;height:140px}.weapon-list{margin-top:14px;margin-left:165px;gap:8px}.weapon-list canvas{max-width:80px}.weapon-list small{font-size:7px}.arsenal-panel>p{margin-left:165px}.world-panel{padding:16px;max-width:580px}.world-panel .sheet-heading h2{font-size:20px}#world-map{max-height:60vh;object-fit:contain;margin-top:10px}}
+@media(orientation:landscape) and (max-width:700px){#camp-tools{left:200px;right:125px}.map-panel{width:85px}#arsenal-open{width:85px;top:150px;padding:7px}.weapon-list{margin-left:125px}#hero-preview{width:135px;left:5px}.arsenal-panel>p{margin-left:125px}.sheet-heading h2{font-size:20px}.menu-intro h1{font-size:43px}#menu-hero{width:110px;height:155px;right:-12px}.header-actions{gap:3px}.header-actions button{width:32px}.brand{font-size:9px}}
+@media(max-width:380px) and (orientation:portrait){.brand{font-size:9px;gap:6px}.logo-mark{font-size:21px}.hud{gap:10px}.hud>div{width:82px}.weapon-list{gap:6px}.weapon-list strong{font-size:10px;margin:6px 3px}.weapon-list small{font-size:7px;margin:6px 3px}.arsenal-panel{padding:18px}.sheet-heading h2{font-size:23px}}
+@media(max-width:650px) and (orientation:portrait){.world-caption{display:none}}
 </style></head>
 <body><main id="app">
 <canvas id="game" aria-label="Jeu de survie cyberpunk vu du dessus"></canvas>
-<header><div class="brand"><span class="logo-mark" aria-hidden="true">◈</span><div>LES CENDRES<small>LE ZOMBIE · ALPHA 0.4</small></div></div><div class="header-actions"><button id="fullscreen" aria-label="Plein écran" title="Plein écran">⛶</button><button id="pause" aria-label="Menu et pause" title="Menu">☰</button></div></header>
+<header><div class="brand"><span class="logo-mark" aria-hidden="true">◈</span><div>LES CENDRES<small>LE ZOMBIE · ALPHA 0.5</small></div></div><div class="header-actions"><button id="refuge-menu" aria-label="Gestion du refuge" title="Refuge">⌂</button><button id="fullscreen" aria-label="Plein écran" title="Plein écran">⛶</button><button id="pause" aria-label="Menu et pause" title="Menu">☰</button></div></header>
 <section class="hud" aria-label="État du personnage"><div class="vital"><small>✚ VITALITÉ</small><span id="health">100 / 100</span><meter id="hpbar" max="100" value="100"></meter></div><div class="energy"><small>ϟ ENDURANCE</small><span id="stamina">100</span><meter id="spbar" max="100" value="100"></meter></div><div class="clock"><small id="zone">STATION 07</small><span id="time">Jour</span></div></section>
 <aside id="mission"><small><span class="objective-dot"></span> JOURNAL DE SURVIE</small><span id="objective">Ramène des ressources au refuge.</span><span id="raid-status">Menace 0/60</span></aside>
-<aside class="map-panel" aria-label="Minicarte"><canvas id="map" width="120" height="72"></canvas><small>SECTEUR LOCAL <span>●</span></small></aside>
+<button id="map-open" class="map-panel" aria-label="Ouvrir la carte du quartier"><canvas id="map" width="120" height="72"></canvas><small>SECTEUR LOCAL <span>↗</span></small></button>
 <div id="message" class="visible" role="status">Bienvenue à la station 07.</div>
-<div id="inventory"><span id="stock">Réserve 8</span><span id="bag">Sac 0/12</span><span id="weapon">Machette</span></div>
-<nav id="camp-tools" aria-label="Gestion du refuge"><button id="build">Bâtir · 2</button><button id="forge">Renforcer · 10</button><button id="summon">Invoquer Écho · 6</button><button id="repair">Réparer · 0</button></nav>
+<div id="inventory"><span id="stock">Réserve 8</span><span id="bag">Sac 0/12</span></div>
+<button id="arsenal-open" aria-label="Ouvrir l’arsenal"><span aria-hidden="true">⚔</span><span id="weapon">Machette</span></button><nav id="camp-tools" class="collapsed" aria-label="Gestion du refuge"><button id="build">Bâtir · 2</button><button id="forge">Renforcer · 10</button><button id="summon">Invoquer Écho · 6</button><button id="repair">Réparer · 0</button></nav>
 <div id="build-hint" hidden>CONSTRUCTION <span>Choisir une case → toucher à nouveau pour confirmer</span></div>
 <section class="controls" aria-label="Commandes tactiles"><div id="stick" aria-label="Joystick de déplacement"><div class="stick-cross" aria-hidden="true"></div><div id="knob"></div><span>DÉPLACEMENT</span></div><div class="actions"><div class="utility"><button id="dog-action">Chien</button><button id="interact">Interagir</button></div><div class="combat"><button id="dodge"><span aria-hidden="true">↝</span>Esquive</button><button id="attack"><svg aria-hidden="true" viewBox="0 0 32 32"><path d="m9 25 17-19 1 7-14 15M7 20l9 8M5 28l5-5"/></svg>Frapper</button></div></div></section>
-<section id="menu" class="overlay"><div class="panel"><div class="menu-intro"><small class="eyebrow">TRANSMISSION 007 / ALPHA 0.4</small><div class="menu-tag"><i></i> UN REFUGE DANS LES RUINES</div><h1>LES<br><em>CENDRES<span>.</span></em></h1><p>Le monde s’est éteint.<br>Pas toi.</p><div class="world-caption"><span>07</span><div>STATION DE REPLI<small>Réseau autonome · secteur des Cendres</small></div></div></div>
-<div class="menu-card"><small class="eyebrow">TON PROCHAIN DÉPART</small><h2>Tenir une nuit de plus.</h2><p>Une lame, un compagnon et ce qu’il reste de la ville.</p><div class="brief"><b>01</b><span><strong>Explore les ruines</strong>Fouille les caches, surveille ton sac.</span><b>02</b><span><strong>Reviens en vie</strong>Dépose tes ressources et renforce ta lame.</span><b>03</b><span><strong>Protège ton refuge</strong>Invoque Écho-01 et repousse les assauts.</span></div><button id="play" class="primary">Commencer l’expédition →</button><div class="menu-tools"><button id="report-open">Rapport de raid</button><button id="save">Sauvegarder</button><button id="load">Recharger</button></div><button id="motion" class="setting">Effets : complets</button><details class="help"><summary>Commandes et règles de survie</summary><small class="hint">Tactile ou ZQSD / flèches · E : interagir · espace : frapper · Maj : esquiver.<br>Mort : perte de la moitié du sac. Raid : alerte à 60 de menace après 8 ressources livrées. Aucun raid hors session dans cette alpha.</small></details></div></div><div class="menu-footer"><span>LE ZOMBIE / ALPHA 0.4</span><span>PIXEL SURVIVAL · SOLO</span></div></section>
+<section id="menu" class="overlay"><div class="panel"><div class="menu-intro"><canvas id="menu-hero" width="240" height="260" aria-label="La survivante aux cheveux rouges"></canvas><small class="eyebrow">TRANSMISSION 007 / ALPHA 0.5</small><div class="menu-tag"><i></i> UN REFUGE DANS LES RUINES</div><h1>LES<br><em>CENDRES<span>.</span></em></h1><p>Le monde s’est éteint.<br>Pas toi.</p><div class="world-caption"><span>07</span><div>STATION DE REPLI<small>Réseau autonome · secteur des Cendres</small></div></div></div>
+<div class="menu-card"><small class="eyebrow">TON PROCHAIN DÉPART</small><h2>Tenir une nuit de plus.</h2><p>Une lame, un compagnon et ce qu’il reste de la ville.</p><div class="brief"><b>01</b><span><strong>Explore les ruines</strong>Fouille les caches, surveille ton sac.</span><b>02</b><span><strong>Reviens en vie</strong>Dépose tes ressources et renforce ta lame.</span><b>03</b><span><strong>Protège ton refuge</strong>Invoque Écho-01 et repousse les assauts.</span></div><p id="asset-status" role="status">Préparation de ton équipement…</p><button id="play" class="primary">Commencer l’expédition →</button><div class="menu-tools"><button id="report-open">Rapport de raid</button><button id="save">Sauvegarder</button><button id="load">Recharger</button></div><button id="motion" class="setting">Effets : complets</button><details class="help"><summary>Commandes et règles de survie</summary><small class="hint">Carte : touche la minicarte. Armes : touche la lame équipée. Refuge : icône maison.<br>Tactile ou ZQSD / flèches · E : interagir · espace : frapper · Maj : esquiver.<br>Mort : perte de la moitié du sac. Raid : alerte à 60 de menace après 8 ressources livrées. Aucun raid hors session dans cette alpha.</small></details></div></div><div class="menu-footer"><span>LE ZOMBIE / ALPHA 0.5</span><span>PIXEL SURVIVAL · SOLO</span></div></section>
 <section id="report" class="overlay" hidden><div class="report-panel"><small class="eyebrow">STATION 07 / RAPPORT DE DÉFENSE</small><div class="report-emblem" aria-hidden="true">◈</div><h2 id="report-title"></h2><p id="report-body"></p><button id="report-close" class="primary">Retour au refuge →</button></div></section>
+<section id="arsenal" class="overlay" hidden><div class="arsenal-panel"><div class="sheet-heading"><div><small class="eyebrow">ÉQUIPEMENT / CORPS À CORPS</small><h2>Choisis ta lame.</h2></div><button id="arsenal-close" aria-label="Fermer l’arsenal">✕</button></div><canvas id="hero-preview" width="240" height="180" aria-label="Aperçu animé de la survivante"></canvas><div class="weapon-list"><button data-weapon="machete"><canvas data-icon="machete" width="96" height="96"></canvas><strong>Machette</strong><small>30 dégâts · portée 68<br>18 endurance · équilibrée</small></button><button data-weapon="sabre"><canvas data-icon="sabre" width="96" height="96"></canvas><strong>Sabre</strong><small>24 dégâts · portée 84<br>16 endurance · rapide</small></button><button data-weapon="hatchet"><canvas data-icon="hatchet" width="96" height="96"></canvas><strong>Hachette</strong><small>48 dégâts · portée 58<br>28 endurance · lourde</small></button></div><p id="arsenal-status" role="status">Choisis une arme.</p><p>Trois armes disponibles pour cet essai. Valeurs de base affichées. Le renforcement d’atelier ajoute 50 % de dégâts aux trois armes. Changement bloqué pendant un raid.</p></div></section>
+<section id="world-view" class="overlay" hidden><div class="world-panel"><div class="sheet-heading"><div><small class="eyebrow">QUARTIER DES CENDRES</small><h2>La ville ne dort plus.</h2></div><button id="map-close" aria-label="Fermer la carte">✕</button></div><canvas id="world-map" width="600" height="400" aria-label="Carte du quartier : clinique, dépôt, marché, serres et retour au refuge"></canvas><p>● Ta position · ◇ caches disponibles · retour au refuge à l’ouest de l’avenue centrale.</p></div></section>
 <noscript>Active JavaScript pour jouer.</noscript>
 </main><script type="module">const COLS = 30, ROWS = 18, TILE = 32;
 const key = (x, y) => `${x},${y}`;
 const entity = (x, y, hp = 60) => ({ x, y, hp, windup: 0, cooldown: 0 });
-const crateLayout = [[208,208,4],[720,144,5],[752,400,4],[304,432,5],[560,272,4]];
+const streetEntry={x:80,y:608};
+function mapSize(zone){return zone==='camp'?{cols:30,rows:18,width:960,height:576}:{cols:60,rows:40,width:1920,height:1280};}
+const districts=[{name:'Clinique écarlate',x:368,y:560},{name:'Dépôt industriel',x:1280,y:528},{name:'Marché oublié',x:464,y:704},{name:'Serres contaminées',x:1088,y:880}];
+const crateLayout = [[368,560,4],[880,400,5],[1184,528,4],[464,704,5],[1088,880,4],[960,1120,5],[320,704,4],[1440,592,5]];
 const newCrates = () => crateLayout.map(([x,y,amount]) => ({x,y,amount}));
-const newEnemies = () => [entity(360,208), entity(650,300), entity(740,440,90), entity(280,400)];
+const newEnemies = () => [entity(608,544),entity(880,464),entity(1120,496,90),entity(1280,560),entity(736,704),entity(960,976,90),entity(1056,848),entity(1056,1136)];
 function createWorld() {
   const walls = [];
   for (let x=8; x<=16; x++) walls.push(key(x,5));
   for (let y=6; y<=11; y++) walls.push(key(8,y));
   return {
-    version:3, zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
+    version:4, loadout:'machete', zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
     dog:{x:410,y:336,cooldown:0}, walls, wallHealth:{}, stock:8, bag:0,
     time:0, weapon:1, delivered:0, visits:0, crates:newCrates(), enemies:newEnemies(),
     kills:0, threat:0, restockAt:300,
@@ -59,14 +70,15 @@ function createWorld() {
 }
 const streetWalls = (() => {
   const a=[];
-  for (const [x,y,w,h] of [[8,3,5,2],[16,5,4,3],[5,10,3,2],[14,12,5,2],[24,2,3,5]])
+  for (const [x,y,w,h] of [[1,1,26,14],[35,1,23,10],[53,11,6,4],[1,23,25,16],[35,23,24,16]])
     for(let i=x;i<x+w;i++) for(let j=y;j<y+h;j++) a.push(key(i,j));
   return a;
 })();
 const activeWalls = s => s.zone==='camp' ? s.walls : streetWalls;
 const activeEnemies = s => s.zone==='camp' ? s.raid.enemies : s.enemies;
 function blocked(walls,x,y) {
-  return x<1 || y<1 || x>=COLS-1 || y>=ROWS-1 || walls.includes(key(x,y));
+  const bounds=mapSize(walls===streetWalls?'street':'camp');
+  return x<1 || y<1 || x>=bounds.cols-1 || y>=bounds.rows-1 || walls.includes(key(x,y));
 }
 function canStand(walls,x,y,r=10) {
   return [[-r,-r],[r,-r],[-r,r],[r,r]].every(([dx,dy]) => !blocked(walls,Math.floor((x+dx)/TILE),Math.floor((y+dy)/TILE)));
@@ -115,9 +127,9 @@ function deposit(s) {
 function upgrade(s) {
   if(s.zone!=='camp') return 'L’atelier est au refuge.';
   if(s.raid.phase==='active') return 'Atelier indisponible pendant le raid.';
-  if(s.weapon>=2) return 'Machette déjà renforcée.';
+  if(s.weapon>=2) return 'Arme déjà renforcée.';
   if(s.stock<10) return 'Renforcement : 10 ferrailles en réserve.';
-  s.stock-=10; s.weapon=2; return 'Machette renforcée · dégâts 30 → 45';
+  s.stock-=10; s.weapon=2; return 'Arme renforcée · dégâts +50 %';
 }
 function transition(s) {
   if(s.raid.phase==='active') return 'Raid en cours : protège le refuge avant de partir.';
@@ -125,7 +137,7 @@ function transition(s) {
   if(s.zone==='street'&&s.time>=s.restockAt) {
     s.crates=newCrates(); s.enemies=newEnemies(); s.restockAt=s.time+300;
   }
-  s.player.x=s.zone==='camp'?816:112; s.player.y=304;
+  s.player.x=s.zone==='camp'?816:streetEntry.x; s.player.y=s.zone==='camp'?304:streetEntry.y;
   // Legacy camps can have a wall on the old entry cell. Pick a safe nearby spawn.
   if(!canStand(activeWalls(s),s.player.x,s.player.y)) {
     outer:for(let y=8;y<17;y++) for(let x=24;x>0;x--) {
@@ -140,12 +152,12 @@ const finite=(n,max=1e9)=>Number.isFinite(n)&&n>=0&&n<=max;
 const positioned=(a,walls)=>a&&finite(a.x)&&finite(a.y)&&canStand(walls,a.x,a.y);
 const validEnemy=(e,walls)=>positioned(e,walls)&&Number.isFinite(e.hp)&&e.hp>=-100&&e.hp<=100&&finite(e.windup,10)&&finite(e.cooldown,10);
 function validSave(s) {
-  if(s?.version!==3||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
+  if(s?.version!==4||!['machete','sabre','hatchet'].includes(s.loadout)||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
   if(!s.wallHealth||typeof s.wallHealth!=='object'||Array.isArray(s.wallHealth)||!Object.entries(s.wallHealth).every(([id,hp])=>s.walls.includes(id)&&finite(hp,100)&&hp>0)) return false;
   if(!['stock','delivered','visits','kills'].every(k=>integer(s[k]))||!finite(s.time)||!finite(s.restockAt)||!finite(s.threat,100)||!integer(s.bag,12)||![1,2].includes(s.weapon)) return false;
   if(![s.player,s.dog].every(a=>positioned(a,activeWalls(s)))||!finite(s.player.hp,100)||!s.player.hp||!finite(s.player.stamina,100)||!finite(s.dog.cooldown,12)) return false;
-  if(!Array.isArray(s.crates)||s.crates.length!==5||!s.crates.every((c,i)=>c?.x===crateLayout[i][0]&&c.y===crateLayout[i][1]&&integer(c.amount,crateLayout[i][2]))) return false;
-  if(!Array.isArray(s.enemies)||s.enemies.length!==4||!s.enemies.every(e=>validEnemy(e,streetWalls))) return false;
+  if(!Array.isArray(s.crates)||s.crates.length!==crateLayout.length||!s.crates.every((c,i)=>c?.x===crateLayout[i][0]&&c.y===crateLayout[i][1]&&integer(c.amount,crateLayout[i][2]))) return false;
+  if(!Array.isArray(s.enemies)||s.enemies.length!==newEnemies().length||!s.enemies.every(e=>validEnemy(e,streetWalls))) return false;
   const d=s.defender,r=s.raid;
   if(!d||typeof d.recruited!=='boolean'||!positioned(d,s.walls)||!finite(d.hp,100)||!finite(d.cooldown,10)) return false;
   if(!r||!['idle','warning','active'].includes(r.phase)||!integer(r.number)||!finite(r.remaining,120)||!finite(r.core,100)||!integer(r.destroyed)||!integer(r.hits)||!Array.isArray(r.enemies)||r.enemies.length>6||!r.enemies.every(e=>validEnemy(e,s.walls))) return false;
@@ -155,17 +167,62 @@ function validSave(s) {
   return result===null||!!(result&&integer(result.id)&&result.id<=r.number&&typeof result.victory==='boolean'&&integer(result.loss)&&integer(result.reward)&&integer(result.destroyed)&&integer(result.hits));
 }
 function migrateSave(s) {
-  if(validSave(s)) return s;
-  if((s?.version!==1&&s?.version!==2)||!Array.isArray(s.walls)) return null;
+  if(validSave(s))return s;
+  if(![1,2,3].includes(s?.version)||!Array.isArray(s.walls))return null;
   const fresh=createWorld();
-  const n=s.version===1 ? {...fresh,walls:s.walls,stock:s.stock,time:s.time,player:s.player,dog:{...s.dog,cooldown:0}} : {...fresh,...s,version:3,wallHealth:{},threat:0,restockAt:Math.max(300,s.time+300),dog:{...s.dog,cooldown:0}};
-  // A new defender must not spawn inside a wall from an older save.
-  if(!positioned(n.defender,n.walls)) {
-    for(let y=1;y<17;y++) for(let x=1;x<29;x++) {
-      if(canStand(n.walls,(x+.5)*32,(y+.5)*32)) { n.defender.x=(x+.5)*32;n.defender.y=(y+.5)*32;break; }
-    }
+  const n={...fresh,...s,version:4,loadout:'machete',dog:{...s.dog,cooldown:s.dog?.cooldown??0},crates:newCrates(),enemies:newEnemies()};
+  if(s.version<3){n.wallHealth={};n.threat=0;n.raid=fresh.raid;n.defender=fresh.defender;n.restockAt=Math.max(300,(s.time??0)+300);}
+  if(s.version>1){
+    for(let i=0;i<Math.min(s.crates?.length??0,5);i++)n.crates[i].amount=s.crates[i].amount;
+    for(let i=0;i<Math.min(s.enemies?.length??0,4);i++)n.enemies[i].hp=s.enemies[i].hp;
+  }
+  if(n.zone==='street'){n.player={...n.player,...streetEntry};n.dog={...n.dog,...streetEntry};}
+  if(!positioned(n.defender,n.walls)){
+    safe:for(let y=1;y<17;y++)for(let x=1;x<29;x++)if(canStand(n.walls,(x+.5)*32,(y+.5)*32)){n.defender={...n.defender,x:(x+.5)*32,y:(y+.5)*32};break safe;}
   }
   return validSave(n)?n:null;
+}
+
+const weapons = {
+  machete:{id:'machete',name:'Machette',damage:30,range:68,stamina:18,duration:.64,icon:0,description:'Polyvalente · acier récupéré et garde dorée.'},
+  sabre:{id:'sabre',name:'Sabre',damage:24,range:84,stamina:16,duration:.52,icon:1,description:'Allonge supérieure · frappes rapides, dégâts légers.'},
+  hatchet:{id:'hatchet',name:'Hachette',damage:48,range:58,stamina:28,duration:.88,icon:2,description:'Impact lourd · courte portée et engagement plus long.'}
+};
+function equipWeapon(s,id){
+  if(!weapons[id])return 'Arme inconnue.';
+  if(s.raid.phase==='active')return 'Équipement verrouillé pendant le raid.';
+  s.loadout=id;return `${weapons[id].name} équipée`;
+}
+function animationFrame(facing,moving,elapsed,attackRemaining=0,duration=.64){
+  const direction=Math.abs(facing.x)>Math.abs(facing.y)?(facing.x<0?1:2):(facing.y<0?3:0);
+  const attack=attackRemaining>0;
+  return {row:direction*2+(attack?1:0),column:attack?Math.min(7,Math.floor((1-attackRemaining/duration)*8)):moving?Math.floor(elapsed*10)%8:0};
+}
+
+const heroAtlases = {"machete":{"file":"hero-atlas.png","width":1254,"height":1254,"scale":0.43,"rows":[[{"x":59,"y":6,"w":83,"h":144,"anchorX":46.04214469679232,"anchorY":142},{"x":221,"y":6,"w":81,"h":145,"anchorX":45.6493262594488,"anchorY":143},{"x":376,"y":6,"w":84,"h":144,"anchorX":48.37567693744165,"anchorY":142},{"x":532,"y":6,"w":84,"h":145,"anchorX":45.49882342084618,"anchorY":143},{"x":690,"y":6,"w":82,"h":145,"anchorX":45.26238120254072,"anchorY":143},{"x":844,"y":6,"w":85,"h":144,"anchorX":49.360523186682485,"anchorY":142},{"x":1003,"y":6,"w":83,"h":145,"anchorX":46.70747535864166,"anchorY":143},{"x":1157,"y":6,"w":85,"h":145,"anchorX":46.128981835821605,"anchorY":143}],[{"x":59,"y":163,"w":86,"h":145,"anchorX":45.76610678750862,"anchorY":143},{"x":190,"y":163,"w":118,"h":145,"anchorX":68.29186578927613,"anchorY":143},{"x":350,"y":160,"w":107,"h":148,"anchorX":71.74859121211006,"anchorY":146},{"x":518,"y":167,"w":114,"h":141,"anchorX":64.27473280350785,"anchorY":139},{"x":679,"y":165,"w":114,"h":143,"anchorX":53.127671158295925,"anchorY":141},{"x":846,"y":163,"w":86,"h":145,"anchorX":46.974635328745194,"anchorY":143},{"x":1001,"y":163,"w":84,"h":145,"anchorX":48.875566424512726,"anchorY":143},{"x":1156,"y":163,"w":85,"h":145,"anchorX":46.64845843664693,"anchorY":143}],[{"x":49,"y":321,"w":90,"h":144,"anchorX":47.477883706948376,"anchorY":142},{"x":208,"y":323,"w":88,"h":141,"anchorX":46.90100960354593,"anchorY":139},{"x":365,"y":323,"w":90,"h":141,"anchorX":33.984687098880784,"anchorY":139},{"x":526,"y":323,"w":87,"h":141,"anchorX":30.100947762838928,"anchorY":139},{"x":688,"y":324,"w":81,"h":140,"anchorX":25.157213138474845,"anchorY":138},{"x":844,"y":324,"w":82,"h":140,"anchorX":37.188401916950056,"anchorY":138},{"x":993,"y":324,"w":89,"h":141,"anchorX":47.3550799551283,"anchorY":139},{"x":1146,"y":321,"w":91,"h":143,"anchorX":47.64933380279081,"anchorY":141}],[{"x":49,"y":478,"w":90,"h":143,"anchorX":47.21936454149137,"anchorY":141},{"x":191,"y":483,"w":110,"h":138,"anchorX":55.45610389610388,"anchorY":136},{"x":352,"y":470,"w":103,"h":151,"anchorX":44.368828321475405,"anchorY":149},{"x":480,"y":485,"w":134,"h":136,"anchorX":83.03951879577221,"anchorY":134},{"x":645,"y":483,"w":125,"h":138,"anchorX":71.77401129943507,"anchorY":136},{"x":828,"y":482,"w":98,"h":139,"anchorX":48.93159872795604,"anchorY":137},{"x":990,"y":480,"w":92,"h":141,"anchorX":46.57588683116455,"anchorY":139},{"x":1146,"y":478,"w":91,"h":144,"anchorX":47.609317810997936,"anchorY":142}],[{"x":51,"y":635,"w":84,"h":141,"anchorX":45.811745012770075,"anchorY":139},{"x":206,"y":637,"w":90,"h":139,"anchorX":53.18408027662895,"anchorY":137},{"x":365,"y":638,"w":91,"h":137,"anchorX":57.673859337605165,"anchorY":135},{"x":521,"y":637,"w":95,"h":138,"anchorX":52.83835610007975,"anchorY":136},{"x":682,"y":638,"w":85,"h":139,"anchorX":49.558334493803045,"anchorY":137},{"x":840,"y":638,"w":83,"h":139,"anchorX":56.219903333053935,"anchorY":137},{"x":998,"y":638,"w":82,"h":139,"anchorX":43.72154922942332,"anchorY":137},{"x":1149,"y":635,"w":83,"h":141,"anchorX":46.077405999728626,"anchorY":139}],[{"x":51,"y":792,"w":84,"h":141,"anchorX":46.57274666763918,"anchorY":139},{"x":208,"y":795,"w":116,"h":140,"anchorX":43.080081968876186,"anchorY":138},{"x":366,"y":785,"w":95,"h":150,"anchorX":42.549380856760365,"anchorY":148},{"x":515,"y":802,"w":140,"h":133,"anchorX":41.097572691174605,"anchorY":131},{"x":680,"y":799,"w":133,"h":136,"anchorX":41.3013599197285,"anchorY":134},{"x":843,"y":796,"w":95,"h":139,"anchorX":38.40847092605884,"anchorY":137},{"x":998,"y":795,"w":86,"h":140,"anchorX":31.745846141873244,"anchorY":138},{"x":1149,"y":792,"w":83,"h":141,"anchorX":46.29914514849747,"anchorY":139}],[{"x":64,"y":946,"w":80,"h":144,"anchorX":36.874906943909636,"anchorY":142},{"x":219,"y":947,"w":79,"h":143,"anchorX":36.108862898563615,"anchorY":141},{"x":373,"y":947,"w":83,"h":137,"anchorX":41.68775385300171,"anchorY":135},{"x":530,"y":948,"w":83,"h":142,"anchorX":45.342229199372014,"anchorY":140},{"x":687,"y":947,"w":81,"h":143,"anchorX":38.21211845930236,"anchorY":141},{"x":845,"y":948,"w":79,"h":141,"anchorX":39.48248407643314,"anchorY":139},{"x":1002,"y":949,"w":82,"h":141,"anchorX":35.7082112822452,"anchorY":139},{"x":1161,"y":946,"w":81,"h":144,"anchorX":37.74080078604766,"anchorY":142}],[{"x":63,"y":1103,"w":81,"h":143,"anchorX":37.49891431434776,"anchorY":141},{"x":202,"y":1106,"w":131,"h":140,"anchorX":37.78197558445703,"anchorY":138},{"x":353,"y":1091,"w":95,"h":156,"anchorX":45.07013523835195,"anchorY":154},{"x":518,"y":1112,"w":144,"h":136,"anchorX":38.27276509438866,"anchorY":134},{"x":683,"y":1108,"w":122,"h":140,"anchorX":33.30233887733891,"anchorY":138},{"x":842,"y":1105,"w":106,"h":142,"anchorX":30.861205687963093,"anchorY":140},{"x":1000,"y":1105,"w":85,"h":142,"anchorX":43.00931309979683,"anchorY":140},{"x":1161,"y":1103,"w":81,"h":144,"anchorX":37.24146348005684,"anchorY":142}]]},"sabre":{"file":"hero-sabre.png","width":1254,"height":1254,"scale":0.43,"rows":[[{"x":54,"y":5,"w":90,"h":146,"anchorX":51.33819409901301,"anchorY":144},{"x":217,"y":4,"w":85,"h":148,"anchorX":50.26667920447602,"anchorY":146},{"x":369,"y":5,"w":89,"h":146,"anchorX":55.78303332056686,"anchorY":144},{"x":528,"y":5,"w":86,"h":147,"anchorX":50.60322203455894,"anchorY":145},{"x":689,"y":5,"w":83,"h":146,"anchorX":46.640889872367325,"anchorY":144},{"x":845,"y":5,"w":85,"h":146,"anchorX":48.94111256959218,"anchorY":144},{"x":1002,"y":5,"w":83,"h":146,"anchorX":48.92016454331247,"anchorY":144},{"x":1157,"y":5,"w":84,"h":146,"anchorX":45.83594607114128,"anchorY":144}],[{"x":54,"y":162,"w":91,"h":147,"anchorX":50.43607692874512,"anchorY":145},{"x":184,"y":162,"w":124,"h":146,"anchorX":73.14647690256004,"anchorY":144},{"x":348,"y":161,"w":109,"h":148,"anchorX":70.13376573336757,"anchorY":146},{"x":518,"y":164,"w":124,"h":145,"anchorX":62.63786429365962,"anchorY":143},{"x":679,"y":164,"w":115,"h":145,"anchorX":53.21626214649871,"anchorY":143},{"x":838,"y":163,"w":92,"h":146,"anchorX":55.0536954585931,"anchorY":144},{"x":998,"y":163,"w":88,"h":145,"anchorX":49.737512552001135,"anchorY":143},{"x":1152,"y":162,"w":90,"h":147,"anchorX":50.12419491736978,"anchorY":145}],[{"x":49,"y":321,"w":92,"h":146,"anchorX":47.716419206390555,"anchorY":144},{"x":205,"y":322,"w":92,"h":144,"anchorX":50.02352358256849,"anchorY":142},{"x":361,"y":323,"w":94,"h":143,"anchorX":37.30703415218693,"anchorY":141},{"x":527,"y":323,"w":86,"h":143,"anchorX":26.675390134923987,"anchorY":141},{"x":681,"y":323,"w":89,"h":143,"anchorX":32.25328133203334,"anchorY":141},{"x":839,"y":323,"w":88,"h":143,"anchorX":41.65092646119206,"anchorY":141},{"x":993,"y":323,"w":90,"h":143,"anchorX":47.15833103611226,"anchorY":141},{"x":1144,"y":321,"w":94,"h":145,"anchorX":50.23978406075571,"anchorY":143}],[{"x":47,"y":479,"w":94,"h":144,"anchorX":49.331948448363576,"anchorY":142},{"x":183,"y":481,"w":119,"h":142,"anchorX":60.08280354026428,"anchorY":140},{"x":357,"y":471,"w":99,"h":153,"anchorX":35.68109296141529,"anchorY":151},{"x":477,"y":485,"w":137,"h":138,"anchorX":83.17075100460136,"anchorY":136},{"x":643,"y":482,"w":128,"h":142,"anchorX":70.41638501619491,"anchorY":140},{"x":829,"y":481,"w":100,"h":142,"anchorX":46.48650922031709,"anchorY":140},{"x":992,"y":480,"w":90,"h":143,"anchorX":43.00030166822535,"anchorY":141},{"x":1144,"y":478,"w":94,"h":145,"anchorX":50.09894875164264,"anchorY":143}],[{"x":50,"y":635,"w":89,"h":142,"anchorX":47.444388950785665,"anchorY":140},{"x":206,"y":636,"w":95,"h":141,"anchorX":53.351672129742724,"anchorY":139},{"x":365,"y":638,"w":96,"h":139,"anchorX":53.58274909708945,"anchorY":137},{"x":523,"y":637,"w":92,"h":139,"anchorX":48.1208159116635,"anchorY":137},{"x":682,"y":637,"w":87,"h":142,"anchorX":51.26184936091545,"anchorY":140},{"x":840,"y":638,"w":84,"h":141,"anchorX":56.0675567764398,"anchorY":139},{"x":998,"y":637,"w":84,"h":141,"anchorX":44.622556236518676,"anchorY":139},{"x":1149,"y":634,"w":85,"h":144,"anchorX":46.669311619791415,"anchorY":142}],[{"x":52,"y":791,"w":85,"h":143,"anchorX":45.10660944206009,"anchorY":141},{"x":208,"y":794,"w":115,"h":142,"anchorX":43.34993524078652,"anchorY":140},{"x":366,"y":785,"w":91,"h":151,"anchorX":42.72964516572688,"anchorY":149},{"x":516,"y":802,"w":147,"h":134,"anchorX":43.72954676793529,"anchorY":132},{"x":680,"y":799,"w":135,"h":138,"anchorX":42.33631243308662,"anchorY":136},{"x":841,"y":795,"w":100,"h":142,"anchorX":43.41069203184213,"anchorY":140},{"x":999,"y":794,"w":83,"h":143,"anchorX":34.345451338533394,"anchorY":141},{"x":1149,"y":791,"w":86,"h":143,"anchorX":46.43488022659358,"anchorY":141}],[{"x":63,"y":946,"w":86,"h":146,"anchorX":38.21712216171787,"anchorY":144},{"x":219,"y":947,"w":86,"h":145,"anchorX":37.7264461984214,"anchorY":143},{"x":373,"y":948,"w":87,"h":136,"anchorX":41.09741074931344,"anchorY":134},{"x":531,"y":948,"w":87,"h":144,"anchorX":45.15585847449131,"anchorY":142},{"x":686,"y":947,"w":90,"h":145,"anchorX":39.65624394966119,"anchorY":143},{"x":845,"y":948,"w":85,"h":142,"anchorX":38.74483486653594,"anchorY":140},{"x":1002,"y":949,"w":87,"h":143,"anchorX":36.52981171548117,"anchorY":141},{"x":1159,"y":946,"w":87,"h":146,"anchorX":41.20109542356386,"anchorY":144}],[{"x":63,"y":1104,"w":86,"h":145,"anchorX":38.0635435625544,"anchorY":143},{"x":203,"y":1106,"w":139,"h":143,"anchorX":39.679852902547935,"anchorY":141},{"x":357,"y":1093,"w":92,"h":156,"anchorX":41.482722513089016,"anchorY":154},{"x":517,"y":1111,"w":150,"h":138,"anchorX":39.541033151997,"anchorY":136},{"x":683,"y":1108,"w":125,"h":143,"anchorX":35.06125731934878,"anchorY":141},{"x":840,"y":1105,"w":111,"h":143,"anchorX":33.37544723758185,"anchorY":141},{"x":1000,"y":1105,"w":96,"h":146,"anchorX":44.00178012399488,"anchorY":144},{"x":1159,"y":1103,"w":90,"h":147,"anchorX":40.07220708446857,"anchorY":145}]]},"hatchet":{"file":"hero-hatchet.png","width":1254,"height":1254,"scale":0.43,"rows":[[{"x":53,"y":3,"w":93,"h":149,"anchorX":51.60860534124629,"anchorY":147},{"x":211,"y":3,"w":94,"h":150,"anchorX":56.4275745001886,"anchorY":148},{"x":368,"y":3,"w":93,"h":147,"anchorX":56.87402071139127,"anchorY":145},{"x":526,"y":4,"w":92,"h":148,"anchorX":52.18635776887015,"anchorY":146},{"x":683,"y":3,"w":91,"h":149,"anchorX":52.547119625601795,"anchorY":147},{"x":839,"y":3,"w":94,"h":149,"anchorX":55.04383037603782,"anchorY":147},{"x":995,"y":3,"w":94,"h":150,"anchorX":57.205043011242196,"anchorY":148},{"x":1152,"y":3,"w":92,"h":149,"anchorX":50.9517203473672,"anchorY":147}],[{"x":54,"y":162,"w":92,"h":147,"anchorX":50.38725921365116,"anchorY":145},{"x":188,"y":162,"w":121,"h":148,"anchorX":70.59205728126915,"anchorY":146},{"x":350,"y":163,"w":111,"h":147,"anchorX":72.48387096774195,"anchorY":145},{"x":515,"y":163,"w":118,"h":146,"anchorX":63.9968045446476,"anchorY":144},{"x":676,"y":164,"w":106,"h":146,"anchorX":55.90101091791348,"anchorY":144},{"x":838,"y":163,"w":95,"h":146,"anchorX":55.48569951757406,"anchorY":144},{"x":994,"y":162,"w":97,"h":147,"anchorX":54.91006262146402,"anchorY":145},{"x":1153,"y":162,"w":91,"h":147,"anchorX":49.654614150624866,"anchorY":145}],[{"x":51,"y":319,"w":92,"h":147,"anchorX":45.42817423540315,"anchorY":145},{"x":207,"y":322,"w":97,"h":144,"anchorX":47.554618202853845,"anchorY":142},{"x":367,"y":322,"w":92,"h":144,"anchorX":30.133536488299626,"anchorY":142},{"x":526,"y":322,"w":91,"h":144,"anchorX":24.898869272902516,"anchorY":142},{"x":681,"y":322,"w":93,"h":144,"anchorX":31.30104652628927,"anchorY":142},{"x":841,"y":322,"w":92,"h":144,"anchorX":39.813967527722184,"anchorY":142},{"x":995,"y":322,"w":93,"h":144,"anchorX":45.5746891033084,"anchorY":142},{"x":1150,"y":320,"w":93,"h":146,"anchorX":45.51328509190171,"anchorY":144}],[{"x":51,"y":478,"w":94,"h":144,"anchorX":46.445011798383035,"anchorY":142},{"x":189,"y":481,"w":116,"h":142,"anchorX":57.07634388361524,"anchorY":140},{"x":349,"y":468,"w":111,"h":154,"anchorX":46.71140458640457,"anchorY":152},{"x":486,"y":484,"w":131,"h":138,"anchorX":79.41552724259373,"anchorY":136},{"x":656,"y":481,"w":116,"h":142,"anchorX":56.96950562604741,"anchorY":140},{"x":833,"y":480,"w":99,"h":143,"anchorX":41.614402121192484,"anchorY":141},{"x":994,"y":479,"w":93,"h":144,"anchorX":41.12687431337031,"anchorY":142},{"x":1149,"y":477,"w":92,"h":146,"anchorX":47.218519313304796,"anchorY":144}],[{"x":48,"y":635,"w":86,"h":143,"anchorX":48.66511931529702,"anchorY":141},{"x":205,"y":635,"w":87,"h":142,"anchorX":53.42482149182496,"anchorY":140},{"x":362,"y":635,"w":92,"h":142,"anchorX":57.61086075661757,"anchorY":140},{"x":519,"y":636,"w":99,"h":141,"anchorX":57.738728930536354,"anchorY":139},{"x":677,"y":636,"w":90,"h":144,"anchorX":56.82634730538928,"anchorY":142},{"x":834,"y":636,"w":89,"h":143,"anchorX":60.64615665034887,"anchorY":141},{"x":995,"y":636,"w":86,"h":146,"anchorX":45.75526579739221,"anchorY":144},{"x":1147,"y":635,"w":88,"h":143,"anchorX":48.925453856488275,"anchorY":141}],[{"x":49,"y":791,"w":88,"h":145,"anchorX":48.34410639325384,"anchorY":143},{"x":204,"y":794,"w":115,"h":142,"anchorX":49.6469477549889,"anchorY":140},{"x":365,"y":780,"w":95,"h":156,"anchorX":46.56180152928323,"anchorY":154},{"x":513,"y":802,"w":139,"h":135,"anchorX":44.52317420170721,"anchorY":133},{"x":680,"y":798,"w":125,"h":139,"anchorX":43.88162046547086,"anchorY":137},{"x":838,"y":795,"w":100,"h":142,"anchorX":45.211506095808886,"anchorY":140},{"x":996,"y":794,"w":88,"h":143,"anchorX":36.48699050357391,"anchorY":141},{"x":1147,"y":792,"w":88,"h":144,"anchorX":48.00179136334191,"anchorY":142}],[{"x":62,"y":946,"w":84,"h":146,"anchorX":38.05897980871413,"anchorY":144},{"x":215,"y":947,"w":88,"h":145,"anchorX":41.411994960856646,"anchorY":143},{"x":371,"y":948,"w":89,"h":139,"anchorX":43.16263936073494,"anchorY":137},{"x":530,"y":947,"w":87,"h":146,"anchorX":45.11894020492434,"anchorY":144},{"x":684,"y":947,"w":88,"h":146,"anchorX":42.18540842029506,"anchorY":144},{"x":844,"y":947,"w":86,"h":143,"anchorX":40.42529780849327,"anchorY":141},{"x":999,"y":948,"w":87,"h":144,"anchorX":39.14212742727909,"anchorY":142},{"x":1159,"y":947,"w":85,"h":145,"anchorX":40.48848033511763,"anchorY":143}],[{"x":61,"y":1104,"w":89,"h":144,"anchorX":38.76136254212807,"anchorY":142},{"x":203,"y":1107,"w":127,"h":142,"anchorX":39.994180633147124,"anchorY":140},{"x":350,"y":1090,"w":100,"h":160,"anchorX":48.53674612220624,"anchorY":158},{"x":514,"y":1112,"w":144,"h":139,"anchorX":42.54035179608047,"anchorY":137},{"x":678,"y":1108,"w":119,"h":143,"anchorX":41.518424335476425,"anchorY":141},{"x":837,"y":1105,"w":109,"h":143,"anchorX":36.12733188720176,"anchorY":141},{"x":999,"y":1105,"w":97,"h":145,"anchorX":45.81120293847562,"anchorY":143},{"x":1158,"y":1104,"w":88,"h":144,"anchorX":41.32095418812696,"anchorY":142}]]}};
+
+const artFiles={machete:'hero-atlas.png',sabre:'hero-sabre.png',hatchet:'hero-hatchet.png',weapons:'weapons.png',district:'district.png'};
+const artImages={};
+async function loadArt(){
+  const results=await Promise.all(Object.entries(artFiles).map(([id,file])=>new Promise(resolve=>{
+    const img=new Image();img.onload=()=>{artImages[id]=img;resolve(id);};img.onerror=()=>resolve(null);
+    img.src=window.__ART_DATA__?.[id]||new URL('./assets/'+file,document.baseURI).href;
+  })));
+  return results.every(Boolean);
+}
+function drawHero(c,a,weapon,frame,options={}){
+  const img=artImages[weapon],atlas=heroAtlases[weapon];
+  if(!img||!atlas)return false;
+  const f=atlas.rows[frame.row][frame.column],scale=atlas.scale;
+  c.save();if(options.hurt)c.globalAlpha=.7;
+  if(options.dash)c.globalAlpha=.65;
+  c.drawImage(img,f.x,f.y,f.w,f.h,Math.round(a.x-f.anchorX*scale),Math.round(a.y-f.anchorY*scale),f.w*scale,f.h*scale);
+  c.restore();return true;
+}
+function drawWeaponIcon(c,id,x,y,size=96){
+  const img=artImages.weapons,position={machete:0,sabre:1,hatchet:2}[id];
+  if(!img||position===undefined)return;
+  const cell=img.width/3;c.drawImage(img,position*cell,0,cell,img.height,x,y,size,size);
 }
 
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
@@ -429,14 +486,17 @@ function renderScene(c,s,view,cam,fx) {
   pixel(c,0,0,view.w,view.h,'#0c1724');
   c.save();c.translate(-Math.round(cam.x),-Math.round(cam.y));
   const camp=s.zone==='camp',clock=fx.reduced?0:s.time;
-  c.drawImage(terrain(s.zone),0,0);
+  const size=mapSize(s.zone);
+  if(!camp&&artImages.district)c.drawImage(artImages.district,0,0,size.width,size.height);
+  else c.drawImage(terrain(s.zone),0,0);
   // Lamps, warning paint and a shallow gate indicate the two traversable exits.
-  const gx=camp?864:80;
+  const gx=camp?864:80,gy=camp?304:608;c.save();c.translate(0,gy-304);
   pixel(c,gx-19,268,38,72,'#1a3f42');pixel(c,gx-21,265,5,76,'#557977');pixel(c,gx+17,265,5,76,'#557977');
   pixel(c,gx-18,272,3,61,'#90ebcc');pixel(c,gx+15,272,3,61,'#90ebcc');
   for(let y=277;y<336;y+=10)pixel(c,gx-10,y,20,3,'#598e8377');
   light(c,gx,303,95,'#7ce4c425');label(c,camp?'VERS LES CENDRES →':'← STATION 07',gx-47,360,'#a8d9c5',8);
-  for(const id of activeWalls(s))wall(c,id,camp,s.wallHealth[id]);
+  c.restore();
+  if(camp)for(const id of activeWalls(s))wall(c,id,camp,s.wallHealth[id]);
   if(camp) {
     consoleProp(c,464,304,'core',clock);consoleProp(c,560,336,'forge',clock);consoleProp(c,624,304,'echo',clock);
     // Small motion and lighting details are decoration, not additional collision obstacles.
@@ -449,7 +509,7 @@ function renderScene(c,s,view,cam,fx) {
       pixel(c,x-11,y-12,4,26,'#2b3439');pixel(c,x+8,y-12,4,26,'#2b3439');pixel(c,x-3,y,6,5,full?'#efd397':'#152a35');
       if(full){light(c,x,y,45,'#d7ad5915');label(c,'◇',x-3,y-25,'#efd397',12);}
     }
-    for(const [x,y,color,name] of [[320,106,'#bd82a6','CLINIQUE'],[570,180,'#8daccd','NO SIGNAL'],[815,114,'#d3b777','04']]) {
+    for(const [x,y,color,name] of districts.map((d,i)=>[d.x,d.y-50,['#df92bc','#d4b785','#d4b785','#9dcfad'][i],d.name])) {
       pixel(c,x-28,y-19,64,18,'#121c2b');label(c,name,x-24,y-7,color,9);pixel(c,x-28,y,64,2,color);light(c,x,y,76,color+'1a');
     }
   }
@@ -459,26 +519,39 @@ function renderScene(c,s,view,cam,fx) {
     pixel(c,b.x*32,b.y*32,32,32,!b.valid?'#e2988944':exists?'#d6b47f44':'#9ce3c344');c.strokeStyle=color;c.lineWidth=2;c.strokeRect(b.x*32+1,b.y*32+1,30,30);label(c,exists?'+2':'−2',b.x*32+8,b.y*32-10,color,11);
   }
   const actors=[{a:s.player,t:'player'},{a:s.dog,t:'dog'},...(camp&&s.defender.recruited?[{a:s.defender,t:'guard'}]:[]),...activeEnemies(s).filter(e=>e.hp>0).map(a=>({a,t:'enemy'}))].sort((a,b)=>a.a.y-b.a.y);
-  for(const {a,t} of actors){sprite(c,a,t,clock,fx.facing,t==='player'?fx.moving:t==='enemy'?a.cooldown===0:t==='guard'?s.raid.phase==='active'&&a.hp>0:Math.hypot(a.x-s.player.x,a.y-s.player.y)>42,fx.hurt);
+  for(const {a,t} of actors){
+    const frame=animationFrame(fx.facing,fx.moving,clock,fx.attackTimer,weapons[s.loadout].duration);
+    if(t==='player')ellipse(c,a.x,a.y,14,6,'#020a1280');
+    if(t!=='player'||!drawHero(c,a,s.loadout,frame,{hurt:fx.hurt,dash:fx.dash}))sprite(c,a,t,clock,fx.facing,t==='player'?fx.moving:t==='enemy'?a.cooldown===0:t==='guard'?s.raid.phase==='active'&&a.hp>0:Math.hypot(a.x-s.player.x,a.y-s.player.y)>42,fx.hurt);
     if(t==='enemy'){pixel(c,a.x-12,a.y-30,24,2,'#322b39');pixel(c,a.x-12,a.y-30,24*Math.max(0,a.hp)/90,2,'#d9a39b');}
     if(t==='guard')label(c,a.hp>0?'ÉCHO-01':'BLESSÉ',a.x-22,a.y-34,'#c2b9dc',8);
   }
-  if(fx.attackTimer>0){const a=Math.atan2(fx.facing.y,fx.facing.x);c.strokeStyle='#e6f2cf';c.lineWidth=4;c.beginPath();c.arc(s.player.x,s.player.y,44,a-.9,a+.9);c.stroke();}
+  if(fx.attackTimer>0&&fx.attackTimer<weapons[s.loadout].duration*.6&&fx.attackTimer>weapons[s.loadout].duration*.3){const a=Math.atan2(fx.facing.y,fx.facing.x);c.strokeStyle='#e6f2cf';c.lineWidth=4;c.beginPath();c.arc(s.player.x,s.player.y,44,a-.9,a+.9);c.stroke();}
   for(const f of fx.particles)pixel(c,f.x,f.y,3,3,f.color);
-  if(s.time%1080>=720){pixel(c,0,0,960,576,'#070b2344');light(c,s.player.x,s.player.y,125,'#b7d9ce15');}
+  if(s.time%1080>=720){pixel(c,0,0,size.width,size.height,'#070b2322');light(c,s.player.x,s.player.y,125,'#b7d9ce15');}
   c.restore();
   // Sparse rain, kept outside the simulation and disabled with reduced motion.
   if(!fx.reduced){c.strokeStyle='#acc8da19';c.lineWidth=1;for(let i=0;i<35;i++){const x=(i*137+clock*19)%view.w,y=(i*79+clock*160)%view.h;c.beginPath();c.moveTo(x,y);c.lineTo(x-3,y+10);c.stroke();}}
   const g=c.createLinearGradient(0,0,0,view.h);g.addColorStop(0,'#050b17a8');g.addColorStop(.25,'transparent');g.addColorStop(.72,'transparent');g.addColorStop(1,'#050c17a6');c.fillStyle=g;c.fillRect(0,0,view.w,view.h);
 }
 function renderMiniMap(c,s) {
+  const size=mapSize(s.zone),sx=120/size.width,sy=72/size.height;
   pixel(c,0,0,120,72,'#0b1925');
-  c.strokeStyle='#1d3540';c.strokeRect(3,3,114,66);
-  for(const id of activeWalls(s)){const [x,y]=id.split(',').map(Number);pixel(c,x*4,y*4,3,3,'#506973');}
-  pixel(c,(s.zone==='camp'?27:2)*4,9*4,4,5,'#d4b97d');
-  if(s.zone==='street')for(const crate of s.crates)if(crate.amount)pixel(c,crate.x/8,crate.y/8,2,2,'#caae7a');
-  for(const e of activeEnemies(s))if(e.hp>0)pixel(c,e.x/8,e.y/8,2,2,'#d78e8e');
-  pixel(c,s.player.x/8-1,s.player.y/8-1,4,4,'#b7f3ce');
+  if(s.zone==='street'&&artImages.district){c.globalAlpha=.65;c.drawImage(artImages.district,0,0,120,72);c.globalAlpha=1;}
+  else for(const id of activeWalls(s)){const [x,y]=id.split(',').map(Number);pixel(c,x*32*sx,y*32*sy,3,3,'#506973');}
+  const exit=s.zone==='camp'?{x:864,y:304}:{x:80,y:608};pixel(c,exit.x*sx,exit.y*sy,4,4,'#d4b97d');
+  if(s.zone==='street')for(const crate of s.crates)if(crate.amount)pixel(c,crate.x*sx,crate.y*sy,2,2,'#e2c88d');
+  for(const e of activeEnemies(s))if(e.hp>0)pixel(c,e.x*sx,e.y*sy,2,2,'#d78e8e');
+  pixel(c,s.player.x*sx-1,s.player.y*sy-1,4,4,'#e3fbd9');
+}
+function renderWorldMap(c,s){
+  const w=c.canvas.width,h=c.canvas.height;
+  c.fillStyle='#0b1724';c.fillRect(0,0,w,h);
+  if(artImages.district)c.drawImage(artImages.district,0,0,w,h);
+  for(const d of districts){const x=d.x/1920*w,y=d.y/1280*h;light(c,x,y,30,'#b2d2ad44');label(c,d.name,x-45,y-12,'#e9e3d2',10);}
+  for(const box of s.crates)if(box.amount)pixel(c,box.x/1920*w-2,box.y/1280*h-2,4,4,'#efd195');
+  label(c,'← REFUGE',12,608/1280*h-12,'#bfe9c3',11);
+  if(s.zone==='street'){ellipse(c,s.player.x/1920*w,s.player.y/1280*h,6,6,'#defbd4');ellipse(c,s.player.x/1920*w,s.player.y/1280*h,3,3,'#285b50');}
 }
 
 const $=id=>document.getElementById(id),canvas=$('game'),ctx=canvas.getContext('2d');
@@ -490,12 +563,12 @@ $('motion').onclick=()=>{reduced=!reduced;$('app').classList.toggle('reduced-mot
 const cell=a=>[Math.floor(a.x/TILE),Math.floor(a.y/TILE)];
 const say=t=>{$('message').textContent=t;messageTimer=5;};
 function persist(notify=false){try{const current=localStorage.getItem('zombie.save');if(current){try{if(migrateSave(JSON.parse(current)))localStorage.setItem('zombie.backup',current);}catch{}}localStorage.setItem('zombie.save',JSON.stringify(state));if(notify)say('Partie sauvegardée sur cet appareil.');return true;}catch{say('Stockage indisponible : la progression ne sera pas conservée.');return false;}}
-function load(notify=true){for(const name of ['zombie.save','zombie.backup']){try{const data=migrateSave(JSON.parse(localStorage.getItem(name)));if(data){state=data;cameraReady=false;pendingBuild=null;building=false;$('build').classList.remove('active');if(notify)say(name.endsWith('backup')?'Copie précédente restaurée.':'Partie restaurée.');return true;}}catch{}}if(notify)say('Aucune sauvegarde valide disponible.');return false;}
+function load(notify=true){for(const name of ['zombie.save','zombie.backup']){try{const data=migrateSave(JSON.parse(localStorage.getItem(name)));if(data){state=data;attackTimer=0;cooldown=0;strikePending=false;cameraReady=false;pendingBuild=null;building=false;$('build').classList.remove('active');if(notify)say(name.endsWith('backup')?'Copie précédente restaurée.':'Partie restaurée.');return true;}}catch{}}if(notify)say('Aucune sauvegarde valide disponible.');return false;}
 function clearInput(){keys.clear();joystick={x:0,y:0};stickPointer=null;$('knob').style.transform='';}
 function pause(value){paused=value;$('menu').hidden=!value;$('play').textContent='Reprendre l’expédition →';clearInput();if(value)persist();}
 $('pause').onclick=()=>pause(!paused);$('play').onclick=()=>pause(false);$('save').onclick=()=>persist(true);$('load').onclick=()=>load();
 $('fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('app').requestFullscreen();}catch{say('Plein écran indisponible dans ce navigateur.');}};
-$('build').onclick=()=>{if(state.raid.phase==='active'){say('Construction verrouillée pendant le raid.');return;}building=!building;pendingBuild=null;$('build').classList.toggle('active',building);say(building?'Choisis une case, puis touche-la à nouveau pour confirmer.':'Mode exploration.');};
+$('build').onclick=()=>{if(state.raid.phase==='active'){say('Construction verrouillée pendant le raid.');return;}building=!building;pendingBuild=null;if(building)$('camp-tools').classList.add('collapsed');$('build').classList.toggle('active',building);say(building?'Choisis une case, puis touche-la à nouveau pour confirmer.':'Mode exploration.');};
 $('forge').onclick=()=>{say(upgrade(state));persist();};
 $('summon').onclick=()=>{say(recruitDefender(state));persist();};
 $('repair').onclick=()=>{say(repairWalls(state));persist();};
@@ -509,16 +582,33 @@ function showReport(){
 $('report-open').onclick=showReport;
 $('report-close').onclick=()=>{$('report').hidden=true;paused=!$('menu').hidden;};
 function burst(x,y,color){for(let i=0;i<8;i++)particles.push({x,y,vx:Math.cos(i*.8)*50,vy:Math.sin(i*.8)*50,t:.35,color});}
-function attack(){if(paused||cooldown>0||state.player.stamina<18)return;const p=state.player;p.stamina-=18;attackTimer=.22;cooldown=.42;for(const e of activeEnemies(state)){const dx=e.x-p.x,dy=e.y-p.y,d=Math.hypot(dx,dy),path=pathTo(activeWalls(state),cell(p),cell(e));if(e.hp>0&&d<65&&dx*facing.x+dy*facing.y>-8&&path.length>0&&path.length<=4){e.hp-=state.weapon===2?45:30;e.windup=0;e.cooldown=.5;burst(e.x,e.y,'#e5908e');if(e.hp<=0){state.kills++;if(state.zone==='street')state.threat=Math.min(100,state.threat+5);say('Infecté neutralisé.');persist();}}}}
+let strikePending=false,attackFacing={x:1,y:0};
+function attack(){
+ const w=weapons[state.loadout];
+ if(paused||cooldown>0||state.player.stamina<w.stamina)return;
+ state.player.stamina-=w.stamina;attackTimer=w.duration;cooldown=w.duration+.08;
+ attackFacing={...facing};strikePending=true;
+}
+function applyStrike(){
+ const w=weapons[state.loadout],p=state.player;
+ for(const e of activeEnemies(state)){
+  const dx=e.x-p.x,dy=e.y-p.y,d=Math.hypot(dx,dy),path=pathTo(activeWalls(state),cell(p),cell(e));
+  if(e.hp>0&&d<w.range&&dx*attackFacing.x+dy*attackFacing.y>-8&&path.length>0&&path.length<=Math.ceil(w.range/32)+1){
+   e.hp=Math.max(-90,e.hp-Math.round(w.damage*(state.weapon===2?1.5:1)));e.windup=0;e.cooldown=.5;burst(e.x,e.y,'#e5908e');
+   if(e.hp<=0){state.kills++;if(state.zone==='street')state.threat=Math.min(100,state.threat+5);say('Infecté neutralisé.');persist();}
+  }
+ }
+}
+
 function dodge(){if(!paused&&state.player.stamina>=30&&dash<=0){state.player.stamina-=30;dash=.16;}}
 function target(){const p=state.player,near=a=>Math.hypot(a.x-p.x,a.y-p.y)<65;
  if(state.zone==='camp'){if(near({x:464,y:304}))return {label:'Déposer / se soigner',run:()=>deposit(state)};if(near({x:560,y:336}))return {label:'Renforcer · 10',run:()=>upgrade(state)};if(near({x:864,y:304}))return {label:'Explorer le quartier →',run:()=>transition(state)};}
- else{if(near({x:80,y:304}))return {label:'← Retour au refuge',run:()=>transition(state)};const i=state.crates.findIndex(c=>c.amount>0&&near(c));if(i>=0)return {label:`Fouiller · ${state.crates[i].amount} ferrailles`,run:()=>collect(state,i)};}
+ else{if(near(streetEntry))return {label:'← Retour au refuge',run:()=>transition(state)};const i=state.crates.findIndex(c=>c.amount>0&&near(c));if(i>=0)return {label:`Fouiller · ${state.crates[i].amount} ferrailles`,run:()=>collect(state,i)};}
  return null;
 }
-function interact(){if(paused)return;const t=target();if(!t)return;say(t.run());building=false;$('build').classList.remove('active');persist();}
+function interact(){if(paused)return;const t=target();if(!t)return;say(t.run());attackTimer=0;strikePending=false;building=false;$('build').classList.remove('active');persist();}
 $('interact').onpointerdown=e=>{e.preventDefault();interact();};$('attack').onpointerdown=e=>{e.preventDefault();attack();};$('dodge').onpointerdown=e=>{e.preventDefault();dodge();};
-window.addEventListener('keydown',e=>{if(e.code==='Escape'){if(!$('report').hidden)$('report-close').click();else pause(!paused);return;}if(paused)return;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();keys.add(e.code);if(!e.repeat&&e.code==='Space')attack();if(!e.repeat&&e.code==='KeyE')interact();if(!e.repeat&&e.code.startsWith('Shift'))dodge();});
+window.addEventListener('keydown',e=>{if(e.code==='Escape'){if(!$('arsenal').hidden){closeArsenal();return;}if(!$('world-view').hidden){closeMap();return;}if(!$('report').hidden)$('report-close').click();else pause(!paused);return;}if(paused)return;if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code))e.preventDefault();keys.add(e.code);if(!e.repeat&&e.code==='Space')attack();if(!e.repeat&&e.code==='KeyE')interact();if(!e.repeat&&e.code.startsWith('Shift'))dodge();});
 window.addEventListener('keyup',e=>keys.delete(e.code));window.addEventListener('blur',()=>pause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});
 const stick=$('stick');function stickMove(e){if(e.pointerId!==stickPointer||paused)return;const r=stick.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,d=Math.max(38,Math.hypot(dx,dy));joystick={x:dx/d,y:dy/d};$('knob').style.transform=`translate(${joystick.x*30}px,${joystick.y*30}px)`;}
 stick.onpointerdown=e=>{if(stickPointer!==null||paused)return;stickPointer=e.pointerId;stick.setPointerCapture(e.pointerId);stickMove(e);};stick.onpointermove=stickMove;function release(e){if(e.pointerId===stickPointer){stickPointer=null;joystick={x:0,y:0};$('knob').style.transform='';}}stick.onpointerup=release;stick.onpointercancel=release;stick.onlostpointercapture=release;
@@ -530,7 +620,7 @@ canvas.onpointerdown=e=>{
 };
 function move(a,dx,dy){const walls=activeWalls(state);if(canStand(walls,a.x+dx,a.y))a.x+=dx;if(canStand(walls,a.x,a.y+dy))a.y+=dy;}
 function follow(a,t,speed,dt,stop){if(Math.hypot(a.x-t.x,a.y-t.y)<stop)return;const path=pathTo(activeWalls(state),cell(a),cell(t));if(!path.length)return;let p=path.length>1?{x:(path[1][0]+.5)*32,y:(path[1][1]+.5)*32}:t;const center={x:(path[0][0]+.5)*32,y:(path[0][1]+.5)*32};if(path.length>1&&((path[1][0]!==path[0][0]&&Math.abs(a.y-center.y)>1)||(path[1][1]!==path[0][1]&&Math.abs(a.x-center.x)>1)))p=center;const dx=p.x-a.x,dy=p.y-a.y,d=Math.hypot(dx,dy);if(d)move(a,dx/d*Math.min(speed*dt,d),dy/d*Math.min(speed*dt,d));}
-function update(dt){state.time+=dt;state.dog.cooldown=Math.max(0,state.dog.cooldown-dt);autosave+=dt;if(autosave>15){persist();autosave=0;}messageTimer=Math.max(0,messageTimer-dt);cooldown=Math.max(0,cooldown-dt);attackTimer=Math.max(0,attackTimer-dt);hurt=Math.max(0,hurt-dt);const p=state.player;p.stamina=Math.min(100,p.stamina+dt*15);let x=joystick.x,y=joystick.y;if(keys.has('KeyW')||keys.has('KeyZ')||keys.has('ArrowUp'))y--;if(keys.has('KeyS')||keys.has('ArrowDown'))y++;if(keys.has('KeyA')||keys.has('KeyQ')||keys.has('ArrowLeft'))x--;if(keys.has('KeyD')||keys.has('ArrowRight'))x++;const d=Math.hypot(x,y);moving=d>.05;if(d){x/=Math.max(1,d);y/=Math.max(1,d);facing={x:x/Math.hypot(x,y),y:y/Math.hypot(x,y)};}if(dash>0){dash-=dt;move(p,facing.x*340*dt,facing.y*340*dt);}else move(p,x*125*dt,y*125*dt);follow(state.dog,p,145,dt,42);
+function update(dt){state.time+=dt;state.dog.cooldown=Math.max(0,state.dog.cooldown-dt);autosave+=dt;if(autosave>15){persist();autosave=0;}messageTimer=Math.max(0,messageTimer-dt);cooldown=Math.max(0,cooldown-dt);attackTimer=Math.max(0,attackTimer-dt);if(strikePending&&attackTimer<=weapons[state.loadout].duration*.5){strikePending=false;applyStrike();}hurt=Math.max(0,hurt-dt);const p=state.player;p.stamina=Math.min(100,p.stamina+dt*15);let x=joystick.x,y=joystick.y;if(keys.has('KeyW')||keys.has('KeyZ')||keys.has('ArrowUp'))y--;if(keys.has('KeyS')||keys.has('ArrowDown'))y++;if(keys.has('KeyA')||keys.has('KeyQ')||keys.has('ArrowLeft'))x--;if(keys.has('KeyD')||keys.has('ArrowRight'))x++;const d=Math.hypot(x,y);moving=d>.05;if(d){x/=Math.max(1,d);y/=Math.max(1,d);if(!attackTimer)facing={x:x/Math.hypot(x,y),y:y/Math.hypot(x,y)};}if(dash>0){dash-=dt;move(p,facing.x*340*dt,facing.y*340*dt);}else move(p,x*125*dt,y*125*dt);follow(state.dog,p,145,dt,42);
  const raidPhase=state.raid.phase,raidMessage=tickRaid(state,dt);
  if(raidMessage){say(raidMessage);if(state.raid.phase==='active'){building=false;$('build').classList.remove('active');}persist();if(raidPhase==='active'&&state.raid.phase==='idle')showReport();}
  if(state.zone==='street')for(const e of state.enemies){if(e.hp<=0)continue;e.cooldown=Math.max(0,e.cooldown-dt);const dist=Math.hypot(e.x-p.x,e.y-p.y);if(e.windup>0){e.windup=Math.max(0,e.windup-dt);if(!e.windup){e.cooldown=1.1;if(dist<48&&!hurt&&dash<=0){p.hp-=state.time%1080>=720?18:12;hurt=.7;burst(p.x,p.y,'#f7cbb9');say('Touché ! Esquive au signal rouge.');}}}else if(dist<44&&!e.cooldown)e.windup=.65;else if(dist<240)follow(e,p,state.time%1080>=720?54:40,dt,32);if(p.hp<=0){state.zone='street';transition(state);p.x=464;p.y=304;p.hp=100;p.stamina=100;state.dog.x=464;state.dog.y=304;const loss=Math.ceil(state.bag/2);state.bag-=loss;hurt=2;say(`Retour au refuge · ${loss} ferrailles perdues (règle alpha : moitié du sac).`);persist();break;}}
@@ -547,14 +637,15 @@ function resize(){
  const next={w:Math.round(r.width*zoom),h:Math.round(r.height*zoom)};
  if(canvas.width!==next.w||canvas.height!==next.h){canvas.width=next.w;canvas.height=next.h;cameraReady=false;}
  view=next;
- const tx=view.w>960?(960-view.w)/2:Math.max(-16,Math.min(960-view.w+16,state.player.x-view.w/2));
- const ty=view.h>576?(576-view.h)/2:Math.max(-32,Math.min(576-view.h+32,state.player.y-view.h*.48));
+ const bounds=mapSize(state.zone);
+ const tx=view.w>bounds.width?(bounds.width-view.w)/2:Math.max(-16,Math.min(bounds.width-view.w+16,state.player.x-view.w/2));
+ const ty=view.h>bounds.height?(bounds.height-view.h)/2:Math.max(-32,Math.min(bounds.height-view.h+32,state.player.y-view.h*.48));
  if(!cameraReady||lastZone!==state.zone||reduced){cam.x=tx;cam.y=ty;cameraReady=true;lastZone=state.zone;}
  else{cam.x+=(tx-cam.x)*.15;cam.y+=(ty-cam.y)*.15;}
 }
 function draw(){
  resize();const p=state.player,camp=state.zone==='camp';
- renderScene(ctx,state,view,cam,{facing,hurt,attackTimer,particles,building,moving,reduced,blueprint:pendingBuild});
+ renderScene(ctx,state,view,cam,{facing:attackTimer?attackFacing:facing,hurt,dash,attackTimer,particles,building,moving,reduced,blueprint:pendingBuild});
  renderMiniMap($('map').getContext('2d'),state);
  const r=state.raid;
  $('raid-status').textContent=r.phase==='active'?`RAID · noyau ${r.core}/100 · ${r.enemies.filter(e=>e.hp>0).length} assaillants`:r.phase==='warning'?`RAID · ${Math.ceil(r.remaining)} s${state.zone==='street'?' · débute au retour':''}`:`Menace ${Math.floor(state.threat)}/60 · ${state.delivered<8?'protection tutoriel':'refuge en veille'}`;
@@ -564,7 +655,21 @@ function draw(){
  $('dog-action').disabled=state.dog.cooldown>0;
  $('report-open').disabled=!r.result;
  $('repair').textContent=`Réparer · ${Object.keys(state.wallHealth).length}`;
- $('health').textContent=`${Math.ceil(p.hp)} / 100`;$('hpbar').value=p.hp;$('stamina').textContent=Math.floor(p.stamina);$('spbar').value=p.stamina;$('stock').textContent=`Réserve ${state.stock}`;$('bag').textContent=`Sac ${state.bag}/12`;$('weapon').textContent=state.weapon===2?'Machette renforcée':'Machette';$('zone').textContent=camp?'STATION 07':'LES CENDRES';$('time').textContent=state.time%1080>=720?'Nuit · danger accru':state.time%1080>=660?'Crépuscule · rentre vite':'Jour';$('camp-tools').hidden=!camp;$('objective').textContent=r.phase==='active'?'Défends le noyau ! Les murs peuvent céder.':r.phase==='warning'?'Invoque Écho-01 et prépare le refuge.':!state.delivered?'Ramène des ferrailles au noyau du refuge.':state.weapon===1?'Renforce ta machette à l’atelier · 10 ferrailles.':'Construis tes défenses · explore les dernières caches.';const t=target();$('interact').textContent=t?t.label:'Approche une caisse / un accès';$('interact').disabled=!t;$('message').classList.toggle('visible',messageTimer>0);$('interact').classList.toggle('ready',!!t);$('build-hint').hidden=!building;$('app').classList.toggle('under-attack',r.phase==='active');
+ $('health').textContent=`${Math.ceil(p.hp)} / 100`;$('hpbar').value=p.hp;$('stamina').textContent=Math.floor(p.stamina);$('spbar').value=p.stamina;$('stock').textContent=`Réserve ${state.stock}`;$('bag').textContent=`Sac ${state.bag}/12`;$('weapon').textContent=weapons[state.loadout].name+(state.weapon===2?' +':'');$('zone').textContent=camp?'STATION 07':'LES CENDRES';$('time').textContent=state.time%1080>=720?'Nuit · danger accru':state.time%1080>=660?'Crépuscule · rentre vite':'Jour';$('camp-tools').hidden=!camp;$('refuge-menu').hidden=!camp;$('objective').textContent=r.phase==='active'?'Défends le noyau ! Les murs peuvent céder.':r.phase==='warning'?'Invoque Écho-01 et prépare le refuge.':!state.delivered?'Ramène des ferrailles au noyau du refuge.':state.weapon===1?'Renforce ton arme à l’atelier · 10 ferrailles.':'Construis tes défenses · explore les dernières caches.';const t=target();$('interact').textContent=t?t.label:'Approche une caisse / un accès';$('interact').disabled=!t;$('message').classList.toggle('visible',messageTimer>0);$('interact').classList.toggle('ready',!!t);$('build-hint').hidden=!building;$('app').classList.toggle('under-attack',r.phase==='active');
 }
-load(false);function frame(now){const dt=Math.min((now-last)/1000,.04);last=now;if(!paused)update(dt);draw();requestAnimationFrame(frame);}requestAnimationFrame(frame);
+let panelWasPaused=false;
+function openArsenal(){panelWasPaused=paused;paused=true;clearInput();$('arsenal').hidden=false;$('arsenal-status').textContent=state.raid.phase==='active'?'Changement verrouillé pendant le raid.':'Choisis une arme : le changement est immédiat.';}
+function closeArsenal(){$('arsenal').hidden=true;paused=panelWasPaused||!$('menu').hidden;}
+$('arsenal-open').onclick=openArsenal;$('arsenal-close').onclick=closeArsenal;
+for(const button of document.querySelectorAll('[data-weapon]'))button.onclick=()=>{
+ if(attackTimer>0){$('arsenal-status').textContent='Termine ton attaque avant de changer d’arme.';return;}
+ const result=equipWeapon(state,button.dataset.weapon);$('arsenal-status').textContent=result;say(result);persist();
+};
+function openMap(){panelWasPaused=paused;paused=true;clearInput();$('world-view').hidden=false;renderWorldMap($('world-map').getContext('2d'),state);}
+function closeMap(){$('world-view').hidden=true;paused=panelWasPaused||!$('menu').hidden;}
+$('map-open').onclick=openMap;$('map-close').onclick=closeMap;
+$('refuge-menu').onclick=()=>$('camp-tools').classList.toggle('collapsed');
+$('play').disabled=true;$('play').textContent='Préparation de l’expédition…';
+loadArt().then(ok=>{if(artImages.district){$('menu').style.backgroundImage='linear-gradient(110deg,#081320ef,#0a1827c9 60%,#152b2ce8),url("'+artImages.district.src+'")';$('menu').style.backgroundSize='cover';$('menu').style.backgroundPosition='center';}$('play').disabled=false;$('play').textContent='Entrer dans les Cendres →';for(const icon of document.querySelectorAll('[data-icon]'))drawWeaponIcon(icon.getContext('2d'),icon.dataset.icon,0,0,96);$('asset-status').textContent=ok?'Ton équipement est prêt.':'Certains visuels ne sont pas chargés. Actualise avec une connexion.';});
+load(false);function frame(now){const dt=Math.min((now-last)/1000,.04);last=now;if(!paused)update(dt);draw();if(!$('menu').hidden){const mc=$('menu-hero').getContext('2d');mc.clearRect(0,0,240,260);mc.save();mc.translate(120,245);mc.scale(3.6,3.6);drawHero(mc,{x:0,y:0},state.loadout,{row:0,column:0});mc.restore();}if(!$('arsenal').hidden){const c=$('hero-preview').getContext('2d');c.clearRect(0,0,240,180);c.save();c.translate(120,155);c.scale(2,2);drawHero(c,{x:0,y:0},state.loadout,animationFrame({x:0,y:1},!reduced,reduced?0:now/1000));c.restore();for(const b of document.querySelectorAll('[data-weapon]'))b.classList.toggle('selected',b.dataset.weapon===state.loadout);}requestAnimationFrame(frame);}requestAnimationFrame(frame);
 </script></body></html>

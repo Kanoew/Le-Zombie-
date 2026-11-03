@@ -1,15 +1,18 @@
 export const COLS = 30, ROWS = 18, TILE = 32;
 export const key = (x, y) => `${x},${y}`;
 export const entity = (x, y, hp = 60) => ({ x, y, hp, windup: 0, cooldown: 0 });
-const crateLayout = [[208,208,4],[720,144,5],[752,400,4],[304,432,5],[560,272,4]];
+export const streetEntry={x:80,y:608};
+export function mapSize(zone){return zone==='camp'?{cols:30,rows:18,width:960,height:576}:{cols:60,rows:40,width:1920,height:1280};}
+export const districts=[{name:'Clinique écarlate',x:368,y:560},{name:'Dépôt industriel',x:1280,y:528},{name:'Marché oublié',x:464,y:704},{name:'Serres contaminées',x:1088,y:880}];
+const crateLayout = [[368,560,4],[880,400,5],[1184,528,4],[464,704,5],[1088,880,4],[960,1120,5],[320,704,4],[1440,592,5]];
 export const newCrates = () => crateLayout.map(([x,y,amount]) => ({x,y,amount}));
-export const newEnemies = () => [entity(360,208), entity(650,300), entity(740,440,90), entity(280,400)];
+export const newEnemies = () => [entity(608,544),entity(880,464),entity(1120,496,90),entity(1280,560),entity(736,704),entity(960,976,90),entity(1056,848),entity(1056,1136)];
 export function createWorld() {
   const walls = [];
   for (let x=8; x<=16; x++) walls.push(key(x,5));
   for (let y=6; y<=11; y++) walls.push(key(8,y));
   return {
-    version:3, zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
+    version:4, loadout:'machete', zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
     dog:{x:410,y:336,cooldown:0}, walls, wallHealth:{}, stock:8, bag:0,
     time:0, weapon:1, delivered:0, visits:0, crates:newCrates(), enemies:newEnemies(),
     kills:0, threat:0, restockAt:300,
@@ -19,14 +22,15 @@ export function createWorld() {
 }
 export const streetWalls = (() => {
   const a=[];
-  for (const [x,y,w,h] of [[8,3,5,2],[16,5,4,3],[5,10,3,2],[14,12,5,2],[24,2,3,5]])
+  for (const [x,y,w,h] of [[1,1,26,14],[35,1,23,10],[53,11,6,4],[1,23,25,16],[35,23,24,16]])
     for(let i=x;i<x+w;i++) for(let j=y;j<y+h;j++) a.push(key(i,j));
   return a;
 })();
 export const activeWalls = s => s.zone==='camp' ? s.walls : streetWalls;
 export const activeEnemies = s => s.zone==='camp' ? s.raid.enemies : s.enemies;
 export function blocked(walls,x,y) {
-  return x<1 || y<1 || x>=COLS-1 || y>=ROWS-1 || walls.includes(key(x,y));
+  const bounds=mapSize(walls===streetWalls?'street':'camp');
+  return x<1 || y<1 || x>=bounds.cols-1 || y>=bounds.rows-1 || walls.includes(key(x,y));
 }
 export function canStand(walls,x,y,r=10) {
   return [[-r,-r],[r,-r],[-r,r],[r,r]].every(([dx,dy]) => !blocked(walls,Math.floor((x+dx)/TILE),Math.floor((y+dy)/TILE)));
@@ -75,9 +79,9 @@ export function deposit(s) {
 export function upgrade(s) {
   if(s.zone!=='camp') return 'L’atelier est au refuge.';
   if(s.raid.phase==='active') return 'Atelier indisponible pendant le raid.';
-  if(s.weapon>=2) return 'Machette déjà renforcée.';
+  if(s.weapon>=2) return 'Arme déjà renforcée.';
   if(s.stock<10) return 'Renforcement : 10 ferrailles en réserve.';
-  s.stock-=10; s.weapon=2; return 'Machette renforcée · dégâts 30 → 45';
+  s.stock-=10; s.weapon=2; return 'Arme renforcée · dégâts +50 %';
 }
 export function transition(s) {
   if(s.raid.phase==='active') return 'Raid en cours : protège le refuge avant de partir.';
@@ -85,7 +89,7 @@ export function transition(s) {
   if(s.zone==='street'&&s.time>=s.restockAt) {
     s.crates=newCrates(); s.enemies=newEnemies(); s.restockAt=s.time+300;
   }
-  s.player.x=s.zone==='camp'?816:112; s.player.y=304;
+  s.player.x=s.zone==='camp'?816:streetEntry.x; s.player.y=s.zone==='camp'?304:streetEntry.y;
   // Legacy camps can have a wall on the old entry cell. Pick a safe nearby spawn.
   if(!canStand(activeWalls(s),s.player.x,s.player.y)) {
     outer:for(let y=8;y<17;y++) for(let x=24;x>0;x--) {
@@ -100,12 +104,12 @@ const finite=(n,max=1e9)=>Number.isFinite(n)&&n>=0&&n<=max;
 const positioned=(a,walls)=>a&&finite(a.x)&&finite(a.y)&&canStand(walls,a.x,a.y);
 const validEnemy=(e,walls)=>positioned(e,walls)&&Number.isFinite(e.hp)&&e.hp>=-100&&e.hp<=100&&finite(e.windup,10)&&finite(e.cooldown,10);
 export function validSave(s) {
-  if(s?.version!==3||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
+  if(s?.version!==4||!['machete','sabre','hatchet'].includes(s.loadout)||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
   if(!s.wallHealth||typeof s.wallHealth!=='object'||Array.isArray(s.wallHealth)||!Object.entries(s.wallHealth).every(([id,hp])=>s.walls.includes(id)&&finite(hp,100)&&hp>0)) return false;
   if(!['stock','delivered','visits','kills'].every(k=>integer(s[k]))||!finite(s.time)||!finite(s.restockAt)||!finite(s.threat,100)||!integer(s.bag,12)||![1,2].includes(s.weapon)) return false;
   if(![s.player,s.dog].every(a=>positioned(a,activeWalls(s)))||!finite(s.player.hp,100)||!s.player.hp||!finite(s.player.stamina,100)||!finite(s.dog.cooldown,12)) return false;
-  if(!Array.isArray(s.crates)||s.crates.length!==5||!s.crates.every((c,i)=>c?.x===crateLayout[i][0]&&c.y===crateLayout[i][1]&&integer(c.amount,crateLayout[i][2]))) return false;
-  if(!Array.isArray(s.enemies)||s.enemies.length!==4||!s.enemies.every(e=>validEnemy(e,streetWalls))) return false;
+  if(!Array.isArray(s.crates)||s.crates.length!==crateLayout.length||!s.crates.every((c,i)=>c?.x===crateLayout[i][0]&&c.y===crateLayout[i][1]&&integer(c.amount,crateLayout[i][2]))) return false;
+  if(!Array.isArray(s.enemies)||s.enemies.length!==newEnemies().length||!s.enemies.every(e=>validEnemy(e,streetWalls))) return false;
   const d=s.defender,r=s.raid;
   if(!d||typeof d.recruited!=='boolean'||!positioned(d,s.walls)||!finite(d.hp,100)||!finite(d.cooldown,10)) return false;
   if(!r||!['idle','warning','active'].includes(r.phase)||!integer(r.number)||!finite(r.remaining,120)||!finite(r.core,100)||!integer(r.destroyed)||!integer(r.hits)||!Array.isArray(r.enemies)||r.enemies.length>6||!r.enemies.every(e=>validEnemy(e,s.walls))) return false;
@@ -115,15 +119,18 @@ export function validSave(s) {
   return result===null||!!(result&&integer(result.id)&&result.id<=r.number&&typeof result.victory==='boolean'&&integer(result.loss)&&integer(result.reward)&&integer(result.destroyed)&&integer(result.hits));
 }
 export function migrateSave(s) {
-  if(validSave(s)) return s;
-  if((s?.version!==1&&s?.version!==2)||!Array.isArray(s.walls)) return null;
+  if(validSave(s))return s;
+  if(![1,2,3].includes(s?.version)||!Array.isArray(s.walls))return null;
   const fresh=createWorld();
-  const n=s.version===1 ? {...fresh,walls:s.walls,stock:s.stock,time:s.time,player:s.player,dog:{...s.dog,cooldown:0}} : {...fresh,...s,version:3,wallHealth:{},threat:0,restockAt:Math.max(300,s.time+300),dog:{...s.dog,cooldown:0}};
-  // A new defender must not spawn inside a wall from an older save.
-  if(!positioned(n.defender,n.walls)) {
-    for(let y=1;y<17;y++) for(let x=1;x<29;x++) {
-      if(canStand(n.walls,(x+.5)*32,(y+.5)*32)) { n.defender.x=(x+.5)*32;n.defender.y=(y+.5)*32;break; }
-    }
+  const n={...fresh,...s,version:4,loadout:'machete',dog:{...s.dog,cooldown:s.dog?.cooldown??0},crates:newCrates(),enemies:newEnemies()};
+  if(s.version<3){n.wallHealth={};n.threat=0;n.raid=fresh.raid;n.defender=fresh.defender;n.restockAt=Math.max(300,(s.time??0)+300);}
+  if(s.version>1){
+    for(let i=0;i<Math.min(s.crates?.length??0,5);i++)n.crates[i].amount=s.crates[i].amount;
+    for(let i=0;i<Math.min(s.enemies?.length??0,4);i++)n.enemies[i].hp=s.enemies[i].hp;
+  }
+  if(n.zone==='street'){n.player={...n.player,...streetEntry};n.dog={...n.dog,...streetEntry};}
+  if(!positioned(n.defender,n.walls)){
+    safe:for(let y=1;y<17;y++)for(let x=1;x<29;x++)if(canStand(n.walls,(x+.5)*32,(y+.5)*32)){n.defender={...n.defender,x:(x+.5)*32,y:(y+.5)*32};break safe;}
   }
   return validSave(n)?n:null;
 }

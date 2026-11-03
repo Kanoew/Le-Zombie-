@@ -1,15 +1,20 @@
-import {readFile, mkdir, writeFile} from 'node:fs/promises';
+import {readFile,mkdir,writeFile,cp} from 'node:fs/promises';
 import {resolve} from 'node:path';
 const root=resolve(import.meta.dirname,'..');
 const read=p=>readFile(resolve(root,p),'utf8');
-const [html,css,world,defense,renderer,game]=await Promise.all(['index.html','style.css','src/world.js','src/defense.js','src/renderer.js','src/game.js'].map(read));
-const output=html.replace('<link rel="stylesheet" href="./style.css?v=0.4">',()=>`<style>${css}</style>`).replace('<script type="module" src="./src/game.js?v=0.4"></script>',()=>`<script type="module">${world.replaceAll('export ','')}\n${defense.replaceAll('export ','').replace(/^import .*;\n/gm,'')}\n${renderer.replaceAll('export ','').replace(/^import .*;\n/gm,'')}\n${game.replace(/^import .*;\n/gm,'')}</script>`);
-await mkdir(resolve(root,'dist'),{recursive:true});
-await writeFile(resolve(root,'dist/le-zombie.html'),output);
-console.log('Fichier autonome généré : dist/le-zombie.html');
-
-// GitHub Pages can serve this directory directly from main.
+const [html,css]=await Promise.all(['index.html','style.css'].map(read));
+const paths=['world','weapons','atlas-data','art','defense','renderer','game'];
+const modules=await Promise.all(paths.map(p=>read('src/'+p+'.js')));
+const code=modules.map(s=>s.replace(/^import .*;\n/gm,'').replaceAll('export ','')).join('\n');
+const output=html.replace(/<link rel="stylesheet" href="\.\/style.css[^\"]*">/,()=>`<style>${css}</style>`).replace(/<script type="module" src="\.\/src\/game.js[^\"]*"><\/script>/,()=>`<script type="module">${code}</script>`);
 await mkdir(resolve(root,'docs'),{recursive:true});
+await cp(resolve(root,'assets'),resolve(root,'docs/assets'),{recursive:true});
 await writeFile(resolve(root,'docs/index.html'),output);
 await writeFile(resolve(root,'docs/.nojekyll'),'');
-console.log('Site GitHub Pages généré : docs/index.html');
+// The standalone download embeds the same original PNGs. Pages loads cached files.
+const files={machete:'hero-atlas.png',sabre:'hero-sabre.png',hatchet:'hero-hatchet.png',weapons:'weapons.png',district:'district.png'};
+const data={};for(const [id,file] of Object.entries(files))data[id]='data:image/png;base64,'+(await readFile(resolve(root,'assets',file))).toString('base64');
+const standalone=output.replace('<script type="module">',()=>`<script>window.__ART_DATA__=${JSON.stringify(data)}</script><script type="module">`);
+await mkdir(resolve(root,'dist'),{recursive:true});
+await writeFile(resolve(root,'dist/le-zombie.html'),standalone);
+console.log('Pages : docs/index.html + assets. Version autonome : dist/le-zombie.html');

@@ -75,3 +75,17 @@ L'option **Effets : réduits** coupe la pluie et les mouvements décoratifs et s
 Les sauvegardes restent en version 3 : aucun changement au contenu de la partie. Publication avec `npm run build`, incluant le renderer dans le HTML autonome et les URL versionnées des fichiers source.
 
 Vérification supplémentaire : `python3 test/design_mobile.py` couvre les formats 390×844, 844×390, 568×320 et 360×640, la préférence d'effets après rechargement et le débit de construction uniquement après confirmation. La qualité et la fluidité sur appareil Android réel restent à apprécier lors des essais.
+
+## Alpha 0.5 — survivante, arsenal et quartier étendu
+
+Le personnage fourni comme référence est désormais intégré via trois planches animées, une par arme : 192 poses au total, attente/marche/attaque dans quatre directions. Machette, sabre et hachette ont des portées, coûts d’endurance, dégâts et durées distincts ; l’impact est synchronisé avec le milieu du coup. L’arsenal s’ouvre en touchant l’arme équipée.
+
+Le quartier passe de 960 × 576 à 1920 × 1280 avec un décor généré et intégré, huit caches et huit infectés. Clinique, dépôt, marché et abords des serres sont reliés par les avenues. Toucher la minicarte ouvre la carte générale. Les intérieurs sont fermés ; les collisions de bâtiments sont approximées sur la grille. Le refuge conserve ses dimensions et sa construction dynamique.
+
+L’écran est allégé : gestion du refuge dans le panneau ouvert par l’icône maison, armes dans l’arsenal, carte dans sa propre vue. Les images sont chargées avant de rendre le bouton de départ actif. En cas d’échec, le menu signale les visuels manquants et le rendu de secours reste disponible. Environ 10 Mo de PNG sont chargés au premier lancement ; la fluidité et le téléchargement restent à mesurer sur téléphone réel.
+
+Les sauvegardes passent à la version 4. Les anciennes ressources, armes améliorées, murs, menace, défenseur et raids sont conservés. Les cinq anciennes caches et les quatre anciens infectés conservent leur état aux nouveaux emplacements. Un joueur sauvegardé dans l’ancien quartier est replacé à la nouvelle entrée pour éviter de se retrouver dans un bâtiment. Les trois caches et quatre infectés supplémentaires sont nouveaux.
+
+Détails de production, formats et limites : [assets/README.md](assets/README.md). Aucun service de génération ni accès réseau externe n’est requis par le jeu après chargement des fichiers statiques.
+
+Vérification : `npm test` (15 scénarios), `npm run check`, `npm run build`, puis `python3 test/mobile.py`, `python3 test/raid_mobile.py`, `python3 test/design_mobile.py` et `python3 test/art_mobile.py`. Le dernier scénario vérifie le décodage des images, les armes, la temporisation de l’impact et la carte en portrait/paysage ainsi que le HTML autonome sans requêtes externes.

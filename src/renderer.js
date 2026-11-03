@@ -1,5 +1,7 @@
-import {activeWalls, activeEnemies} from './world.js?v=0.4';
+import {activeWalls, activeEnemies, mapSize, districts} from './world.js?v=0.5';
 
+import {artImages,drawHero} from './art.js?v=0.5';
+import {animationFrame,weapons} from './weapons.js?v=0.5';
 // Original procedural pixel art. Static terrain is cached; actors and lighting remain dynamic.
 const terrainCache = new Map();
 const pixel = (c,x,y,w,h,color) => { c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),w,h); };
@@ -116,14 +118,17 @@ export function renderScene(c,s,view,cam,fx) {
   pixel(c,0,0,view.w,view.h,'#0c1724');
   c.save();c.translate(-Math.round(cam.x),-Math.round(cam.y));
   const camp=s.zone==='camp',clock=fx.reduced?0:s.time;
-  c.drawImage(terrain(s.zone),0,0);
+  const size=mapSize(s.zone);
+  if(!camp&&artImages.district)c.drawImage(artImages.district,0,0,size.width,size.height);
+  else c.drawImage(terrain(s.zone),0,0);
   // Lamps, warning paint and a shallow gate indicate the two traversable exits.
-  const gx=camp?864:80;
+  const gx=camp?864:80,gy=camp?304:608;c.save();c.translate(0,gy-304);
   pixel(c,gx-19,268,38,72,'#1a3f42');pixel(c,gx-21,265,5,76,'#557977');pixel(c,gx+17,265,5,76,'#557977');
   pixel(c,gx-18,272,3,61,'#90ebcc');pixel(c,gx+15,272,3,61,'#90ebcc');
   for(let y=277;y<336;y+=10)pixel(c,gx-10,y,20,3,'#598e8377');
   light(c,gx,303,95,'#7ce4c425');label(c,camp?'VERS LES CENDRES →':'← STATION 07',gx-47,360,'#a8d9c5',8);
-  for(const id of activeWalls(s))wall(c,id,camp,s.wallHealth[id]);
+  c.restore();
+  if(camp)for(const id of activeWalls(s))wall(c,id,camp,s.wallHealth[id]);
   if(camp) {
     consoleProp(c,464,304,'core',clock);consoleProp(c,560,336,'forge',clock);consoleProp(c,624,304,'echo',clock);
     // Small motion and lighting details are decoration, not additional collision obstacles.
@@ -136,7 +141,7 @@ export function renderScene(c,s,view,cam,fx) {
       pixel(c,x-11,y-12,4,26,'#2b3439');pixel(c,x+8,y-12,4,26,'#2b3439');pixel(c,x-3,y,6,5,full?'#efd397':'#152a35');
       if(full){light(c,x,y,45,'#d7ad5915');label(c,'◇',x-3,y-25,'#efd397',12);}
     }
-    for(const [x,y,color,name] of [[320,106,'#bd82a6','CLINIQUE'],[570,180,'#8daccd','NO SIGNAL'],[815,114,'#d3b777','04']]) {
+    for(const [x,y,color,name] of districts.map((d,i)=>[d.x,d.y-50,['#df92bc','#d4b785','#d4b785','#9dcfad'][i],d.name])) {
       pixel(c,x-28,y-19,64,18,'#121c2b');label(c,name,x-24,y-7,color,9);pixel(c,x-28,y,64,2,color);light(c,x,y,76,color+'1a');
     }
   }
@@ -146,24 +151,37 @@ export function renderScene(c,s,view,cam,fx) {
     pixel(c,b.x*32,b.y*32,32,32,!b.valid?'#e2988944':exists?'#d6b47f44':'#9ce3c344');c.strokeStyle=color;c.lineWidth=2;c.strokeRect(b.x*32+1,b.y*32+1,30,30);label(c,exists?'+2':'−2',b.x*32+8,b.y*32-10,color,11);
   }
   const actors=[{a:s.player,t:'player'},{a:s.dog,t:'dog'},...(camp&&s.defender.recruited?[{a:s.defender,t:'guard'}]:[]),...activeEnemies(s).filter(e=>e.hp>0).map(a=>({a,t:'enemy'}))].sort((a,b)=>a.a.y-b.a.y);
-  for(const {a,t} of actors){sprite(c,a,t,clock,fx.facing,t==='player'?fx.moving:t==='enemy'?a.cooldown===0:t==='guard'?s.raid.phase==='active'&&a.hp>0:Math.hypot(a.x-s.player.x,a.y-s.player.y)>42,fx.hurt);
+  for(const {a,t} of actors){
+    const frame=animationFrame(fx.facing,fx.moving,clock,fx.attackTimer,weapons[s.loadout].duration);
+    if(t==='player')ellipse(c,a.x,a.y,14,6,'#020a1280');
+    if(t!=='player'||!drawHero(c,a,s.loadout,frame,{hurt:fx.hurt,dash:fx.dash}))sprite(c,a,t,clock,fx.facing,t==='player'?fx.moving:t==='enemy'?a.cooldown===0:t==='guard'?s.raid.phase==='active'&&a.hp>0:Math.hypot(a.x-s.player.x,a.y-s.player.y)>42,fx.hurt);
     if(t==='enemy'){pixel(c,a.x-12,a.y-30,24,2,'#322b39');pixel(c,a.x-12,a.y-30,24*Math.max(0,a.hp)/90,2,'#d9a39b');}
     if(t==='guard')label(c,a.hp>0?'ÉCHO-01':'BLESSÉ',a.x-22,a.y-34,'#c2b9dc',8);
   }
-  if(fx.attackTimer>0){const a=Math.atan2(fx.facing.y,fx.facing.x);c.strokeStyle='#e6f2cf';c.lineWidth=4;c.beginPath();c.arc(s.player.x,s.player.y,44,a-.9,a+.9);c.stroke();}
+  if(fx.attackTimer>0&&fx.attackTimer<weapons[s.loadout].duration*.6&&fx.attackTimer>weapons[s.loadout].duration*.3){const a=Math.atan2(fx.facing.y,fx.facing.x);c.strokeStyle='#e6f2cf';c.lineWidth=4;c.beginPath();c.arc(s.player.x,s.player.y,44,a-.9,a+.9);c.stroke();}
   for(const f of fx.particles)pixel(c,f.x,f.y,3,3,f.color);
-  if(s.time%1080>=720){pixel(c,0,0,960,576,'#070b2344');light(c,s.player.x,s.player.y,125,'#b7d9ce15');}
+  if(s.time%1080>=720){pixel(c,0,0,size.width,size.height,'#070b2322');light(c,s.player.x,s.player.y,125,'#b7d9ce15');}
   c.restore();
   // Sparse rain, kept outside the simulation and disabled with reduced motion.
   if(!fx.reduced){c.strokeStyle='#acc8da19';c.lineWidth=1;for(let i=0;i<35;i++){const x=(i*137+clock*19)%view.w,y=(i*79+clock*160)%view.h;c.beginPath();c.moveTo(x,y);c.lineTo(x-3,y+10);c.stroke();}}
   const g=c.createLinearGradient(0,0,0,view.h);g.addColorStop(0,'#050b17a8');g.addColorStop(.25,'transparent');g.addColorStop(.72,'transparent');g.addColorStop(1,'#050c17a6');c.fillStyle=g;c.fillRect(0,0,view.w,view.h);
 }
 export function renderMiniMap(c,s) {
+  const size=mapSize(s.zone),sx=120/size.width,sy=72/size.height;
   pixel(c,0,0,120,72,'#0b1925');
-  c.strokeStyle='#1d3540';c.strokeRect(3,3,114,66);
-  for(const id of activeWalls(s)){const [x,y]=id.split(',').map(Number);pixel(c,x*4,y*4,3,3,'#506973');}
-  pixel(c,(s.zone==='camp'?27:2)*4,9*4,4,5,'#d4b97d');
-  if(s.zone==='street')for(const crate of s.crates)if(crate.amount)pixel(c,crate.x/8,crate.y/8,2,2,'#caae7a');
-  for(const e of activeEnemies(s))if(e.hp>0)pixel(c,e.x/8,e.y/8,2,2,'#d78e8e');
-  pixel(c,s.player.x/8-1,s.player.y/8-1,4,4,'#b7f3ce');
+  if(s.zone==='street'&&artImages.district){c.globalAlpha=.65;c.drawImage(artImages.district,0,0,120,72);c.globalAlpha=1;}
+  else for(const id of activeWalls(s)){const [x,y]=id.split(',').map(Number);pixel(c,x*32*sx,y*32*sy,3,3,'#506973');}
+  const exit=s.zone==='camp'?{x:864,y:304}:{x:80,y:608};pixel(c,exit.x*sx,exit.y*sy,4,4,'#d4b97d');
+  if(s.zone==='street')for(const crate of s.crates)if(crate.amount)pixel(c,crate.x*sx,crate.y*sy,2,2,'#e2c88d');
+  for(const e of activeEnemies(s))if(e.hp>0)pixel(c,e.x*sx,e.y*sy,2,2,'#d78e8e');
+  pixel(c,s.player.x*sx-1,s.player.y*sy-1,4,4,'#e3fbd9');
+}
+export function renderWorldMap(c,s){
+  const w=c.canvas.width,h=c.canvas.height;
+  c.fillStyle='#0b1724';c.fillRect(0,0,w,h);
+  if(artImages.district)c.drawImage(artImages.district,0,0,w,h);
+  for(const d of districts){const x=d.x/1920*w,y=d.y/1280*h;light(c,x,y,30,'#b2d2ad44');label(c,d.name,x-45,y-12,'#e9e3d2',10);}
+  for(const box of s.crates)if(box.amount)pixel(c,box.x/1920*w-2,box.y/1280*h-2,4,4,'#efd195');
+  label(c,'← REFUGE',12,608/1280*h-12,'#bfe9c3',11);
+  if(s.zone==='street'){ellipse(c,s.player.x/1920*w,s.player.y/1280*h,6,6,'#defbd4');ellipse(c,s.player.x/1920*w,s.player.y/1280*h,3,3,'#285b50');}
 }

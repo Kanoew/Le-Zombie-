@@ -1,3 +1,4 @@
+from browser_support import install_routes
 from pathlib import Path
 import json
 from playwright.sync_api import sync_playwright, expect
@@ -9,14 +10,7 @@ with sync_playwright() as p:
    page=browser.new_page(viewport={'width':w,'height':h},has_touch=True,is_mobile=True)
    errors=[];requests=[]
    page.on('pageerror',lambda e: errors.append(str(e)))
-   def serve(route):
-    path=route.request.url.split('/Le-Zombie-/')[-1].split('?')[0]
-    target=root/('docs' if source=='docs' else '')/(path or 'index.html')
-    requests.append(path)
-    if not target.is_file():route.fulfill(status=404);return
-    types={'.js':'text/javascript','.css':'text/css','.html':'text/html'}
-    route.fulfill(body=target.read_text(),content_type=types.get(target.suffix,'text/plain'))
-   page.route('https://prototype.test/**',serve)
+   install_routes(page,source,requests)
    page.goto('https://prototype.test/Le-Zombie-/')
    assert page.locator('#game').is_visible()
    assert page.locator('body').evaluate("e=>getComputedStyle(e).margin")=='0px'
@@ -33,14 +27,14 @@ with sync_playwright() as p:
    assert not page.locator('#camp-tools').is_visible()
    page.locator('#pause').tap()
    state=page.evaluate("JSON.parse(localStorage.getItem('zombie.save'))")
-   state['player']['x']=208;state['player']['y']=224;state['dog']['x']=208;state['dog']['y']=240
+   state['player']['x']=368;state['player']['y']=576;state['dog']['x']=368;state['dog']['y']=608
    page.evaluate('(s)=>localStorage.setItem("zombie.save",JSON.stringify(s))',state)
    page.locator('#load').tap();page.locator('#play').tap();page.locator('#interact').tap()
    expect(page.locator('#bag')).to_contain_text('Sac 4/12')
    page.locator('#pause').tap()
    state=page.evaluate("JSON.parse(localStorage.getItem('zombie.save'))")
    assert state['crates'][0]['amount']==0
-   state['player'].update(x=80,y=304);state['dog'].update(x=112,y=336)
+   state['player'].update(x=80,y=608);state['dog'].update(x=112,y=624)
    page.evaluate('(s)=>localStorage.setItem("zombie.save",JSON.stringify(s))',state)
    page.locator('#load').tap();page.locator('#play').tap();page.locator('#interact').tap()
    expect(page.locator('#zone')).to_have_text('STATION 07')
@@ -50,8 +44,8 @@ with sync_playwright() as p:
    page.locator('#load').tap();page.locator('#play').tap();page.locator('#interact').tap()
    expect(page.locator('#bag')).to_contain_text('Sac 0/12')
    expect(page.locator('#stock')).to_contain_text('Réserve 12')
-   page.locator('#forge').tap()
-   expect(page.locator('#weapon')).to_contain_text('Machette renforcée')
+   page.locator('#refuge-menu').tap();page.locator('#forge').tap()
+   expect(page.locator('#weapon')).to_contain_text('Machette +')
    expect(page.locator('#stock')).to_contain_text('Réserve 2')
    # Exercise two real simultaneous touch points (movement + attack).
    if source=='docs' and w==390:
@@ -69,7 +63,7 @@ with sync_playwright() as p:
     print('OK: déplacement et frappe tactiles simultanés')
    page.screenshot(path=f'/tmp/le-zombie-alpha-{source}-{w}.png')
    assert not errors,errors
-   if source=='docs':assert requests==[''],requests
+   if source=='docs':assert not any(path.startswith('src/') for path in requests),requests
    print(f'OK {source} {w}x{h}: CSS, transitions, fouille persistée, dépôt et amélioration, zéro erreur JS')
    page.close()
  browser.close()

@@ -1,3 +1,4 @@
+from browser_support import install_routes
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 root=Path(__file__).resolve().parents[1]
@@ -7,15 +8,15 @@ with sync_playwright() as p:
   page=browser.new_page(viewport={'width':w,'height':h},has_touch=True,is_mobile=True)
   errors=[]
   page.on('pageerror',lambda e:errors.append(str(e)))
-  page.route('https://prototype.test/**',lambda route:route.fulfill(body=(root/'docs/index.html').read_text(),content_type='text/html'))
+  install_routes(page)
   page.goto('https://prototype.test/Le-Zombie-/')
   page.locator('#play').tap();page.locator('#pause').tap()
   state=page.evaluate("JSON.parse(localStorage.getItem('zombie.save'))")
-  assert state['version']==3
+  assert state['version']==4
   state.update(stock=30,delivered=12,threat=60)
   state['raid'].update(phase='warning',remaining=20)
   page.evaluate('(s)=>localStorage.setItem("zombie.save",JSON.stringify(s))',state)
-  page.locator('#load').tap();page.locator('#play').tap();page.locator('#summon').tap()
+  page.locator('#load').tap();page.locator('#play').tap();page.locator('#refuge-menu').tap();page.locator('#summon').tap()
   expect(page.locator('#stock')).to_have_text('Réserve 24')
   page.locator('#summon').tap()
   expect(page.locator('#stock')).to_have_text('Réserve 24')
