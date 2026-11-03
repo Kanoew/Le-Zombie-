@@ -1,19 +1,20 @@
 import {reservedModuleCell,campFootprint} from './camp.js?v=0.6';
 export const COLS = 30, ROWS = 18, TILE = 32;
 export const key = (x, y) => `${x},${y}`;
-export const entity = (x, y, hp = 60) => ({ x, y, hp, kind:hp>60?'brute':'infected', windup:0,cooldown:0 });
+function patrolPoints(x,y,idx){const a=idx*(Math.PI/4);return[0,1,2].map(i=>{const t=a+i*Math.PI*2/3;return{x:Math.max(64,Math.min(1856,x+Math.cos(t)*88)),y:Math.max(64,Math.min(1216,y+Math.sin(t)*88))};});}
+export const entity=(x,y,hp=60,idx=0)=>({x,y,hp,kind:hp>60?'brute':'infected',windup:0,cooldown:0,spawnX:x,spawnY:y,patrol:patrolPoints(x,y,idx),patrolIdx:0,respawnAt:null});
 export const streetEntry={x:80,y:608};
 export function mapSize(zone){return zone==='camp'?{cols:30,rows:18,width:960,height:576}:{cols:60,rows:40,width:1920,height:1280};}
 export const districts=[{name:'Clinique écarlate',x:368,y:560},{name:'Dépôt industriel',x:1280,y:528},{name:'Marché oublié',x:464,y:704},{name:'Serres contaminées',x:1088,y:880}];
 const crateLayout = [[368,560,4],[880,400,5],[1184,528,4],[464,704,5],[1088,880,4],[960,1120,5],[320,704,4],[1440,592,5]];
 export const newCrates = () => crateLayout.map(([x,y,amount]) => ({x,y,amount}));
-export const newEnemies = () => [entity(608,544),entity(880,464),entity(1120,496,90),entity(1280,560),entity(736,704),entity(960,976,90),entity(1056,848),entity(1056,1136)];
+export const newEnemies=()=>[entity(608,544,60,0),entity(880,464,60,1),entity(1120,496,90,2),entity(1280,560,60,3),entity(736,704,60,4),entity(960,976,90,5),entity(1056,848,60,6),entity(1056,1136,60,7)];
 export function createWorld() {
   const walls = [];
   for (let x=8; x<=16; x++) walls.push(key(x,5));
   for (let y=6; y<=11; y++) walls.push(key(8,y));
   return {
-    version:5, camp:{built:{generator:false,infirmary:false,bunks:false,lights:false}}, loadout:'machete', zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
+    version:6, camp:{built:{generator:false,infirmary:false,bunks:false,lights:false}}, loadout:'machete', zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
     dog:{x:410,y:336,cooldown:0}, walls, wallHealth:{}, stock:8, bag:0,
     time:0, weapon:1, delivered:0, visits:0, crates:newCrates(), enemies:newEnemies(),
     kills:0, threat:0, restockAt:300,
@@ -106,9 +107,9 @@ export function transition(s) {
 const integer=(n,max=1e7)=>Number.isInteger(n)&&n>=0&&n<=max;
 const finite=(n,max=1e9)=>Number.isFinite(n)&&n>=0&&n<=max;
 const positioned=(a,walls)=>a&&finite(a.x)&&finite(a.y)&&canStand(walls,a.x,a.y);
-const validEnemy=(e,walls)=>['infected','brute'].includes(e?.kind)&&positioned(e,walls)&&Number.isFinite(e.hp)&&e.hp>=-100&&e.hp<=100&&finite(e.windup,10)&&finite(e.cooldown,10);
+const validEnemy=(e,walls)=>['infected','brute'].includes(e?.kind)&&positioned(e,walls)&&Number.isFinite(e.hp)&&e.hp>=-100&&e.hp<=100&&finite(e.windup,10)&&finite(e.cooldown,10)&&(e.respawnAt===undefined||e.respawnAt===null||finite(e.respawnAt));
 export function validSave(s) {
-  if(s?.version!==5||!s.camp||!s.camp.built||!['generator','infirmary','bunks','lights'].every(k=>typeof s.camp.built[k]==='boolean')||!['machete','sabre','hatchet'].includes(s.loadout)||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
+  if(s?.version!==6||!s.camp||!s.camp.built||!['generator','infirmary','bunks','lights'].every(k=>typeof s.camp.built[k]==='boolean')||!['machete','sabre','hatchet'].includes(s.loadout)||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
   if(!s.wallHealth||typeof s.wallHealth!=='object'||Array.isArray(s.wallHealth)||!Object.entries(s.wallHealth).every(([id,hp])=>s.walls.includes(id)&&finite(hp,100)&&hp>0)) return false;
   if(!['stock','delivered','visits','kills'].every(k=>integer(s[k]))||!finite(s.time)||!finite(s.restockAt)||!finite(s.threat,100)||!integer(s.bag,12)||![1,2].includes(s.weapon)) return false;
   if(![s.player,s.dog].every(a=>positioned(a,activeWalls(s)))||!finite(s.player.hp,100)||!s.player.hp||!finite(s.player.stamina,100)||!finite(s.dog.cooldown,12)) return false;
@@ -124,11 +125,11 @@ export function validSave(s) {
 }
 export function migrateSave(s) {
   if(validSave(s))return s;
-  if(![1,2,3,4].includes(s?.version)||!Array.isArray(s.walls))return null;
+  if(![1,2,3,4,5].includes(s?.version)||!Array.isArray(s.walls))return null;
   const fresh=createWorld();
-  const n={...fresh,...s,version:5,camp:fresh.camp,loadout:s.version===4?s.loadout:'machete',dog:{...s.dog,cooldown:s.dog?.cooldown??0},crates:newCrates(),enemies:newEnemies()};
+  const n={...fresh,...s,version:6,camp:s.version<5?fresh.camp:(s.camp??fresh.camp),loadout:s.version>=4?s.loadout:'machete',dog:{...s.dog,cooldown:s.dog?.cooldown??0},crates:newCrates(),enemies:newEnemies()};
   if(s.version<3){n.wallHealth={};n.threat=0;n.raid=fresh.raid;n.defender=fresh.defender;n.restockAt=Math.max(300,(s.time??0)+300);}
-  if(s.version===4){n.crates=s.crates;n.enemies=s.enemies.map((e,i)=>({...e,kind:newEnemies()[i].kind}));n.raid={...s.raid,enemies:s.raid.enemies.map(e=>({...e,kind:e.kind??'infected'}))};}
+  if(s.version>=4&&s.version<=5){n.crates=s.crates;n.enemies=s.enemies.map((e,i)=>{const f=newEnemies()[i];return{...f,...e,kind:f.kind,x:e.hp>0?e.x:f.x,y:e.hp>0?e.y:f.y,respawnAt:null};});if(s.version===4)n.raid={...s.raid,enemies:s.raid.enemies.map(e=>({...e,kind:e.kind??'infected'}))};}
   if(s.version>1&&s.version<4){
     for(let i=0;i<Math.min(s.crates?.length??0,5);i++)n.crates[i].amount=s.crates[i].amount;
     for(let i=0;i<Math.min(s.enemies?.length??0,4);i++)n.enemies[i].hp=s.enemies[i].hp;
