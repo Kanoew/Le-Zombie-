@@ -1,20 +1,22 @@
-import {reservedModuleCell,campFootprint} from './camp.js?v=0.6';
+import {reservedModuleCell,campFootprint} from './camp.js?v=0.6.1';
 export const COLS = 30, ROWS = 18, TILE = 32;
 export const key = (x, y) => `${x},${y}`;
-function patrolPoints(x,y,idx){const a=idx*(Math.PI/4);return[0,1,2].map(i=>{const t=a+i*Math.PI*2/3;return{x:Math.max(64,Math.min(1856,x+Math.cos(t)*88)),y:Math.max(64,Math.min(1216,y+Math.sin(t)*88))};});}
-export const entity=(x,y,hp=60,idx=0)=>({x,y,hp,kind:hp>60?'brute':'infected',windup:0,cooldown:0,spawnX:x,spawnY:y,patrol:patrolPoints(x,y,idx),patrolIdx:0,respawnAt:null});
+export const ENEMY_RESPAWN_DELAY=90;
+const patrolCache=new Map();
+export const entity=(x,y,hp=60)=>({x,y,hp,kind:hp>60?'brute':'infected',windup:0,cooldown:0});
 export const streetEntry={x:80,y:608};
 export function mapSize(zone){return zone==='camp'?{cols:30,rows:18,width:960,height:576}:{cols:60,rows:40,width:1920,height:1280};}
 export const districts=[{name:'Clinique écarlate',x:368,y:560},{name:'Dépôt industriel',x:1280,y:528},{name:'Marché oublié',x:464,y:704},{name:'Serres contaminées',x:1088,y:880}];
 const crateLayout = [[368,560,4],[880,400,5],[1184,528,4],[464,704,5],[1088,880,4],[960,1120,5],[320,704,4],[1440,592,5]];
 export const newCrates = () => crateLayout.map(([x,y,amount]) => ({x,y,amount}));
-export const newEnemies=()=>[entity(608,544,60,0),entity(880,464,60,1),entity(1120,496,90,2),entity(1280,560,60,3),entity(736,704,60,4),entity(960,976,90,5),entity(1056,848,60,6),entity(1056,1136,60,7)];
+const enemyLayout=[[608,544,60],[880,464,60],[1120,496,90],[1280,560,60],[736,704,60],[960,976,90],[1056,848,60],[1056,1136,60]];
+export const newEnemies=()=>enemyLayout.map(([x,y,hp],i)=>({...entity(x,y,hp),spawnX:x,spawnY:y,patrol:patrolPoints(x,y,i),patrolIdx:0,respawnAt:null}));
 export function createWorld() {
   const walls = [];
   for (let x=8; x<=16; x++) walls.push(key(x,5));
   for (let y=6; y<=11; y++) walls.push(key(8,y));
   return {
-    version:6, camp:{built:{generator:false,infirmary:false,bunks:false,lights:false}}, loadout:'machete', zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
+    version:7, camp:{built:{generator:false,infirmary:false,bunks:false,lights:false}}, loadout:'machete', zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
     dog:{x:410,y:336,cooldown:0}, walls, wallHealth:{}, stock:8, bag:0,
     time:0, weapon:1, delivered:0, visits:0, crates:newCrates(), enemies:newEnemies(),
     kills:0, threat:0, restockAt:300,
@@ -29,12 +31,14 @@ export const streetWalls = (() => {
   Object.defineProperty(a,'zone',{value:'street'});
   return a;
 })();
+// City collision geometry is static; use constant-time lookups for patrol searches.
+const streetWallIds=new Set(streetWalls);
 export const campWalls=s=>s.walls.concat(campFootprint(s));
 export const activeWalls = s => s.zone==='camp' ? campWalls(s) : streetWalls;
 export const activeEnemies = s => s.zone==='camp' ? s.raid.enemies : s.enemies;
 export function blocked(walls,x,y) {
   const bounds=mapSize(walls.zone==='street'?'street':'camp');
-  return x<1 || y<1 || x>=bounds.cols-1 || y>=bounds.rows-1 || walls.includes(key(x,y));
+  return x<1 || y<1 || x>=bounds.cols-1 || y>=bounds.rows-1 || (walls.zone==='street'?streetWallIds.has(key(x,y)):walls.includes(key(x,y)));
 }
 export function canStand(walls,x,y,r=10) {
   return [[-r,-r],[r,-r],[-r,r],[r,r]].every(([dx,dy]) => !blocked(walls,Math.floor((x+dx)/TILE),Math.floor((y+dy)/TILE)));
@@ -54,6 +58,28 @@ export function pathTo(walls,from,to) {
     }
   }
   return [];
+}
+export function patrolPoints(x,y,idx){
+  const cacheKey=`${x},${y},${idx}`;
+  if(patrolCache.has(cacheKey))return patrolCache.get(cacheKey).map(p=>({...p}));
+  const origin=[Math.floor(x/TILE),Math.floor(y/TILE)],queue=[origin],seen=new Set([key(...origin)]),candidates=[];
+  for(let i=0;i<queue.length;i++){
+    const [cx,cy]=queue[i],point={x:(cx+.5)*TILE,y:(cy+.5)*TILE};
+    if(canStand(streetWalls,point.x,point.y))candidates.push(point);
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
+      const cell=[cx+dx,cy+dy],id=key(...cell),px=(cell[0]+.5)*TILE,py=(cell[1]+.5)*TILE;
+      if(!seen.has(id)&&Math.hypot(px-x,py-y)<=144&&canStand(streetWalls,px,py)){seen.add(id);queue.push(cell);}
+    }
+  }
+  const chosen=[];
+  for(let i=0;i<3;i++){
+    const angle=idx*Math.PI/4+i*Math.PI*2/3,desired={x:x+Math.cos(angle)*88,y:y+Math.sin(angle)*88};
+    const options=candidates.filter(p=>Math.hypot(p.x-x,p.y-y)>=48&&chosen.every(q=>Math.hypot(p.x-q.x,p.y-q.y)>=48));
+    const point=options.sort((a,b)=>Math.hypot(a.x-desired.x,a.y-desired.y)-Math.hypot(b.x-desired.x,b.y-desired.y))[0];
+    if(!point)throw new Error('Aucun trajet de patrouille sûr pour cet emplacement.');
+    chosen.push(point);
+  }
+  patrolCache.set(cacheKey,chosen);return chosen.map(p=>({...p}));
 }
 export function toggleWall(s,x,y,actors=[]) {
   if(s.zone!=='camp') return 'La construction est réservée au refuge.';
@@ -92,7 +118,7 @@ export function transition(s) {
   if(s.raid.phase==='active') return 'Raid en cours : protège le refuge avant de partir.';
   s.zone=s.zone==='camp'?'street':'camp'; s.visits++;
   if(s.zone==='street'&&s.time>=s.restockAt) {
-    s.crates=newCrates(); s.enemies=newEnemies(); s.restockAt=s.time+300;
+    s.crates=newCrates(); s.restockAt=s.time+300;
   }
   s.player.x=s.zone==='camp'?816:streetEntry.x; s.player.y=s.zone==='camp'?304:streetEntry.y;
   // Legacy camps can have a wall on the old entry cell. Pick a safe nearby spawn.
@@ -107,14 +133,20 @@ export function transition(s) {
 const integer=(n,max=1e7)=>Number.isInteger(n)&&n>=0&&n<=max;
 const finite=(n,max=1e9)=>Number.isFinite(n)&&n>=0&&n<=max;
 const positioned=(a,walls)=>a&&finite(a.x)&&finite(a.y)&&canStand(walls,a.x,a.y);
-const validEnemy=(e,walls)=>['infected','brute'].includes(e?.kind)&&positioned(e,walls)&&Number.isFinite(e.hp)&&e.hp>=-100&&e.hp<=100&&finite(e.windup,10)&&finite(e.cooldown,10)&&(e.respawnAt===undefined||e.respawnAt===null||finite(e.respawnAt));
+const validEnemy=(e,walls)=>['infected','brute'].includes(e?.kind)&&positioned(e,walls)&&Number.isFinite(e.hp)&&e.hp>=-100&&e.hp<=100&&finite(e.windup,10)&&finite(e.cooldown,10);
+function validCityEnemy(e){
+  if(!validEnemy(e,streetWalls)||!positioned({x:e.spawnX,y:e.spawnY},streetWalls)||!Array.isArray(e.patrol)||e.patrol.length!==3||!integer(e.patrolIdx,2)||new Set(e.patrol.map(p=>p&&key(p.x,p.y))).size!==3)return false;
+  if(e.hp>0?e.respawnAt!==null:!finite(e.respawnAt))return false;
+  const spawn=[Math.floor(e.spawnX/TILE),Math.floor(e.spawnY/TILE)];
+  return e.patrol.every(p=>positioned(p,streetWalls)&&pathTo(streetWalls,spawn,[Math.floor(p.x/TILE),Math.floor(p.y/TILE)]).length>0);
+}
 export function validSave(s) {
-  if(s?.version!==6||!s.camp||!s.camp.built||!['generator','infirmary','bunks','lights'].every(k=>typeof s.camp.built[k]==='boolean')||!['machete','sabre','hatchet'].includes(s.loadout)||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
+  if(s?.version!==7||!s.camp||!s.camp.built||!['generator','infirmary','bunks','lights'].every(k=>typeof s.camp.built[k]==='boolean')||!['machete','sabre','hatchet'].includes(s.loadout)||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
   if(!s.wallHealth||typeof s.wallHealth!=='object'||Array.isArray(s.wallHealth)||!Object.entries(s.wallHealth).every(([id,hp])=>s.walls.includes(id)&&finite(hp,100)&&hp>0)) return false;
   if(!['stock','delivered','visits','kills'].every(k=>integer(s[k]))||!finite(s.time)||!finite(s.restockAt)||!finite(s.threat,100)||!integer(s.bag,12)||![1,2].includes(s.weapon)) return false;
   if(![s.player,s.dog].every(a=>positioned(a,activeWalls(s)))||!finite(s.player.hp,100)||!s.player.hp||!finite(s.player.stamina,100)||!finite(s.dog.cooldown,12)) return false;
   if(!Array.isArray(s.crates)||s.crates.length!==crateLayout.length||!s.crates.every((c,i)=>c?.x===crateLayout[i][0]&&c.y===crateLayout[i][1]&&integer(c.amount,crateLayout[i][2]))) return false;
-  if(!Array.isArray(s.enemies)||s.enemies.length!==newEnemies().length||!s.enemies.every(e=>validEnemy(e,streetWalls))) return false;
+  if(!Array.isArray(s.enemies)||s.enemies.length!==enemyLayout.length||!s.enemies.every(validCityEnemy)) return false;
   const d=s.defender,r=s.raid;
   if(!d||typeof d.recruited!=='boolean'||!positioned(d,campWalls(s))||!finite(d.hp,100)||!finite(d.cooldown,10)||!finite(d.windup??0,1)||(d.windup>0&&(!finite(d.targetX)||!finite(d.targetY)))) return false;
   if(!r||!['idle','warning','active'].includes(r.phase)||!integer(r.number)||!finite(r.remaining,120)||!finite(r.core,100)||!integer(r.destroyed)||!integer(r.hits)||!Array.isArray(r.enemies)||r.enemies.length>6||!r.enemies.every(e=>validEnemy(e,s.walls))) return false;
@@ -125,16 +157,20 @@ export function validSave(s) {
 }
 export function migrateSave(s) {
   if(validSave(s))return s;
-  if(![1,2,3,4,5].includes(s?.version)||!Array.isArray(s.walls))return null;
+  if(![1,2,3,4,5,6].includes(s?.version)||!Array.isArray(s.walls))return null;
   const fresh=createWorld();
-  const n={...fresh,...s,version:6,camp:s.version<5?fresh.camp:(s.camp??fresh.camp),loadout:s.version>=4?s.loadout:'machete',dog:{...s.dog,cooldown:s.dog?.cooldown??0},crates:newCrates(),enemies:newEnemies()};
+  const n={...fresh,...s,version:7,camp:s.version<5?fresh.camp:(s.camp??fresh.camp),loadout:s.version>=4?s.loadout:'machete',dog:{...s.dog,cooldown:s.dog?.cooldown??0},crates:newCrates(),enemies:newEnemies()};
   if(s.version<3){n.wallHealth={};n.threat=0;n.raid=fresh.raid;n.defender=fresh.defender;n.restockAt=Math.max(300,(s.time??0)+300);}
-  if(s.version>=4&&s.version<=5){n.crates=s.crates;n.enemies=s.enemies.map((e,i)=>{const f=newEnemies()[i];return{...f,...e,kind:f.kind,x:e.hp>0?e.x:f.x,y:e.hp>0?e.y:f.y,respawnAt:null};});if(s.version===4)n.raid={...s.raid,enemies:s.raid.enemies.map(e=>({...e,kind:e.kind??'infected'}))};}
+  if(s.version>=4){if(!Array.isArray(s.enemies)||s.enemies.length!==enemyLayout.length)return null;n.crates=s.crates;n.enemies=s.enemies.map((e,i)=>({...fresh.enemies[i],...e,kind:fresh.enemies[i].kind}));if(s.version===4)n.raid={...s.raid,enemies:s.raid.enemies.map(e=>({...e,kind:e.kind??'infected'}))};}
   if(s.version>1&&s.version<4){
     for(let i=0;i<Math.min(s.crates?.length??0,5);i++)n.crates[i].amount=s.crates[i].amount;
     for(let i=0;i<Math.min(s.enemies?.length??0,4);i++)n.enemies[i].hp=s.enemies[i].hp;
   }
   if(s.version<4&&n.zone==='street'){n.player={...n.player,...streetEntry};n.dog={...n.dog,...streetEntry};}
+  n.enemies=n.enemies.map((e,i)=>{
+    const f=fresh.enemies[i],spawn=positioned({x:e.spawnX,y:e.spawnY},streetWalls)?{x:e.spawnX,y:e.spawnY}:{x:f.spawnX,y:f.spawnY};
+    return {...e,spawnX:spawn.x,spawnY:spawn.y,patrol:patrolPoints(spawn.x,spawn.y,i),patrolIdx:0,respawnAt:e.hp>0?null:finite(e.respawnAt)?e.respawnAt:n.time+ENEMY_RESPAWN_DELAY};
+  });
   n.raid={...n.raid,enemies:n.raid.enemies.map(e=>({...e,kind:e.kind??'infected'}))};
   if(!positioned(n.defender,n.walls)){
     safe:for(let y=1;y<17;y++)for(let x=1;x<29;x++)if(canStand(n.walls,(x+.5)*32,(y+.5)*32)){n.defender={...n.defender,x:(x+.5)*32,y:(y+.5)*32};break safe;}

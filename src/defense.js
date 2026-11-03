@@ -1,5 +1,5 @@
-import {followSmooth} from './motion.js?v=0.6';
-import { entity, key, canStand, pathTo, activeWalls,campWalls } from './world.js?v=0.6';
+import {followSmooth} from './motion.js?v=0.6.1';
+import { entity, key, canStand, pathTo, activeWalls,campWalls } from './world.js?v=0.6.1';
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const tileOf=a=>[Math.floor(a.x/32),Math.floor(a.y/32)];
 const corePosition={x:464,y:304};

@@ -1,3 +1,4 @@
+import {registerCityKill,tickCityLifecycle} from '../src/city-ai.js';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createWorld,entity,validSave,transition,migrateSave,toggleWall,collect,deposit,streetWalls} from '../src/world.js';
@@ -35,9 +36,9 @@ test('chien : interruption de contact, recharge et refus à travers un obstacle'
  assert.ok(streetWalls.includes('8,3'));
 });
 test('renouvellement après 5 minutes actives sans duplication par transition',()=>{
- const s=createWorld();transition(s);collect(s,0);s.enemies[0].hp=0;transition(s);transition(s);assert.equal(s.crates[0].amount,0);assert.equal(s.enemies[0].hp,0);transition(s);s.time=300;transition(s);assert.equal(s.crates[0].amount,4);assert.equal(s.enemies[0].hp,60);assert.equal(s.restockAt,600);
+ const s=createWorld();transition(s);collect(s,0);s.enemies[0].hp=0;registerCityKill(s,s.enemies[0]);transition(s);transition(s);assert.equal(s.crates[0].amount,0);assert.equal(s.enemies[0].hp,0);transition(s);s.time=300;transition(s);assert.equal(s.crates[0].amount,4);assert.equal(s.enemies[0].hp,0);assert.equal(s.enemies[0].respawnAt,90);tickCityLifecycle(s);assert.equal(s.enemies[0].hp,60);assert.equal(s.restockAt,600);
 });
 test('migration réelle v2 et rejet d’un raid corrompu',()=>{
- const s=createWorld();const old={...s,version:2};for(const k of ['raid','defender','threat','restockAt','wallHealth'])delete old[k];delete old.dog.cooldown;const migrated=migrateSave(old);assert.ok(migrated);assert.equal(migrated.version,6);assert.equal(migrated.stock,s.stock);assert.deepEqual(migrated.walls,s.walls);
+ const s=createWorld();const old={...s,version:2};for(const k of ['raid','defender','threat','restockAt','wallHealth'])delete old[k];delete old.dog.cooldown;const migrated=migrateSave(old);assert.ok(migrated);assert.equal(migrated.version,7);assert.equal(migrated.stock,s.stock);assert.deepEqual(migrated.walls,s.walls);
  assert.equal(migrateSave({version:1}),null);assert.equal(migrateSave({version:2}),null);assert.equal(validSave({...createWorld(),raid:{phase:'active'}}),false);assert.equal(validSave({...createWorld(),wallHealth:{'28,10':20}}),false);
 });

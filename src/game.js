@@ -1,10 +1,11 @@
-import {steerPlayer,followSmooth,slideActor} from './motion.js?v=0.6';
-import {campModules,campPower,installModule,tickCamp} from './camp.js?v=0.6';
-import {COLS,ROWS,TILE,key,createWorld,canStand,pathTo,toggleWall,validSave,migrateSave,activeWalls,activeEnemies,mapSize,streetEntry,collect,deposit,upgrade,transition} from './world.js?v=0.6';
-import {recruitDefender,repairWalls,tickRaid,finishRaid,commandDog} from './defense.js?v=0.6';
-import {renderScene,renderMiniMap,renderWorldMap} from './renderer.js?v=0.6';
-import {loadArt,drawHero,drawWeaponIcon,artImages} from './art.js?v=0.6';
-import {weapons,equipWeapon,animationFrame} from './weapons.js?v=0.6';
+import {registerCityKill,tickCityLifecycle,tickCityPatrol} from './city-ai.js?v=0.6.1';
+import {steerPlayer,followSmooth,slideActor} from './motion.js?v=0.6.1';
+import {campModules,campPower,installModule,tickCamp} from './camp.js?v=0.6.1';
+import {COLS,ROWS,TILE,key,createWorld,canStand,pathTo,toggleWall,validSave,migrateSave,activeWalls,activeEnemies,mapSize,streetEntry,collect,deposit,upgrade,transition} from './world.js?v=0.6.1';
+import {recruitDefender,repairWalls,tickRaid,finishRaid,commandDog} from './defense.js?v=0.6.1';
+import {renderScene,renderMiniMap,renderWorldMap} from './renderer.js?v=0.6.1';
+import {loadArt,drawHero,drawWeaponIcon,artImages} from './art.js?v=0.6.1';
+import {weapons,equipWeapon,animationFrame} from './weapons.js?v=0.6.1';
 const $=id=>document.getElementById(id),canvas=$('game'),ctx=canvas.getContext('2d');
 let state=createWorld(),paused=true,building=false,keys=new Set(),joystick={x:0,y:0},facing={x:1,y:0},attackTimer=0,cooldown=0,dash=0,hurt=0,last=performance.now(),autosave=0,stickPointer=null,cam={x:0,y:0},view={w:480,h:800},particles=[],messageTimer=0,moving=false,pendingBuild=null;
 let reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -47,7 +48,7 @@ function applyStrike(){
   const dx=e.x-p.x,dy=e.y-p.y,d=Math.hypot(dx,dy),path=pathTo(activeWalls(state),cell(p),cell(e));
   if(e.hp>0&&d<w.range&&dx*attackFacing.x+dy*attackFacing.y>-8&&path.length>0&&path.length<=Math.ceil(w.range/32)+1){
    e.hp=Math.max(-90,e.hp-Math.round(w.damage*(state.weapon===2?1.5:1)));e.windup=0;e.cooldown=.5;e.hitFlash=.12;const push=state.loadout==='hatchet'?12:7;if(d)slideActor(activeWalls(state),e,dx/d*push,dy/d*push);burst(e.x,e.y,'#e5908e');
-   if(e.hp<=0){if(state.zone==='street'&&e.respawnAt===null)e.respawnAt=state.time+90;state.kills++;if(state.zone==='street')state.threat=Math.min(100,state.threat+5);say('Infecté neutralisé · 90s avant le retour.');persist();}
+   if(e.hp<=0){registerCityKill(state,e);state.kills++;if(state.zone==='street')state.threat=Math.min(100,state.threat+5);say(state.zone==='street'?'Infecté neutralisé · retour au plus tôt dans 90 s.':'Infecté neutralisé.');persist();}
   }
  }
 }
@@ -76,7 +77,7 @@ function update(dt){state.time+=dt;tickCamp(state,dt);for(const e of activeEnemi
  if(dash>0){dash=Math.max(0,dash-dt);if(!reduced)ghosts.push({x:p.x,y:p.y,remaining:.13});}ghosts=ghosts.map(g=>({...g,remaining:g.remaining-dt})).filter(g=>g.remaining>0).slice(-5);follow(state.dog,p,145,dt,42);
  const raidPhase=state.raid.phase,raidMessage=tickRaid(state,dt);
  if(raidMessage){say(raidMessage);if(state.raid.phase==='active'){building=false;$('build').classList.remove('active');}persist();if(raidPhase==='active'&&state.raid.phase==='idle')showReport();}
- let respawned=false;if(state.zone==='street')for(const e of state.enemies){if(e.respawnAt!=null){if(state.time>=e.respawnAt){e.x=e.spawnX;e.y=e.spawnY;e.hp=e.kind==='brute'?90:60;e.respawnAt=null;e.windup=0;e.cooldown=2;e.patrolIdx=0;respawned=true;}continue;}if(e.hp<=0)continue;e.cooldown=Math.max(0,e.cooldown-dt);const dist=Math.hypot(e.x-p.x,e.y-p.y);if(e.windup>0){const before=e.windup;e.windup=Math.max(0,e.windup-dt);if(!e.windup)e.cooldown=1.1;if(before>.325&&e.windup<=.325){if(dist<48&&!hurt&&dash<=0){p.hp-=state.time%1080>=720?18:12;hurt=.7;burst(p.x,p.y,'#f7cbb9');say('Touché ! Esquive au signal rouge.');}}}else if(dist<44&&!e.cooldown)e.windup=.65;else if(dist<240&&!e.cooldown)follow(e,p,state.time%1080>=720?54:40,dt,32);else if(!e.cooldown){const pt=e.patrol[e.patrolIdx??0];if(Math.hypot(e.x-pt.x,e.y-pt.y)<36)e.patrolIdx=((e.patrolIdx??0)+1)%e.patrol.length;else follow(e,pt,22,dt,28);}if(p.hp<=0){state.zone='street';transition(state);p.x=464;p.y=304;p.hp=100;p.stamina=100;state.dog.x=464;state.dog.y=304;const loss=Math.ceil(state.bag/2);state.bag-=loss;hurt=2;say(`Retour au refuge · ${loss} ferrailles perdues (règle alpha : moitié du sac).`);persist();break;}}if(respawned)say('Zone réinfestée · infectés de retour aux positions.');
+ const population=tickCityLifecycle(state);if(population.changed)persist();if(population.respawned)say('Zone réinfestée · infectés de retour.');if(state.zone==='street')for(const e of state.enemies){if(e.hp<=0)continue;e.cooldown=Math.max(0,e.cooldown-dt);const dist=Math.hypot(e.x-p.x,e.y-p.y);if(e.windup>0){const before=e.windup;e.windup=Math.max(0,e.windup-dt);if(!e.windup)e.cooldown=1.1;if(before>.325&&e.windup<=.325){if(dist<48&&!hurt&&dash<=0){p.hp-=state.time%1080>=720?18:12;hurt=.7;burst(p.x,p.y,'#f7cbb9');say('Touché ! Esquive au signal rouge.');}}}else if(dist<44&&!e.cooldown)e.windup=.65;else if(dist<240&&!e.cooldown)follow(e,p,state.time%1080>=720?54:40,dt,32);else if(!e.cooldown)tickCityPatrol(e,dt);if(p.hp<=0){state.zone='street';transition(state);p.x=464;p.y=304;p.hp=100;p.stamina=100;state.dog.x=464;state.dog.y=304;const loss=Math.ceil(state.bag/2);state.bag-=loss;hurt=2;say(`Retour au refuge · ${loss} ferrailles perdues (règle alpha : moitié du sac).`);persist();break;}}
  if(state.zone==='camp'&&state.raid.phase==='active')for(const e of state.raid.enemies){
    if(e.hp>0&&Math.hypot(e.x-p.x,e.y-p.y)<42&&e.windup>0&&e.windup<.36&&e.windup>.28&&!hurt&&dash<=0&&pathTo(state.walls,cell(e),cell(p)).length>0&&pathTo(state.walls,cell(e),cell(p)).length<=3){p.hp-=12;hurt=.7;burst(p.x,p.y,'#f7cbb9');}
  }

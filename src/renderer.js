@@ -1,9 +1,9 @@
-import {campModules,campPower} from './camp.js?v=0.6';
-import {actorPresentation} from './presentation.js?v=0.6';
-import {activeWalls, activeEnemies, mapSize, districts} from './world.js?v=0.6';
+import {campModules,campPower} from './camp.js?v=0.6.1';
+import {actorPresentation} from './presentation.js?v=0.6.1';
+import {activeWalls, activeEnemies, mapSize, districts} from './world.js?v=0.6.1';
 
-import {artImages,drawHero,drawCampProp} from './art.js?v=0.6';
-import {animationFrame,weapons} from './weapons.js?v=0.6';
+import {artImages,drawHero,drawCampProp} from './art.js?v=0.6.1';
+import {animationFrame,weapons} from './weapons.js?v=0.6.1';
 // Original procedural pixel art. Static terrain is cached; actors and lighting remain dynamic.
 const terrainCache = new Map();
 const pixel = (c,x,y,w,h,color) => { c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),w,h); };

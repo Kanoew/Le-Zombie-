@@ -33,7 +33,7 @@ header{position:absolute;top:max(16px,env(safe-area-inset-top));left:max(18px,en
 </style></head>
 <body><main id="app">
 <canvas id="game" aria-label="Jeu de survie cyberpunk vu du dessus"></canvas>
-<header><div class="brand"><span class="logo-mark" aria-hidden="true">◈</span><div>LES CENDRES<small>LE ZOMBIE · ALPHA 0.6</small></div></div><div class="header-actions"><button id="refuge-menu" aria-label="Gestion du refuge" title="Refuge">⌂</button><button id="fullscreen" aria-label="Plein écran" title="Plein écran">⛶</button><button id="pause" aria-label="Menu et pause" title="Menu">☰</button></div></header>
+<header><div class="brand"><span class="logo-mark" aria-hidden="true">◈</span><div>LES CENDRES<small>LE ZOMBIE · ALPHA 0.6.1</small></div></div><div class="header-actions"><button id="refuge-menu" aria-label="Gestion du refuge" title="Refuge">⌂</button><button id="fullscreen" aria-label="Plein écran" title="Plein écran">⛶</button><button id="pause" aria-label="Menu et pause" title="Menu">☰</button></div></header>
 <section class="hud" aria-label="État du personnage"><div class="vital"><small>✚ VITALITÉ</small><span id="health">100 / 100</span><meter id="hpbar" max="100" value="100"></meter></div><div class="energy"><small>ϟ ENDURANCE</small><span id="stamina">100</span><meter id="spbar" max="100" value="100"></meter></div><div class="clock"><small id="zone">STATION 07</small><span id="time">Jour</span></div></section>
 <aside id="mission"><small><span class="objective-dot"></span> JOURNAL DE SURVIE</small><span id="objective">Ramène des ressources au refuge.</span><span id="raid-status">Menace 0/60</span></aside>
 <button id="map-open" class="map-panel" aria-label="Ouvrir la carte du quartier"><canvas id="map" width="120" height="72"></canvas><small>SECTEUR LOCAL <span>↗</span></small></button>
@@ -42,8 +42,8 @@ header{position:absolute;top:max(16px,env(safe-area-inset-top));left:max(18px,en
 <button id="arsenal-open" aria-label="Ouvrir l’arsenal"><span aria-hidden="true">⚔</span><span id="weapon">Machette</span></button><nav id="camp-tools" class="collapsed" aria-label="Gestion du refuge"><button id="build">Bâtir · 2</button><button id="forge">Renforcer · 10</button><button id="summon">Invoquer Écho · 6</button><button id="repair">Réparer · 0</button><button id="camp-manage">Installations</button></nav>
 <div id="build-hint" hidden>CONSTRUCTION <span>Choisir une case → toucher à nouveau pour confirmer</span></div>
 <section class="controls" aria-label="Commandes tactiles"><div id="stick" aria-label="Joystick de déplacement"><div class="stick-cross" aria-hidden="true"></div><div id="knob"></div><span>DÉPLACEMENT</span></div><div class="actions"><div class="utility"><button id="dog-action">Chien</button><button id="interact">Interagir</button></div><div class="combat"><button id="dodge"><span aria-hidden="true">↝</span>Esquive</button><button id="attack"><svg aria-hidden="true" viewBox="0 0 32 32"><path d="m9 25 17-19 1 7-14 15M7 20l9 8M5 28l5-5"/></svg>Frapper</button></div></div></section>
-<section id="menu" class="overlay"><div class="panel"><div class="menu-intro"><canvas id="menu-hero" width="240" height="260" aria-label="La survivante aux cheveux rouges"></canvas><small class="eyebrow">TRANSMISSION 007 / ALPHA 0.6</small><div class="menu-tag"><i></i> UN REFUGE DANS LES RUINES</div><h1>LES<br><em>CENDRES<span>.</span></em></h1><p>Le monde s’est éteint.<br>Pas toi.</p><div class="world-caption"><span>07</span><div>STATION DE REPLI<small>Réseau autonome · secteur des Cendres</small></div></div></div>
-<div class="menu-card"><small class="eyebrow">TON PROCHAIN DÉPART</small><h2>Tenir une nuit de plus.</h2><p>Une lame, un compagnon et ce qu’il reste de la ville.</p><div class="brief"><b>01</b><span><strong>Explore les ruines</strong>Fouille les caches, surveille ton sac.</span><b>02</b><span><strong>Reviens en vie</strong>Dépose tes ressources et renforce ta lame.</span><b>03</b><span><strong>Protège ton refuge</strong>Invoque Écho-01 et repousse les assauts.</span></div><p id="asset-status" role="status">Préparation de ton équipement…</p><button id="play" class="primary">Commencer l’expédition →</button><div class="menu-tools"><button id="report-open">Rapport de raid</button><button id="save">Sauvegarder</button><button id="load">Recharger</button></div><button id="motion" class="setting">Effets : complets</button><details class="help"><summary>Commandes et règles de survie</summary><small class="hint">Carte : touche la minicarte. Armes : touche la lame équipée. Refuge : icône maison.<br>Tactile ou ZQSD / flèches · E : interagir · espace : frapper · Maj : esquiver.<br>Mort : perte de la moitié du sac. Raid : alerte à 60 de menace après 8 ressources livrées. Aucun raid hors session dans cette alpha.</small></details></div></div><div class="menu-footer"><span>LE ZOMBIE / ALPHA 0.6</span><span>PIXEL SURVIVAL · SOLO</span></div></section>
+<section id="menu" class="overlay"><div class="panel"><div class="menu-intro"><canvas id="menu-hero" width="240" height="260" aria-label="La survivante aux cheveux rouges"></canvas><small class="eyebrow">TRANSMISSION 007 / ALPHA 0.6.1</small><div class="menu-tag"><i></i> UN REFUGE DANS LES RUINES</div><h1>LES<br><em>CENDRES<span>.</span></em></h1><p>Le monde s’est éteint.<br>Pas toi.</p><div class="world-caption"><span>07</span><div>STATION DE REPLI<small>Réseau autonome · secteur des Cendres</small></div></div></div>
+<div class="menu-card"><small class="eyebrow">TON PROCHAIN DÉPART</small><h2>Tenir une nuit de plus.</h2><p>Une lame, un compagnon et ce qu’il reste de la ville.</p><div class="brief"><b>01</b><span><strong>Explore les ruines</strong>Fouille les caches, surveille ton sac.</span><b>02</b><span><strong>Reviens en vie</strong>Dépose tes ressources et renforce ta lame.</span><b>03</b><span><strong>Protège ton refuge</strong>Invoque Écho-01 et repousse les assauts.</span></div><p id="asset-status" role="status">Préparation de ton équipement…</p><button id="play" class="primary">Commencer l’expédition →</button><div class="menu-tools"><button id="report-open">Rapport de raid</button><button id="save">Sauvegarder</button><button id="load">Recharger</button></div><button id="motion" class="setting">Effets : complets</button><details class="help"><summary>Commandes et règles de survie</summary><small class="hint">Carte : touche la minicarte. Armes : touche la lame équipée. Refuge : icône maison.<br>Tactile ou ZQSD / flèches · E : interagir · espace : frapper · Maj : esquiver.<br>Mort : perte de la moitié du sac. Raid : alerte à 60 de menace après 8 ressources livrées. Aucun raid hors session dans cette alpha.</small></details></div></div><div class="menu-footer"><span>LE ZOMBIE / ALPHA 0.6.1</span><span>PIXEL SURVIVAL · SOLO</span></div></section>
 <section id="report" class="overlay" hidden><div class="report-panel"><small class="eyebrow">STATION 07 / RAPPORT DE DÉFENSE</small><div class="report-emblem" aria-hidden="true">◈</div><h2 id="report-title"></h2><p id="report-body"></p><button id="report-close" class="primary">Retour au refuge →</button></div></section>
 <section id="arsenal" class="overlay" hidden><div class="arsenal-panel"><div class="sheet-heading"><div><small class="eyebrow">ÉQUIPEMENT / CORPS À CORPS</small><h2>Choisis ta lame.</h2></div><button id="arsenal-close" aria-label="Fermer l’arsenal">✕</button></div><canvas id="hero-preview" width="240" height="180" aria-label="Aperçu animé de la survivante"></canvas><div class="weapon-list"><button data-weapon="machete"><canvas data-icon="machete" width="96" height="96"></canvas><strong>Machette</strong><small>30 dégâts · portée 68<br>18 endurance · équilibrée</small></button><button data-weapon="sabre"><canvas data-icon="sabre" width="96" height="96"></canvas><strong>Sabre</strong><small>24 dégâts · portée 84<br>16 endurance · rapide</small></button><button data-weapon="hatchet"><canvas data-icon="hatchet" width="96" height="96"></canvas><strong>Hachette</strong><small>48 dégâts · portée 58<br>28 endurance · lourde</small></button></div><p id="arsenal-status" role="status">Choisis une arme.</p><p>Trois armes disponibles pour cet essai. Valeurs de base affichées. Le renforcement d’atelier ajoute 50 % de dégâts aux trois armes. Changement bloqué pendant un raid.</p></div></section>
 <section id="world-view" class="overlay" hidden><div class="world-panel"><div class="sheet-heading"><div><small class="eyebrow">QUARTIER DES CENDRES</small><h2>La ville ne dort plus.</h2></div><button id="map-close" aria-label="Fermer la carte">✕</button></div><canvas id="world-map" width="600" height="400" aria-label="Carte du quartier : clinique, dépôt, marché, serres et retour au refuge"></canvas><p>● Ta position · ◇ caches disponibles · retour au refuge à l’ouest de l’avenue centrale.</p></div></section>
@@ -79,20 +79,22 @@ function campFootprint(s){const cells=[];for(const [id,m] of Object.entries(camp
 
 const COLS = 30, ROWS = 18, TILE = 32;
 const key = (x, y) => `${x},${y}`;
-function patrolPoints(x,y,idx){const a=idx*(Math.PI/4);return[0,1,2].map(i=>{const t=a+i*Math.PI*2/3;return{x:Math.max(64,Math.min(1856,x+Math.cos(t)*88)),y:Math.max(64,Math.min(1216,y+Math.sin(t)*88))};});}
-const entity=(x,y,hp=60,idx=0)=>({x,y,hp,kind:hp>60?'brute':'infected',windup:0,cooldown:0,spawnX:x,spawnY:y,patrol:patrolPoints(x,y,idx),patrolIdx:0,respawnAt:null});
+const ENEMY_RESPAWN_DELAY=90;
+const patrolCache=new Map();
+const entity=(x,y,hp=60)=>({x,y,hp,kind:hp>60?'brute':'infected',windup:0,cooldown:0});
 const streetEntry={x:80,y:608};
 function mapSize(zone){return zone==='camp'?{cols:30,rows:18,width:960,height:576}:{cols:60,rows:40,width:1920,height:1280};}
 const districts=[{name:'Clinique écarlate',x:368,y:560},{name:'Dépôt industriel',x:1280,y:528},{name:'Marché oublié',x:464,y:704},{name:'Serres contaminées',x:1088,y:880}];
 const crateLayout = [[368,560,4],[880,400,5],[1184,528,4],[464,704,5],[1088,880,4],[960,1120,5],[320,704,4],[1440,592,5]];
 const newCrates = () => crateLayout.map(([x,y,amount]) => ({x,y,amount}));
-const newEnemies=()=>[entity(608,544,60,0),entity(880,464,60,1),entity(1120,496,90,2),entity(1280,560,60,3),entity(736,704,60,4),entity(960,976,90,5),entity(1056,848,60,6),entity(1056,1136,60,7)];
+const enemyLayout=[[608,544,60],[880,464,60],[1120,496,90],[1280,560,60],[736,704,60],[960,976,90],[1056,848,60],[1056,1136,60]];
+const newEnemies=()=>enemyLayout.map(([x,y,hp],i)=>({...entity(x,y,hp),spawnX:x,spawnY:y,patrol:patrolPoints(x,y,i),patrolIdx:0,respawnAt:null}));
 function createWorld() {
   const walls = [];
   for (let x=8; x<=16; x++) walls.push(key(x,5));
   for (let y=6; y<=11; y++) walls.push(key(8,y));
   return {
-    version:6, camp:{built:{generator:false,infirmary:false,bunks:false,lights:false}}, loadout:'machete', zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
+    version:7, camp:{built:{generator:false,infirmary:false,bunks:false,lights:false}}, loadout:'machete', zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
     dog:{x:410,y:336,cooldown:0}, walls, wallHealth:{}, stock:8, bag:0,
     time:0, weapon:1, delivered:0, visits:0, crates:newCrates(), enemies:newEnemies(),
     kills:0, threat:0, restockAt:300,
@@ -107,12 +109,14 @@ const streetWalls = (() => {
   Object.defineProperty(a,'zone',{value:'street'});
   return a;
 })();
+// City collision geometry is static; use constant-time lookups for patrol searches.
+const streetWallIds=new Set(streetWalls);
 const campWalls=s=>s.walls.concat(campFootprint(s));
 const activeWalls = s => s.zone==='camp' ? campWalls(s) : streetWalls;
 const activeEnemies = s => s.zone==='camp' ? s.raid.enemies : s.enemies;
 function blocked(walls,x,y) {
   const bounds=mapSize(walls.zone==='street'?'street':'camp');
-  return x<1 || y<1 || x>=bounds.cols-1 || y>=bounds.rows-1 || walls.includes(key(x,y));
+  return x<1 || y<1 || x>=bounds.cols-1 || y>=bounds.rows-1 || (walls.zone==='street'?streetWallIds.has(key(x,y)):walls.includes(key(x,y)));
 }
 function canStand(walls,x,y,r=10) {
   return [[-r,-r],[r,-r],[-r,r],[r,r]].every(([dx,dy]) => !blocked(walls,Math.floor((x+dx)/TILE),Math.floor((y+dy)/TILE)));
@@ -132,6 +136,28 @@ function pathTo(walls,from,to) {
     }
   }
   return [];
+}
+function patrolPoints(x,y,idx){
+  const cacheKey=`${x},${y},${idx}`;
+  if(patrolCache.has(cacheKey))return patrolCache.get(cacheKey).map(p=>({...p}));
+  const origin=[Math.floor(x/TILE),Math.floor(y/TILE)],queue=[origin],seen=new Set([key(...origin)]),candidates=[];
+  for(let i=0;i<queue.length;i++){
+    const [cx,cy]=queue[i],point={x:(cx+.5)*TILE,y:(cy+.5)*TILE};
+    if(canStand(streetWalls,point.x,point.y))candidates.push(point);
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
+      const cell=[cx+dx,cy+dy],id=key(...cell),px=(cell[0]+.5)*TILE,py=(cell[1]+.5)*TILE;
+      if(!seen.has(id)&&Math.hypot(px-x,py-y)<=144&&canStand(streetWalls,px,py)){seen.add(id);queue.push(cell);}
+    }
+  }
+  const chosen=[];
+  for(let i=0;i<3;i++){
+    const angle=idx*Math.PI/4+i*Math.PI*2/3,desired={x:x+Math.cos(angle)*88,y:y+Math.sin(angle)*88};
+    const options=candidates.filter(p=>Math.hypot(p.x-x,p.y-y)>=48&&chosen.every(q=>Math.hypot(p.x-q.x,p.y-q.y)>=48));
+    const point=options.sort((a,b)=>Math.hypot(a.x-desired.x,a.y-desired.y)-Math.hypot(b.x-desired.x,b.y-desired.y))[0];
+    if(!point)throw new Error('Aucun trajet de patrouille sûr pour cet emplacement.');
+    chosen.push(point);
+  }
+  patrolCache.set(cacheKey,chosen);return chosen.map(p=>({...p}));
 }
 function toggleWall(s,x,y,actors=[]) {
   if(s.zone!=='camp') return 'La construction est réservée au refuge.';
@@ -170,7 +196,7 @@ function transition(s) {
   if(s.raid.phase==='active') return 'Raid en cours : protège le refuge avant de partir.';
   s.zone=s.zone==='camp'?'street':'camp'; s.visits++;
   if(s.zone==='street'&&s.time>=s.restockAt) {
-    s.crates=newCrates(); s.enemies=newEnemies(); s.restockAt=s.time+300;
+    s.crates=newCrates(); s.restockAt=s.time+300;
   }
   s.player.x=s.zone==='camp'?816:streetEntry.x; s.player.y=s.zone==='camp'?304:streetEntry.y;
   // Legacy camps can have a wall on the old entry cell. Pick a safe nearby spawn.
@@ -185,14 +211,20 @@ function transition(s) {
 const integer=(n,max=1e7)=>Number.isInteger(n)&&n>=0&&n<=max;
 const finite=(n,max=1e9)=>Number.isFinite(n)&&n>=0&&n<=max;
 const positioned=(a,walls)=>a&&finite(a.x)&&finite(a.y)&&canStand(walls,a.x,a.y);
-const validEnemy=(e,walls)=>['infected','brute'].includes(e?.kind)&&positioned(e,walls)&&Number.isFinite(e.hp)&&e.hp>=-100&&e.hp<=100&&finite(e.windup,10)&&finite(e.cooldown,10)&&(e.respawnAt===undefined||e.respawnAt===null||finite(e.respawnAt));
+const validEnemy=(e,walls)=>['infected','brute'].includes(e?.kind)&&positioned(e,walls)&&Number.isFinite(e.hp)&&e.hp>=-100&&e.hp<=100&&finite(e.windup,10)&&finite(e.cooldown,10);
+function validCityEnemy(e){
+  if(!validEnemy(e,streetWalls)||!positioned({x:e.spawnX,y:e.spawnY},streetWalls)||!Array.isArray(e.patrol)||e.patrol.length!==3||!integer(e.patrolIdx,2)||new Set(e.patrol.map(p=>p&&key(p.x,p.y))).size!==3)return false;
+  if(e.hp>0?e.respawnAt!==null:!finite(e.respawnAt))return false;
+  const spawn=[Math.floor(e.spawnX/TILE),Math.floor(e.spawnY/TILE)];
+  return e.patrol.every(p=>positioned(p,streetWalls)&&pathTo(streetWalls,spawn,[Math.floor(p.x/TILE),Math.floor(p.y/TILE)]).length>0);
+}
 function validSave(s) {
-  if(s?.version!==6||!s.camp||!s.camp.built||!['generator','infirmary','bunks','lights'].every(k=>typeof s.camp.built[k]==='boolean')||!['machete','sabre','hatchet'].includes(s.loadout)||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
+  if(s?.version!==7||!s.camp||!s.camp.built||!['generator','infirmary','bunks','lights'].every(k=>typeof s.camp.built[k]==='boolean')||!['machete','sabre','hatchet'].includes(s.loadout)||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
   if(!s.wallHealth||typeof s.wallHealth!=='object'||Array.isArray(s.wallHealth)||!Object.entries(s.wallHealth).every(([id,hp])=>s.walls.includes(id)&&finite(hp,100)&&hp>0)) return false;
   if(!['stock','delivered','visits','kills'].every(k=>integer(s[k]))||!finite(s.time)||!finite(s.restockAt)||!finite(s.threat,100)||!integer(s.bag,12)||![1,2].includes(s.weapon)) return false;
   if(![s.player,s.dog].every(a=>positioned(a,activeWalls(s)))||!finite(s.player.hp,100)||!s.player.hp||!finite(s.player.stamina,100)||!finite(s.dog.cooldown,12)) return false;
   if(!Array.isArray(s.crates)||s.crates.length!==crateLayout.length||!s.crates.every((c,i)=>c?.x===crateLayout[i][0]&&c.y===crateLayout[i][1]&&integer(c.amount,crateLayout[i][2]))) return false;
-  if(!Array.isArray(s.enemies)||s.enemies.length!==newEnemies().length||!s.enemies.every(e=>validEnemy(e,streetWalls))) return false;
+  if(!Array.isArray(s.enemies)||s.enemies.length!==enemyLayout.length||!s.enemies.every(validCityEnemy)) return false;
   const d=s.defender,r=s.raid;
   if(!d||typeof d.recruited!=='boolean'||!positioned(d,campWalls(s))||!finite(d.hp,100)||!finite(d.cooldown,10)||!finite(d.windup??0,1)||(d.windup>0&&(!finite(d.targetX)||!finite(d.targetY)))) return false;
   if(!r||!['idle','warning','active'].includes(r.phase)||!integer(r.number)||!finite(r.remaining,120)||!finite(r.core,100)||!integer(r.destroyed)||!integer(r.hits)||!Array.isArray(r.enemies)||r.enemies.length>6||!r.enemies.every(e=>validEnemy(e,s.walls))) return false;
@@ -203,16 +235,20 @@ function validSave(s) {
 }
 function migrateSave(s) {
   if(validSave(s))return s;
-  if(![1,2,3,4,5].includes(s?.version)||!Array.isArray(s.walls))return null;
+  if(![1,2,3,4,5,6].includes(s?.version)||!Array.isArray(s.walls))return null;
   const fresh=createWorld();
-  const n={...fresh,...s,version:6,camp:s.version<5?fresh.camp:(s.camp??fresh.camp),loadout:s.version>=4?s.loadout:'machete',dog:{...s.dog,cooldown:s.dog?.cooldown??0},crates:newCrates(),enemies:newEnemies()};
+  const n={...fresh,...s,version:7,camp:s.version<5?fresh.camp:(s.camp??fresh.camp),loadout:s.version>=4?s.loadout:'machete',dog:{...s.dog,cooldown:s.dog?.cooldown??0},crates:newCrates(),enemies:newEnemies()};
   if(s.version<3){n.wallHealth={};n.threat=0;n.raid=fresh.raid;n.defender=fresh.defender;n.restockAt=Math.max(300,(s.time??0)+300);}
-  if(s.version>=4&&s.version<=5){n.crates=s.crates;n.enemies=s.enemies.map((e,i)=>{const f=newEnemies()[i];return{...f,...e,kind:f.kind,x:e.hp>0?e.x:f.x,y:e.hp>0?e.y:f.y,respawnAt:null};});if(s.version===4)n.raid={...s.raid,enemies:s.raid.enemies.map(e=>({...e,kind:e.kind??'infected'}))};}
+  if(s.version>=4){if(!Array.isArray(s.enemies)||s.enemies.length!==enemyLayout.length)return null;n.crates=s.crates;n.enemies=s.enemies.map((e,i)=>({...fresh.enemies[i],...e,kind:fresh.enemies[i].kind}));if(s.version===4)n.raid={...s.raid,enemies:s.raid.enemies.map(e=>({...e,kind:e.kind??'infected'}))};}
   if(s.version>1&&s.version<4){
     for(let i=0;i<Math.min(s.crates?.length??0,5);i++)n.crates[i].amount=s.crates[i].amount;
     for(let i=0;i<Math.min(s.enemies?.length??0,4);i++)n.enemies[i].hp=s.enemies[i].hp;
   }
   if(s.version<4&&n.zone==='street'){n.player={...n.player,...streetEntry};n.dog={...n.dog,...streetEntry};}
+  n.enemies=n.enemies.map((e,i)=>{
+    const f=fresh.enemies[i],spawn=positioned({x:e.spawnX,y:e.spawnY},streetWalls)?{x:e.spawnX,y:e.spawnY}:{x:f.spawnX,y:f.spawnY};
+    return {...e,spawnX:spawn.x,spawnY:spawn.y,patrol:patrolPoints(spawn.x,spawn.y,i),patrolIdx:0,respawnAt:e.hp>0?null:finite(e.respawnAt)?e.respawnAt:n.time+ENEMY_RESPAWN_DELAY};
+  });
   n.raid={...n.raid,enemies:n.raid.enemies.map(e=>({...e,kind:e.kind??'infected'}))};
   if(!positioned(n.defender,n.walls)){
     safe:for(let y=1;y<17;y++)for(let x=1;x<29;x++)if(canStand(n.walls,(x+.5)*32,(y+.5)*32)){n.defender={...n.defender,x:(x+.5)*32,y:(y+.5)*32};break safe;}
@@ -304,6 +340,34 @@ function followSmooth(walls,a,target,speed,dt,stop=24){
  }
  const dx=aim.x-a.x,dy=aim.y-a.y,d=Math.hypot(dx,dy),step=Math.min(speed*dt,d);
  return d?slideActor(walls,a,dx/d*step,dy/d*step):0;
+}
+
+
+function registerCityKill(s,e){
+  if(s.zone!=='street'||e.hp>0||e.respawnAt!=null)return false;
+  e.respawnAt=s.time+ENEMY_RESPAWN_DELAY;
+  return true;
+}
+function tickCityLifecycle(s){
+  let changed=false,respawned=0;
+  for(const e of s.enemies){
+    if(e.hp>0)continue;
+    // Defensive handling for deaths introduced by future damage sources.
+    if(e.respawnAt==null){e.respawnAt=s.time+ENEMY_RESPAWN_DELAY;changed=true;}
+    if(s.zone!=='street'||s.time<e.respawnAt)continue;
+    // Keep the original deadline while the player occupies the spawn area.
+    if(Math.hypot(s.player.x-e.spawnX,s.player.y-e.spawnY)<160)continue;
+    e.x=e.spawnX;e.y=e.spawnY;e.hp=e.kind==='brute'?90:60;
+    e.respawnAt=null;e.windup=0;e.cooldown=2;e.hitFlash=0;e.patrolIdx=0;
+    changed=true;respawned++;
+  }
+  return {changed,respawned};
+}
+function tickCityPatrol(e,dt){
+  if(e.hp<=0||e.cooldown>0||e.windup>0)return;
+  const point=e.patrol[e.patrolIdx];
+  if(Math.hypot(e.x-point.x,e.y-point.y)<36)e.patrolIdx=(e.patrolIdx+1)%e.patrol.length;
+  followSmooth(streetWalls,e,e.patrol[e.patrolIdx],22,dt,28);
 }
 
 // Presentation clocks follow distance, never the wall clock: a blocked actor stays idle.
@@ -702,7 +766,7 @@ function applyStrike(){
   const dx=e.x-p.x,dy=e.y-p.y,d=Math.hypot(dx,dy),path=pathTo(activeWalls(state),cell(p),cell(e));
   if(e.hp>0&&d<w.range&&dx*attackFacing.x+dy*attackFacing.y>-8&&path.length>0&&path.length<=Math.ceil(w.range/32)+1){
    e.hp=Math.max(-90,e.hp-Math.round(w.damage*(state.weapon===2?1.5:1)));e.windup=0;e.cooldown=.5;e.hitFlash=.12;const push=state.loadout==='hatchet'?12:7;if(d)slideActor(activeWalls(state),e,dx/d*push,dy/d*push);burst(e.x,e.y,'#e5908e');
-   if(e.hp<=0){if(state.zone==='street'&&e.respawnAt===null)e.respawnAt=state.time+90;state.kills++;if(state.zone==='street')state.threat=Math.min(100,state.threat+5);say('Infecté neutralisé · 90s avant le retour.');persist();}
+   if(e.hp<=0){registerCityKill(state,e);state.kills++;if(state.zone==='street')state.threat=Math.min(100,state.threat+5);say(state.zone==='street'?'Infecté neutralisé · retour au plus tôt dans 90 s.':'Infecté neutralisé.');persist();}
   }
  }
 }
@@ -731,7 +795,7 @@ function update(dt){state.time+=dt;tickCamp(state,dt);for(const e of activeEnemi
  if(dash>0){dash=Math.max(0,dash-dt);if(!reduced)ghosts.push({x:p.x,y:p.y,remaining:.13});}ghosts=ghosts.map(g=>({...g,remaining:g.remaining-dt})).filter(g=>g.remaining>0).slice(-5);follow(state.dog,p,145,dt,42);
  const raidPhase=state.raid.phase,raidMessage=tickRaid(state,dt);
  if(raidMessage){say(raidMessage);if(state.raid.phase==='active'){building=false;$('build').classList.remove('active');}persist();if(raidPhase==='active'&&state.raid.phase==='idle')showReport();}
- let respawned=false;if(state.zone==='street')for(const e of state.enemies){if(e.respawnAt!=null){if(state.time>=e.respawnAt){e.x=e.spawnX;e.y=e.spawnY;e.hp=e.kind==='brute'?90:60;e.respawnAt=null;e.windup=0;e.cooldown=2;e.patrolIdx=0;respawned=true;}continue;}if(e.hp<=0)continue;e.cooldown=Math.max(0,e.cooldown-dt);const dist=Math.hypot(e.x-p.x,e.y-p.y);if(e.windup>0){const before=e.windup;e.windup=Math.max(0,e.windup-dt);if(!e.windup)e.cooldown=1.1;if(before>.325&&e.windup<=.325){if(dist<48&&!hurt&&dash<=0){p.hp-=state.time%1080>=720?18:12;hurt=.7;burst(p.x,p.y,'#f7cbb9');say('Touché ! Esquive au signal rouge.');}}}else if(dist<44&&!e.cooldown)e.windup=.65;else if(dist<240&&!e.cooldown)follow(e,p,state.time%1080>=720?54:40,dt,32);else if(!e.cooldown){const pt=e.patrol[e.patrolIdx??0];if(Math.hypot(e.x-pt.x,e.y-pt.y)<36)e.patrolIdx=((e.patrolIdx??0)+1)%e.patrol.length;else follow(e,pt,22,dt,28);}if(p.hp<=0){state.zone='street';transition(state);p.x=464;p.y=304;p.hp=100;p.stamina=100;state.dog.x=464;state.dog.y=304;const loss=Math.ceil(state.bag/2);state.bag-=loss;hurt=2;say(`Retour au refuge · ${loss} ferrailles perdues (règle alpha : moitié du sac).`);persist();break;}}if(respawned)say('Zone réinfestée · infectés de retour aux positions.');
+ const population=tickCityLifecycle(state);if(population.changed)persist();if(population.respawned)say('Zone réinfestée · infectés de retour.');if(state.zone==='street')for(const e of state.enemies){if(e.hp<=0)continue;e.cooldown=Math.max(0,e.cooldown-dt);const dist=Math.hypot(e.x-p.x,e.y-p.y);if(e.windup>0){const before=e.windup;e.windup=Math.max(0,e.windup-dt);if(!e.windup)e.cooldown=1.1;if(before>.325&&e.windup<=.325){if(dist<48&&!hurt&&dash<=0){p.hp-=state.time%1080>=720?18:12;hurt=.7;burst(p.x,p.y,'#f7cbb9');say('Touché ! Esquive au signal rouge.');}}}else if(dist<44&&!e.cooldown)e.windup=.65;else if(dist<240&&!e.cooldown)follow(e,p,state.time%1080>=720?54:40,dt,32);else if(!e.cooldown)tickCityPatrol(e,dt);if(p.hp<=0){state.zone='street';transition(state);p.x=464;p.y=304;p.hp=100;p.stamina=100;state.dog.x=464;state.dog.y=304;const loss=Math.ceil(state.bag/2);state.bag-=loss;hurt=2;say(`Retour au refuge · ${loss} ferrailles perdues (règle alpha : moitié du sac).`);persist();break;}}
  if(state.zone==='camp'&&state.raid.phase==='active')for(const e of state.raid.enemies){
    if(e.hp>0&&Math.hypot(e.x-p.x,e.y-p.y)<42&&e.windup>0&&e.windup<.36&&e.windup>.28&&!hurt&&dash<=0&&pathTo(state.walls,cell(e),cell(p)).length>0&&pathTo(state.walls,cell(e),cell(p)).length<=3){p.hp-=12;hurt=.7;burst(p.x,p.y,'#f7cbb9');}
  }

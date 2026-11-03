@@ -3,7 +3,7 @@ import {resolve} from 'node:path';
 const root=resolve(import.meta.dirname,'..');
 const read=p=>readFile(resolve(root,p),'utf8');
 const [html,css]=await Promise.all(['index.html','style.css'].map(read));
-const paths=['camp','world','weapons','atlas-data','prop-data','art','motion','presentation','defense','renderer','game'];
+const paths=['camp','world','weapons','atlas-data','prop-data','art','motion','city-ai','presentation','defense','renderer','game'];
 const modules=await Promise.all(paths.map(p=>read('src/'+p+'.js')));
 const code=modules.map(s=>s.replace(/^import .*;\n/gm,'').replaceAll('export ','')).join('\n');
 const output=html.replace(/<link rel="stylesheet" href="\.\/style.css[^\"]*">/,()=>`<style>${css}</style>`).replace(/<script type="module" src="\.\/src\/game.js[^\"]*"><\/script>/,()=>`<script type="module">${code}</script>`);

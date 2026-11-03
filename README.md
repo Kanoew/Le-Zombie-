@@ -110,3 +110,17 @@ Les modules ont des volumes de collision, sont sauvegardés et ne peuvent être 
 Sauvegardes en version 5, migration depuis v4 conservant positions, ressources, équipement, ennemis, murs, défenseur et raid. Les quatre installations sont initialement non construites. Les mêmes PNG sont inclus dans le build autonome et copiés pour Pages ; le volume initial de téléchargement augmente avec ces nouveaux assets.
 
 Validation : 22 tests Node, parcours d’exploration/raid/armes, test des quatre formats mobiles et `python3 test/camp_mobile.py` pour installation, budget d’énergie, coût unique, persistance et rendu nocturne. Les mesures de fluidité sur appareil Android réel restent à faire. Les raids hors session, le placement libre des modules, des animations dédiées de mort et l’asset final du chien ne sont pas encore réalisés.
+
+## Correctif 0.6.1 — patrouilles et réapparitions individuelles
+
+Conserve l’évolution de Claude Code (patrouilles et délai individuel de 90 secondes), avec les corrections suivantes :
+
+- Les trois points de chaque patrouille sont sélectionnés sur des cases accessibles, reliées au lieu de départ. La génération reste déterministe. Un scénario simule deux minutes pour chacun des huit infectés afin de détecter les blocages.
+- Le renouvellement du butin après cinq minutes ne réinitialise plus la population. Chaque ennemi garde sa position, ses PV et son échéance entre deux cartes.
+- Le retour survient au plus tôt 90 secondes de jeu actif après la mort. Si le joueur est à moins de 160 unités du point de départ, le retour attend qu’il s’éloigne, sans repousser l’échéance sauvegardée. Au camp, le délai peut s’écouler ; la réapparition se résout lors du retour dans le quartier. Les pauses et l’absence ne font toujours pas avancer l’horloge.
+- La sauvegarde passe en version 7 : migration des versions antérieures, réparation des patrouilles et ajout d’une échéance aux morts qui n’en avaient pas. Un délai existant est conservé, y compris s’il est déjà écoulé. La migration ne ressuscite pas les ennemis et ne modifie ni ressources, ni installations, ni équipement.
+- Les positions de départ, points de patrouille, index et échéances sont désormais validés au chargement. La population est sauvegardée immédiatement après une réapparition.
+
+`src/city-ai.js` regroupe les morts, retours et patrouilles pour les vérifier sans navigateur. Les recherches de navigation dans la ville utilisent des collisions en ensemble pour éviter de parcourir toute la liste des bâtiments à chaque case testée.
+
+Vérifications : 30 tests Node, dont les régressions des trois problèmes ; `python3 test/city_mobile.py` exerce une mort réelle, le délai, un changement de carte après cinq minutes, le retour et le rechargement, en portrait et paysage. Les parcours d’exploration et de raid restent vérifiés. Les URL source sont versionnées en 0.6.1 pour éviter le mélange de fichiers d’anciennes versions.

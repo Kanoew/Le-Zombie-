@@ -23,8 +23,8 @@ with sync_playwright() as p:
   state=page.evaluate('JSON.parse(localStorage.getItem("zombie.save"))')
   assert state['loadout']=='hatchet'
   state['zone']='street';state['player'].update(x=960,y=608);state['dog'].update(x=928,y=608)
-  for enemy in state['enemies']:enemy['hp']=0
-  state['enemies'][0].update(x=1008,y=608,hp=90,cooldown=0,windup=0)
+  for enemy in state['enemies']:enemy.update(hp=0,respawnAt=state['time']+1000)
+  state['enemies'][0].update(x=1008,y=608,hp=90,cooldown=0,windup=0,respawnAt=None)
   page.evaluate('(s)=>localStorage.setItem("zombie.save",JSON.stringify(s))',state)
   page.locator('#load').tap();page.locator('#play').tap()
   page.locator('#attack').tap();page.wait_for_timeout(80);page.locator('#pause').tap()

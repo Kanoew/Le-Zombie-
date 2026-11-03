@@ -1,5 +1,5 @@
-import {campPropFrames} from './prop-data.js?v=0.6';
-import {heroAtlases} from './atlas-data.js?v=0.6';
+import {campPropFrames} from './prop-data.js?v=0.6.1';
+import {heroAtlases} from './atlas-data.js?v=0.6.1';
 const artFiles={machete:'hero-atlas.png',sabre:'hero-sabre.png',hatchet:'hero-hatchet.png',weapons:'weapons.png',district:'district.png',infected:'infected.png',brute:'brute.png',echo:'echo.png',props:'camp-props.png'};
 export const artImages={};
 export async function loadArt(){
