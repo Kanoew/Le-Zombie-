@@ -16,7 +16,7 @@ test('migration v3 conserve coûts, morts et caches vidées avec les nouvelles p
 test('trois armes distinctes et impossibilité de changer pendant un raid',()=>{
  const s=createWorld();equipWeapon(s,'sabre');assert.equal(s.loadout,'sabre');assert.ok(weapons.sabre.range>weapons.machete.range);assert.ok(weapons.hatchet.damage>weapons.machete.damage);s.raid.phase='active';equipWeapon(s,'hatchet');assert.equal(s.loadout,'sabre');
 });
-test('atlas : 192 frames dans leurs limites et animation attaque alignée sur le cycle',()=>{
+test('atlas : 384 frames dans leurs limites et animation attaque alignée sur le cycle',()=>{
  for(const atlas of Object.values(heroAtlases)){assert.equal(atlas.rows.length,8);for(const row of atlas.rows){assert.equal(row.length,8);for(const f of row){assert.ok(f.w>0&&f.h>0&&f.x>=0&&f.y>=0&&f.x+f.w<=atlas.width&&f.y+f.h<=atlas.height);assert.ok(f.anchorX>=0&&f.anchorX<=f.w&&f.anchorY>=0&&f.anchorY<=f.h);}}}
  for(const facing of [{x:0,y:1},{x:-1,y:0},{x:1,y:0},{x:0,y:-1}]){
  const idle=animationFrame(facing,false,0),attack=animationFrame(facing,false,0,.32,.64);assert.equal(attack.row,idle.row+1);assert.equal(attack.column,4);assert.equal(idle.column,0);

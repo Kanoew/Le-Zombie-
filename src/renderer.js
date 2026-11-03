@@ -1,7 +1,9 @@
-import {activeWalls, activeEnemies, mapSize, districts} from './world.js?v=0.5';
+import {campModules,campPower} from './camp.js?v=0.6';
+import {actorPresentation} from './presentation.js?v=0.6';
+import {activeWalls, activeEnemies, mapSize, districts} from './world.js?v=0.6';
 
-import {artImages,drawHero} from './art.js?v=0.5';
-import {animationFrame,weapons} from './weapons.js?v=0.5';
+import {artImages,drawHero,drawCampProp} from './art.js?v=0.6';
+import {animationFrame,weapons} from './weapons.js?v=0.6';
 // Original procedural pixel art. Static terrain is cached; actors and lighting remain dynamic.
 const terrainCache = new Map();
 const pixel = (c,x,y,w,h,color) => { c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),w,h); };
@@ -30,6 +32,13 @@ function terrain(zone) {
   }
   // Inlaid service routes, cables, painted pavement and drainage remain walkable.
   if(camp) {
+    // Separate service pads and cable runs make the refuge read as a place.
+    for(const [x,y,w,h,tint] of [[300,350,100,108,'#372e30'],[380,380,108,112,'#233a3a'],[650,350,110,112,'#3a3528'],[708,190,88,78,'#26333d']]){
+      pixel(c,x,y,w,h,'#101e27');pixel(c,x+3,y+3,w-6,h-6,tint);
+      for(let xx=x+8;xx<x+w-5;xx+=14)pixel(c,xx,y+4,7,2,'#9ca27c44');
+    }
+    pixel(c,350,402,355,2,'#0b1620');pixel(c,350,405,355,1,'#718d7466');
+    pixel(c,704,240,2,161,'#0b1620');pixel(c,707,240,1,161,'#8f987044');
     pixel(c,400,218,288,170,'#101f29');
     for(let y=224;y<383;y+=16)for(let x=405;x<685;x+=32){pixel(c,x,y,30,14,'#2a3b42');pixel(c,x+2,y+2,26,1,'#52636833');}
     for(let x=408;x<690;x+=16){pixel(c,x,214,9,3,'#c4a25c77');pixel(c,x,389,9,3,'#c4a25c77');}
@@ -130,7 +139,8 @@ export function renderScene(c,s,view,cam,fx) {
   c.restore();
   if(camp)for(const id of activeWalls(s))wall(c,id,camp,s.wallHealth[id]);
   if(camp) {
-    consoleProp(c,464,304,'core',clock);consoleProp(c,560,336,'forge',clock);consoleProp(c,624,304,'echo',clock);
+    consoleProp(c,464,304,'core',clock);
+    for(const [id,m] of Object.entries(campModules)){if(!s.camp.built[id]){pixel(c,m.x-24,m.y-8,48,12,'#46636533');label(c,'+ '+m.name,m.x-30,m.y+18,'#789590',7);}}consoleProp(c,560,336,'forge',clock);consoleProp(c,624,304,'echo',clock);
     // Small motion and lighting details are decoration, not additional collision obstacles.
     light(c,310,176,100,'#a0c9d010');light(c,720,422,110,'#c5995010');
     if(s.raid.phase==='active'){pixel(c,440,268,48,4,'#162832');pixel(c,440,268,48*s.raid.core/100,4,'#e9c184');}
@@ -150,17 +160,28 @@ export function renderScene(c,s,view,cam,fx) {
     const b=fx.blueprint,exists=s.walls.includes(`${b.x},${b.y}`),color=!b.valid?'#e29889':exists?'#d6b47f':'#9ce3c3';
     pixel(c,b.x*32,b.y*32,32,32,!b.valid?'#e2988944':exists?'#d6b47f44':'#9ce3c344');c.strokeStyle=color;c.lineWidth=2;c.strokeRect(b.x*32+1,b.y*32+1,30,30);label(c,exists?'+2':'−2',b.x*32+8,b.y*32-10,color,11);
   }
-  const actors=[{a:s.player,t:'player'},{a:s.dog,t:'dog'},...(camp&&s.defender.recruited?[{a:s.defender,t:'guard'}]:[]),...activeEnemies(s).filter(e=>e.hp>0).map(a=>({a,t:'enemy'}))].sort((a,b)=>a.a.y-b.a.y);
+  for(const ghost of fx.ghosts??[]){c.save();c.globalAlpha=ghost.remaining*3;drawHero(c,ghost,s.loadout,animationFrame(fx.facing,true,fx.walkPhase*8/10));c.restore();}
+  const actors=[...(camp?Object.entries(campModules).filter(([id])=>s.camp.built[id]).map(([id,m])=>({a:{...m,module:id},t:'module'})):[]),{a:s.player,t:'player'},{a:s.dog,t:'dog'},...(camp&&s.defender.recruited?[{a:s.defender,t:'guard'}]:[]),...activeEnemies(s).filter(e=>e.hp>0).map(a=>({a,t:'enemy'}))].sort((a,b)=>a.a.y-b.a.y);
   for(const {a,t} of actors){
-    const frame=animationFrame(fx.facing,fx.moving,clock,fx.attackTimer,weapons[s.loadout].duration);
-    if(t==='player')ellipse(c,a.x,a.y,14,6,'#020a1280');
-    if(t!=='player'||!drawHero(c,a,s.loadout,frame,{hurt:fx.hurt,dash:fx.dash}))sprite(c,a,t,clock,fx.facing,t==='player'?fx.moving:t==='enemy'?a.cooldown===0:t==='guard'?s.raid.phase==='active'&&a.hp>0:Math.hypot(a.x-s.player.x,a.y-s.player.y)>42,fx.hurt);
-    if(t==='enemy'){pixel(c,a.x-12,a.y-30,24,2,'#322b39');pixel(c,a.x-12,a.y-30,24*Math.max(0,a.hp)/90,2,'#d9a39b');}
-    if(t==='guard')label(c,a.hp>0?'ÉCHO-01':'BLESSÉ',a.x-22,a.y-34,'#c2b9dc',8);
+    if(t==='module'){ellipse(c,a.x,a.y,38,10,'#020a1266');drawCampProp(c,a.module,a.x,a.y,a.module==='lights'?72:86);continue;}
+    const v=actorPresentation(a,fx.dt,t==='guard'&&a.windup>0?{x:a.targetX,y:a.targetY}:t==='enemy'&&a.windup>0?(camp?s.defender.recruited&&s.defender.hp>0?s.defender:{x:464,y:304}:s.player):null);
+    const frame=t==='player'?animationFrame(fx.facing,fx.moving,fx.walkPhase*8/10,fx.attackTimer,weapons[s.loadout].duration):animationFrame(v.facing,v.moving,v.phase*8/10,a.windup??0,t==='guard'?.48:camp?.7:.65);
+    const id=t==='player'?s.loadout:t==='guard'?'echo':a.kind??'infected';
+    if(t!=='dog'){
+      ellipse(c,a.x,a.y,t==='enemy'&&a.kind==='brute'?19:14,6,'#020a1290');
+      light(c,a.x-7,a.y-25,34,t==='enemy'?'#9ab56a09':'#b8d1db09');
+    }
+    if(t==='dog'||!drawHero(c,a,id,frame,{hurt:t==='player'?fx.hurt:a.hitFlash,dash:t==='player'&&fx.dash}))sprite(c,a,t,clock,v.facing,v.moving,fx.hurt);
+    if(t==='enemy'){
+      pixel(c,a.x-14,a.y-70,28,3,'#222a29');pixel(c,a.x-14,a.y-70,28*Math.max(0,a.hp)/(a.kind==='brute'?90:60),3,'#a6b77b');
+      if(a.windup>0){c.strokeStyle='#e5b16e';c.lineWidth=2;c.beginPath();c.arc(a.x,a.y,43,0,Math.PI*2);c.stroke();label(c,'!',a.x-3,a.y-79,'#ffddb5',13);}
+    }
+    if(t==='guard')label(c,a.hp>0?'ÉCHO-01':'BLESSÉ',a.x-22,a.y-68,'#bdc8e4',8);
   }
+
   if(fx.attackTimer>0&&fx.attackTimer<weapons[s.loadout].duration*.6&&fx.attackTimer>weapons[s.loadout].duration*.3){const a=Math.atan2(fx.facing.y,fx.facing.x);c.strokeStyle='#e6f2cf';c.lineWidth=4;c.beginPath();c.arc(s.player.x,s.player.y,44,a-.9,a+.9);c.stroke();}
   for(const f of fx.particles)pixel(c,f.x,f.y,3,3,f.color);
-  if(s.time%1080>=720){pixel(c,0,0,size.width,size.height,'#070b2322');light(c,s.player.x,s.player.y,125,'#b7d9ce15');}
+  if(s.time%1080>=720){pixel(c,0,0,size.width,size.height,'#070b2340');light(c,s.player.x,s.player.y,125,'#b7d9ce15');if(camp&&campPower(s).lights){for(const pos of [{x:752,y:240},{x:464,y:304},{x:864,y:304}])light(c,pos.x,pos.y,170,'#f3da913d');}}
   c.restore();
   // Sparse rain, kept outside the simulation and disabled with reduced motion.
   if(!fx.reduced){c.strokeStyle='#acc8da19';c.lineWidth=1;for(let i=0;i<35;i++){const x=(i*137+clock*19)%view.w,y=(i*79+clock*160)%view.h;c.beginPath();c.moveTo(x,y);c.lineTo(x-3,y+10);c.stroke();}}

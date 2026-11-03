@@ -26,3 +26,13 @@ Les séquences restent issues d’une génération d’images : une retouche man
 `district.png` : 1536 × 1024, rendu à 1920 × 1280 dans le jeu. Clinique / logements au nord-ouest, dépôt au nord-est, marché au sud-ouest, serres au sud-est. La carte utilise les avenues et les abords des bâtiments. Les intérieurs ne sont pas jouables. Les bâtiments possèdent des collisions rectangulaires approchées ; les points de fouille et ennemis sont placés sur les chemins accessibles, vérifiés par recherche de chemin. Cette illustration n’est pas un tileset modifiable.
 
 Les PNG sont servis localement, sans CDN. Le build copie les assets dans `docs/assets` et les intègre comme données dans le HTML autonome de `dist`. Aucune clé ni service de génération n’est nécessaire pour jouer.
+
+## Alpha 0.6 — personnages et refuge
+
+- `infected.png` : rôdeur chibi verdâtre, vêtements déchirés, yeux jaunes et contamination des implants.
+- `brute.png` : colosse chibi vert, épaules massives et bras mutant ; échelle légèrement plus grande.
+- `echo.png` : Écho-01, gardienne synthétique aux cheveux argentés, tenue bleu nuit et sabre, dans le style de la survivante.
+- Ces trois planches ajoutent 192 poses (64 par personnage), soit 384 poses indexées au total. Même organisation sud/ouest/est/nord, marche et attaque. L’extraction conserve les ancrages de pieds et les PNG originaux. Certains pixels de frange sont très faiblement opaques : le rendu réel se vérifie sur le fond du jeu plutôt qu’avec un aperçu converti en RGB.
+- `camp-props.png` : quatre installations en grille 2 × 2, dans l’ordre générateur, infirmerie, couchages, éclairage. `prop-atlas.json` et `src/prop-data.js` donnent leurs rectangles. Les objets sont triés avec les acteurs selon leur profondeur.
+
+Les ombres au sol, l’éclairage, le recul d’impact et les traînées d’esquive sont rendus par le jeu. Les cycles de marche avancent en fonction de la distance réellement parcourue, pas pendant l’immobilité. Les attaques des ennemis et d’Écho ont une anticipation et un impact à mi-cycle. Le chien conserve son dessin procédural.

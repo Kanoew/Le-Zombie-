@@ -12,7 +12,7 @@ with sync_playwright() as p:
   page.goto('https://prototype.test/Le-Zombie-/')
   page.locator('#play').tap();page.locator('#pause').tap()
   state=page.evaluate("JSON.parse(localStorage.getItem('zombie.save'))")
-  assert state['version']==4
+  assert state['version']==5
   state.update(stock=30,delivered=12,threat=60)
   state['raid'].update(phase='warning',remaining=20)
   page.evaluate('(s)=>localStorage.setItem("zombie.save",JSON.stringify(s))',state)

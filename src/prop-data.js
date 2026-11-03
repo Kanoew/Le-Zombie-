@@ -1,0 +1,1 @@
+export const campPropFrames={"generator": {"x": 45, "y": 109, "w": 523, "h": 427}, "infirmary": {"x": 651, "y": 102, "w": 559, "h": 440}, "bunks": {"x": 46, "y": 676, "w": 537, "h": 505}, "lights": {"x": 667, "y": 678, "w": 534, "h": 499}};

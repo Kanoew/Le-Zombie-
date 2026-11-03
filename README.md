@@ -89,3 +89,24 @@ Les sauvegardes passent à la version 4. Les anciennes ressources, armes amélio
 Détails de production, formats et limites : [assets/README.md](assets/README.md). Aucun service de génération ni accès réseau externe n’est requis par le jeu après chargement des fichiers statiques.
 
 Vérification : `npm test` (15 scénarios), `npm run check`, `npm run build`, puis `python3 test/mobile.py`, `python3 test/raid_mobile.py`, `python3 test/design_mobile.py` et `python3 test/art_mobile.py`. Le dernier scénario vérifie le décodage des images, les armes, la temporisation de l’impact et la carte en portrait/paysage ainsi que le HTML autonome sans requêtes externes.
+
+## Alpha 0.6 — camp aménagé et personnages vivants
+
+Les monstres et Écho utilisent maintenant des planches animées dans la famille graphique de la survivante : rôdeur vert, colosse vert, gardienne argentée. Les acteurs ont une orientation propre, un cycle de marche lié à la distance, des ombres et un éclairage cohérents. Les coups infligent les dégâts au milieu du mouvement et interrompent l’ennemi touché. Les frappes du joueur repoussent légèrement la cible et l’esquive laisse des silhouettes brèves (sauf effets réduits).
+
+Le déplacement du joueur a une courte accélération et un arrêt amorti. Les diagonales ne sont pas plus rapides ; les collisions sont vérifiées par petits pas, y compris pendant l’esquive. Compagnons et défenseurs prennent un trajet direct si le segment est libre, sinon suivent des points de grille avec anticipation du virage. La caméra suit une interpolation indépendante de la fréquence d’affichage.
+
+Au refuge, **icône maison → Installations** ouvre quatre modules à emplacement fixe :
+
+| Module | Coût | Effet |
+| --- | ---: | --- |
+| Générateur | 8 | Produit 4 unités d’énergie, sans combustible quotidien. |
+| Couchages | 4 | Écho récupère 100 PV en 90 secondes de jeu actif au camp. |
+| Infirmerie | 6 | Consomme 2 énergies ; avec les couchages, réduit ce délai à 45 secondes. |
+| Éclairage | 4 | Consomme 1 énergie et éclaire les accès et installations la nuit. |
+
+Les modules ont des volumes de collision, sont sauvegardés et ne peuvent être installés deux fois ni pendant un raid. Une ancienne construction sur l’emplacement empêche l’installation jusqu’au démontage. Les occupants doivent libérer l’emplacement. La récupération est suspendue en expédition et pendant un raid. Le soin manuel au noyau reste disponible hors raid.
+
+Sauvegardes en version 5, migration depuis v4 conservant positions, ressources, équipement, ennemis, murs, défenseur et raid. Les quatre installations sont initialement non construites. Les mêmes PNG sont inclus dans le build autonome et copiés pour Pages ; le volume initial de téléchargement augmente avec ces nouveaux assets.
+
+Validation : 22 tests Node, parcours d’exploration/raid/armes, test des quatre formats mobiles et `python3 test/camp_mobile.py` pour installation, budget d’énergie, coût unique, persistance et rendu nocturne. Les mesures de fluidité sur appareil Android réel restent à faire. Les raids hors session, le placement libre des modules, des animations dédiées de mort et l’asset final du chien ne sont pas encore réalisés.

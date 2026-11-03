@@ -7,3 +7,4 @@ test('boucle fouille, sac plein sans destruction, retour et amélioration',()=>{
 test('sauvegarde valide, migration v1, refus de corruption',()=>{const s=createWorld();assert.ok(validSave(JSON.parse(JSON.stringify(s))));assert.equal(validSave({...s,stock:-1}),false);assert.equal(validSave({...s,bag:13}),false);assert.equal(validSave({...s,player:{...s.player,x:NaN}}),false);assert.equal(validSave({...s,walls:['900,900']}),false);assert.ok(migrateSave({...s,version:1}));assert.equal(migrateSave({...s,version:10}),null);assert.ok(s.enemies.every(e=>canStand(streetWalls,e.x,e.y)));});
 import './defense.test.js';
 import './expansion.test.js';
+import './camp-motion.test.js';

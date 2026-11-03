@@ -1,4 +1,5 @@
-import { entity, key, canStand, pathTo, activeWalls } from './world.js?v=0.5';
+import {followSmooth} from './motion.js?v=0.6';
+import { entity, key, canStand, pathTo, activeWalls,campWalls } from './world.js?v=0.6';
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const tileOf=a=>[Math.floor(a.x/32),Math.floor(a.y/32)];
 const corePosition={x:464,y:304};
@@ -39,27 +40,16 @@ export function finishRaid(s,victory) {
 }
 // All movement follows the same collision grid as the player. Actors align with tile
 // centres at corners so a changed wall cannot trap them between two waypoints.
-export function navigateCamp(s,a,target,speed,dt,stop=24) {
-  if(distance(a,target)<stop) return;
-  const path=pathTo(s.walls,tileOf(a),tileOf(target));
-  if(!path.length) return;
-  const center={x:(path[0][0]+.5)*32,y:(path[0][1]+.5)*32};
-  let p=path.length>1?{x:(path[1][0]+.5)*32,y:(path[1][1]+.5)*32}:target;
-  if(path.length>1&&((path[1][0]!==path[0][0]&&Math.abs(a.y-center.y)>1)||(path[1][1]!==path[0][1]&&Math.abs(a.x-center.x)>1))) p=center;
-  const dx=p.x-a.x,dy=p.y-a.y,d=Math.hypot(dx,dy);
-  if(!d) return;
-  const step=Math.min(speed*dt,d);
-  if(canStand(s.walls,a.x+dx/d*step,a.y)) a.x+=dx/d*step;
-  if(canStand(s.walls,a.x,a.y+dy/d*step)) a.y+=dy/d*step;
-}
+export function navigateCamp(s,a,target,speed,dt,stop=24){return followSmooth(campWalls(s),a,target,speed,dt,stop);}
+
 function spawnRaid(s) {
   const positions=[[27,6],[27,11],[22,15],[6,15]];
   const enemies=[];
   for(const [x,y] of positions) {
     let p={x:(x+.5)*32,y:(y+.5)*32};
-    if(!canStand(s.walls,p.x,p.y)) {
+    if(!canStand(campWalls(s),p.x,p.y)) {
       const candidates=[];
-      for(let j=1;j<17;j++) for(let i=1;i<29;i++) if(canStand(s.walls,(i+.5)*32,(j+.5)*32)) candidates.push({x:(i+.5)*32,y:(j+.5)*32});
+      for(let j=1;j<17;j++) for(let i=1;i<29;i++) if(canStand(campWalls(s),(i+.5)*32,(j+.5)*32)) candidates.push({x:(i+.5)*32,y:(j+.5)*32});
       p=candidates.sort((a,b)=>distance(a,p)-distance(b,p))[0];
     }
     if(p) enemies.push(entity(p.x,p.y));
@@ -86,11 +76,15 @@ export function tickRaid(s,dt) {
   const d=s.defender;
   if(d.recruited&&d.hp>0) {
     d.cooldown=Math.max(0,d.cooldown-dt);
+    if(d.windup>0){const before=d.windup;d.windup=Math.max(0,d.windup-dt);if(before>.24&&d.windup<=.24){
+      const victim=r.enemies.find(e=>{const route=pathTo(campWalls(s),tileOf(d),tileOf(e));return e.hp>0&&Math.hypot(e.x-d.targetX,e.y-d.targetY)<36&&distance(e,d)<56&&route.length>0&&route.length<=3;});
+      if(victim){victim.hp-=20;r.hits++;}
+    }}
     const target=r.enemies.filter(e=>e.hp>0).sort((a,b)=>distance(a,d)-distance(b,d))[0];
     if(target) {
-      const route=pathTo(s.walls,tileOf(d),tileOf(target));
-      if(distance(d,target)<49&&route.length>0&&route.length<=3&&!d.cooldown) { target.hp-=20;d.cooldown=.8;r.hits++; }
-      else navigateCamp(s,d,target,85,dt,32);
+      const route=pathTo(campWalls(s),tileOf(d),tileOf(target));
+      if(distance(d,target)<49&&route.length>0&&route.length<=3&&!d.cooldown) { d.windup=.48;d.targetX=target.x;d.targetY=target.y;d.cooldown=.8; }
+      else if(!d.windup)navigateCamp(s,d,target,85,dt,32);
     }
   }
   for(const e of r.enemies) {
@@ -99,14 +93,14 @@ export function tickRaid(s,dt) {
     e.cooldown=Math.max(0,e.cooldown-dt);
     // Barricades remain destructible even when a player has enclosed the core.
     const wall=s.walls.map(id=>{const [x,y]=id.split(',').map(Number);return {id,x:(x+.5)*32,y:(y+.5)*32};}).filter(w=>distance(e,w)<49).sort((a,b)=>distance(e,a)-distance(e,b))[0];
-    const route=pathTo(s.walls,tileOf(e),tileOf(target));
+    const route=pathTo(campWalls(s),tileOf(e),tileOf(target));
     if(e.windup>0) {
-      e.windup=Math.max(0,e.windup-dt);
-      if(!e.windup) {
-        e.cooldown=1;
+      const before=e.windup;e.windup=Math.max(0,e.windup-dt);
+      if(before>.35&&e.windup<=.35) {
         if(wall) damageWall(s,wall.id,25);
         else if(distance(e,target)<48) {if(target===d)d.hp=Math.max(0,d.hp-12);else r.core=Math.max(0,r.core-12);}
       }
+      if(!e.windup)e.cooldown=1;
     } else if(!e.cooldown&&(wall||distance(e,target)<44)) e.windup=.7;
     else if(!e.cooldown) {
       if(route.length) navigateCamp(s,e,target,47,dt,30);
@@ -116,13 +110,13 @@ export function tickRaid(s,dt) {
         const origin=tileOf(e),queue=[origin],reachable=new Set([key(...origin)]);
         for(let i=0;i<queue.length;i++)for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
           const [x,y]=queue[i],next=[x+dx,y+dy],id=key(...next);
-          if(!reachable.has(id)&&canStand(s.walls,(next[0]+.5)*32,(next[1]+.5)*32)){reachable.add(id);queue.push(next);}
+          if(!reachable.has(id)&&canStand(campWalls(s),(next[0]+.5)*32,(next[1]+.5)*32)){reachable.add(id);queue.push(next);}
         }
         for(const id of s.walls) {
           const [x,y]=id.split(',').map(Number);
           for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
             const point={x:(x+dx+.5)*32,y:(y+dy+.5)*32};
-            if(!canStand(s.walls,point.x,point.y))continue;
+            if(!canStand(campWalls(s),point.x,point.y))continue;
             if((!best||distance(e,point)<distance(e,best))&&reachable.has(key(...tileOf(point))))best=point;
           }
         }
