@@ -11,3 +11,5 @@ import './expansion.test.js';
 import './camp-motion.test.js';
 
 import './city-ai.test.js';
+import './firearms-journey.test.js';
+import './yeji.test.js';

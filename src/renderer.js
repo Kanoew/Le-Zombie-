@@ -1,9 +1,9 @@
-import {campModules,campPower} from './camp.js?v=0.6.1';
-import {actorPresentation} from './presentation.js?v=0.6.1';
-import {activeWalls, activeEnemies, mapSize, districts} from './world.js?v=0.6.1';
+import {campModules,campPower} from './camp.js?v=0.8';
+import {actorPresentation} from './presentation.js?v=0.8';
+import {activeWalls, activeEnemies, mapSize, districts} from './world.js?v=0.8';
 
-import {artImages,drawHero,drawCampProp} from './art.js?v=0.6.1';
-import {animationFrame,weapons} from './weapons.js?v=0.6.1';
+import {artImages,drawHero,drawPlayer,drawCampProp} from './art.js?v=0.8';
+import {animationFrame,weapons} from './weapons.js?v=0.8';
 // Original procedural pixel art. Static terrain is cached; actors and lighting remain dynamic.
 const terrainCache = new Map();
 const pixel = (c,x,y,w,h,color) => { c.fillStyle=color;c.fillRect(Math.round(x),Math.round(y),w,h); };
@@ -129,6 +129,7 @@ export function renderScene(c,s,view,cam,fx) {
   const camp=s.zone==='camp',clock=fx.reduced?0:s.time;
   const size=mapSize(s.zone);
   if(!camp&&artImages.district)c.drawImage(artImages.district,0,0,size.width,size.height);
+  else if(camp&&artImages.refuge)c.drawImage(artImages.refuge,0,0,size.width,size.height);
   else c.drawImage(terrain(s.zone),0,0);
   // Lamps, warning paint and a shallow gate indicate the two traversable exits.
   const gx=camp?864:80,gy=camp?304:608;c.save();c.translate(0,gy-304);
@@ -160,18 +161,19 @@ export function renderScene(c,s,view,cam,fx) {
     const b=fx.blueprint,exists=s.walls.includes(`${b.x},${b.y}`),color=!b.valid?'#e29889':exists?'#d6b47f':'#9ce3c3';
     pixel(c,b.x*32,b.y*32,32,32,!b.valid?'#e2988944':exists?'#d6b47f44':'#9ce3c344');c.strokeStyle=color;c.lineWidth=2;c.strokeRect(b.x*32+1,b.y*32+1,30,30);label(c,exists?'+2':'−2',b.x*32+8,b.y*32-10,color,11);
   }
-  for(const ghost of fx.ghosts??[]){c.save();c.globalAlpha=ghost.remaining*3;drawHero(c,ghost,s.loadout,animationFrame(fx.facing,true,fx.walkPhase*8/10));c.restore();}
+  const playerPose={weapon:s.loadout,facing:fx.facing,side:fx.side,moving:fx.moving,walkPhase:fx.walkPhase,elapsed:s.time,attackRemaining:fx.attackTimer,duration:weapons[s.loadout].duration,dash:fx.dash,hurt:fx.hurt,reduced:fx.reduced};
+  for(const ghost of fx.ghosts??[]){c.save();c.globalAlpha=ghost.remaining*3;drawPlayer(c,ghost,playerPose);c.restore();}
   const actors=[...(camp?Object.entries(campModules).filter(([id])=>s.camp.built[id]).map(([id,m])=>({a:{...m,module:id},t:'module'})):[]),{a:s.player,t:'player'},{a:s.dog,t:'dog'},...(camp&&s.defender.recruited?[{a:s.defender,t:'guard'}]:[]),...activeEnemies(s).filter(e=>e.hp>0).map(a=>({a,t:'enemy'}))].sort((a,b)=>a.a.y-b.a.y);
   for(const {a,t} of actors){
     if(t==='module'){ellipse(c,a.x,a.y,38,10,'#020a1266');drawCampProp(c,a.module,a.x,a.y,a.module==='lights'?72:86);continue;}
-    const v=actorPresentation(a,fx.dt,t==='guard'&&a.windup>0?{x:a.targetX,y:a.targetY}:t==='enemy'&&a.windup>0?(camp?s.defender.recruited&&s.defender.hp>0?s.defender:{x:464,y:304}:s.player):null);
-    const frame=t==='player'?animationFrame(fx.facing,fx.moving,fx.walkPhase*8/10,fx.attackTimer,weapons[s.loadout].duration):animationFrame(v.facing,v.moving,v.phase*8/10,a.windup??0,t==='guard'?.48:camp?.7:.65);
-    const id=t==='player'?s.loadout:t==='guard'?'echo':a.kind??'infected';
-    if(t!=='dog'){
-      ellipse(c,a.x,a.y,t==='enemy'&&a.kind==='brute'?19:14,6,'#020a1290');
+    const v=actorPresentation(a,fx.dt,t==='guard'&&a.windup>0?{x:a.targetX,y:a.targetY}:t==='dog'&&a.cooldown>11.35?{x:a.targetX,y:a.targetY}:t==='enemy'&&a.windup>0?(camp?s.defender.recruited&&s.defender.hp>0?s.defender:{x:464,y:304}:s.player):null);
+    const frame=t==='player'?animationFrame(fx.facing,fx.moving,fx.walkPhase*8/10,fx.attackTimer,weapons[s.loadout].duration):animationFrame(v.facing,v.moving,v.phase*8/10,t==='dog'?Math.max(0,(a.cooldown??0)-11.35):a.windup??0,t==='dog'?.65:t==='guard'?.48:camp?.7:.65);
+    const id=t==='player'?s.loadout:t==='guard'?'echo':t==='dog'?'dog':a.kind??'infected';
+    {
+      ellipse(c,a.x,a.y,t==='dog'?17:t==='enemy'&&a.kind==='brute'?19:14,6,'#020a1290');
       light(c,a.x-7,a.y-25,34,t==='enemy'?'#9ab56a09':'#b8d1db09');
     }
-    if(t==='dog'||!drawHero(c,a,id,frame,{hurt:t==='player'?fx.hurt:a.hitFlash,dash:t==='player'&&fx.dash}))sprite(c,a,t,clock,v.facing,v.moving,fx.hurt);
+    if(!(t==='player'?drawPlayer(c,a,playerPose):drawHero(c,a,id,frame,{hurt:a.hitFlash})))sprite(c,a,t,clock,v.facing,v.moving,fx.hurt);
     if(t==='enemy'){
       pixel(c,a.x-14,a.y-70,28,3,'#222a29');pixel(c,a.x-14,a.y-70,28*Math.max(0,a.hp)/(a.kind==='brute'?90:60),3,'#a6b77b');
       if(a.windup>0){c.strokeStyle='#e5b16e';c.lineWidth=2;c.beginPath();c.arc(a.x,a.y,43,0,Math.PI*2);c.stroke();label(c,'!',a.x-3,a.y-79,'#ffddb5',13);}
@@ -179,7 +181,15 @@ export function renderScene(c,s,view,cam,fx) {
     if(t==='guard')label(c,a.hp>0?'ÉCHO-01':'BLESSÉ',a.x-22,a.y-68,'#bdc8e4',8);
   }
 
-  if(fx.attackTimer>0&&fx.attackTimer<weapons[s.loadout].duration*.6&&fx.attackTimer>weapons[s.loadout].duration*.3){const a=Math.atan2(fx.facing.y,fx.facing.x);c.strokeStyle='#e6f2cf';c.lineWidth=4;c.beginPath();c.arc(s.player.x,s.player.y,44,a-.9,a+.9);c.stroke();}
+  if(!weapons[s.loadout].ranged&&fx.attackTimer>0&&fx.attackTimer<weapons[s.loadout].duration*.6&&fx.attackTimer>weapons[s.loadout].duration*.3){const a=Math.atan2(fx.facing.y,fx.facing.x);c.strokeStyle=s.loadout==='scythe'?'#d6a9eb':'#e6f2cf';c.lineWidth=4;c.beginPath();c.arc(s.player.x,s.player.y,weapons[s.loadout].range*.65,a-.9,a+.9);c.stroke();}
+  for(const shot of fx.shots??[]){
+    const x=shot.x+shot.direction.x*23,y=shot.y-38+shot.direction.y*12,ex=shot.endX,ey=shot.endY-38;
+    c.save();c.globalAlpha=Math.min(1,shot.life/.07);c.strokeStyle='#f7dda1';c.lineWidth=1.5;c.beginPath();c.moveTo(x,y);c.lineTo(ex,ey);c.stroke();
+    c.translate(x,y);c.rotate(Math.atan2(shot.direction.y,shot.direction.x));c.fillStyle='#fff0bf';c.beginPath();c.moveTo(0,-4);c.lineTo(18,0);c.lineTo(0,4);c.closePath();c.fill();c.restore();
+    if(!fx.reduced)light(c,x,y,32,'#f3b95455');
+  }
+  for(const f of fx.floaters??[]){c.save();c.globalAlpha=Math.min(1,f.life*2);label(c,f.text,f.x-10,f.y,'#f1dab0',11);c.restore();}
+  if(fx.goal){const dx=fx.goal.x-s.player.x,dy=fx.goal.y-s.player.y,d=Math.hypot(dx,dy);if(d>80){const x=s.player.x+dx/d*44,y=s.player.y+dy/d*44;c.save();c.translate(x,y);c.rotate(Math.atan2(dy,dx));c.fillStyle='#e1c687';c.beginPath();c.moveTo(8,0);c.lineTo(-4,-5);c.lineTo(-4,5);c.closePath();c.fill();c.restore();}else{c.strokeStyle='#dfc27c';c.lineWidth=1;c.beginPath();c.ellipse(fx.goal.x,fx.goal.y,25,10,0,0,Math.PI*2);c.stroke();}}
   for(const f of fx.particles)pixel(c,f.x,f.y,3,3,f.color);
   if(s.time%1080>=720){pixel(c,0,0,size.width,size.height,'#070b2340');light(c,s.player.x,s.player.y,125,'#b7d9ce15');if(camp&&campPower(s).lights){for(const pos of [{x:752,y:240},{x:464,y:304},{x:864,y:304}])light(c,pos.x,pos.y,170,'#f3da913d');}}
   c.restore();

@@ -43,7 +43,7 @@ test('migration v5 et v6 : morts planifiés, patrouilles réparées et progressi
   const old=createWorld();old.version=version;old.stock=17;old.bag=6;old.time=400;old.loadout='sabre';old.camp.built.generator=true;
   old.enemies[0].hp=0;old.enemies[0].respawnAt=null;old.enemies[1].hp=0;old.enemies[1].respawnAt=480;
   old.enemies[2].hp=33;old.enemies[2].patrol=[{x:564,y:467},{x:10,y:10},{x:0,y:0}];
-  const migrated=migrateSave(old);assert.ok(migrated);assert.equal(migrated.version,7);assert.equal(migrated.enemies[0].hp,0);assert.equal(migrated.enemies[0].respawnAt,490);assert.equal(migrated.enemies[1].respawnAt,480);assert.equal(migrated.enemies[2].hp,33);
+  const migrated=migrateSave(old);assert.ok(migrated);assert.equal(migrated.version,8);assert.equal(migrated.enemies[0].hp,0);assert.equal(migrated.enemies[0].respawnAt,490);assert.equal(migrated.enemies[1].respawnAt,480);assert.equal(migrated.enemies[2].hp,33);
   assert.equal(migrated.stock,17);assert.equal(migrated.bag,6);assert.equal(migrated.loadout,'sabre');assert.equal(migrated.camp.built.generator,true);assert.ok(validSave(migrated));
   assert.deepEqual(migrateSave(JSON.parse(JSON.stringify(migrated))),migrated,'une seconde reprise ne repousse pas le délai');
  }

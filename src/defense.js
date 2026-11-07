@@ -1,5 +1,5 @@
-import {followSmooth} from './motion.js?v=0.6.1';
-import { entity, key, canStand, pathTo, activeWalls,campWalls } from './world.js?v=0.6.1';
+import {followSmooth} from './motion.js?v=0.8';
+import { entity, key, canStand, pathTo, activeWalls,campWalls } from './world.js?v=0.8';
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
 const tileOf=a=>[Math.floor(a.x/32),Math.floor(a.y/32)];
 const corePosition={x:464,y:304};
@@ -133,6 +133,6 @@ export function commandDog(s) {
   const enemies=s.zone==='camp'?s.raid.enemies:s.enemies;
   const target=enemies.filter(e=>e.hp>0&&distance(e,s.dog)<80).sort((a,b)=>distance(a,s.dog)-distance(b,s.dog)).find(e=>{const path=pathTo(activeWalls(s),tileOf(s.dog),tileOf(e));return path.length>0&&path.length<=3;});
   if(!target) return 'Aucun infecté accessible à portée du chien.';
-  target.windup=0;target.cooldown=2;s.dog.cooldown=12;
+  target.windup=0;target.cooldown=2;s.dog.cooldown=12;s.dog.targetX=target.x;s.dog.targetY=target.y;
   return 'Le chien interrompt l’infecté · 12 secondes de recharge.';
 }

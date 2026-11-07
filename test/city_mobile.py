@@ -8,7 +8,7 @@ with sync_playwright() as p:
   install_routes(page);page.goto('https://prototype.test/Le-Zombie-/')
   page.locator('#play').tap();page.locator('#pause').tap()
   state=page.evaluate('JSON.parse(localStorage.getItem("zombie.save"))')
-  assert state['version']==7
+  assert state['version']==8
   state.update(zone='street',time=299)
   state['player'].update(x=912,y=976);state['dog'].update(x=880,y=976)
   for e in state['enemies']:e.update(hp=0,respawnAt=10000)

@@ -9,7 +9,7 @@ with sync_playwright() as p:
   install_routes(page);page.goto('https://prototype.test/Le-Zombie-/')
   expect(page.locator('#asset-status')).to_have_text('Ton équipement est prêt.')
   page.locator('#play').tap();page.locator('#pause').tap()
-  s=page.evaluate('JSON.parse(localStorage.getItem("zombie.save"))');s['stock']=50;s['defender'].update(recruited=True,hp=45);s['time']=750
+  s=page.evaluate('JSON.parse(localStorage.getItem("zombie.save"))');s['journey']={'stage':5,'rewarded':True};s['stock']=50;s['defender'].update(recruited=True,hp=45);s['time']=750
   page.evaluate('(s)=>localStorage.setItem("zombie.save",JSON.stringify(s))',s)
   page.locator('#load').tap();page.locator('#play').tap();page.locator('#refuge-menu').tap();page.locator('#camp-manage').tap()
   for id in ['generator','infirmary','bunks','lights']:page.locator(f'[data-module="{id}"]').tap()

@@ -1,4 +1,5 @@
-import {reservedModuleCell,campFootprint} from './camp.js?v=0.6.1';
+import {reservedModuleCell,campFootprint} from './camp.js?v=0.8';
+import {weapons} from './weapons.js?v=0.8';
 export const COLS = 30, ROWS = 18, TILE = 32;
 export const key = (x, y) => `${x},${y}`;
 export const ENEMY_RESPAWN_DELAY=90;
@@ -16,7 +17,7 @@ export function createWorld() {
   for (let x=8; x<=16; x++) walls.push(key(x,5));
   for (let y=6; y<=11; y++) walls.push(key(8,y));
   return {
-    version:7, camp:{built:{generator:false,infirmary:false,bunks:false,lights:false}}, loadout:'machete', zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
+    version:8, ammo:18,journey:{stage:0,rewarded:false},camp:{built:{generator:false,infirmary:false,bunks:false,lights:false}}, loadout:'katana', zone:'camp', player:{x:464,y:304,hp:100,stamina:100},
     dog:{x:410,y:336,cooldown:0}, walls, wallHealth:{}, stock:8, bag:0,
     time:0, weapon:1, delivered:0, visits:0, crates:newCrates(), enemies:newEnemies(),
     kills:0, threat:0, restockAt:300,
@@ -141,7 +142,7 @@ function validCityEnemy(e){
   return e.patrol.every(p=>positioned(p,streetWalls)&&pathTo(streetWalls,spawn,[Math.floor(p.x/TILE),Math.floor(p.y/TILE)]).length>0);
 }
 export function validSave(s) {
-  if(s?.version!==7||!s.camp||!s.camp.built||!['generator','infirmary','bunks','lights'].every(k=>typeof s.camp.built[k]==='boolean')||!['machete','sabre','hatchet'].includes(s.loadout)||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
+  if(s?.version!==8||!integer(s.ammo,90)||!s.journey||!integer(s.journey.stage,5)||typeof s.journey.rewarded!=='boolean'||!s.camp||!s.camp.built||!['generator','infirmary','bunks','lights'].every(k=>typeof s.camp.built[k]==='boolean')||!Object.hasOwn(weapons,s.loadout)||!['camp','street'].includes(s.zone)||!Array.isArray(s.walls)||s.walls.length>COLS*ROWS||new Set(s.walls).size!==s.walls.length||!s.walls.every(id=>typeof id==='string'&&/^\d+,\d+$/.test(id)&&!blocked([],...id.split(',').map(Number)))) return false;
   if(!s.wallHealth||typeof s.wallHealth!=='object'||Array.isArray(s.wallHealth)||!Object.entries(s.wallHealth).every(([id,hp])=>s.walls.includes(id)&&finite(hp,100)&&hp>0)) return false;
   if(!['stock','delivered','visits','kills'].every(k=>integer(s[k]))||!finite(s.time)||!finite(s.restockAt)||!finite(s.threat,100)||!integer(s.bag,12)||![1,2].includes(s.weapon)) return false;
   if(![s.player,s.dog].every(a=>positioned(a,activeWalls(s)))||!finite(s.player.hp,100)||!s.player.hp||!finite(s.player.stamina,100)||!finite(s.dog.cooldown,12)) return false;
@@ -157,9 +158,9 @@ export function validSave(s) {
 }
 export function migrateSave(s) {
   if(validSave(s))return s;
-  if(![1,2,3,4,5,6].includes(s?.version)||!Array.isArray(s.walls))return null;
+  if(![1,2,3,4,5,6,7].includes(s?.version)||!Array.isArray(s.walls))return null;
   const fresh=createWorld();
-  const n={...fresh,...s,version:7,camp:s.version<5?fresh.camp:(s.camp??fresh.camp),loadout:s.version>=4?s.loadout:'machete',dog:{...s.dog,cooldown:s.dog?.cooldown??0},crates:newCrates(),enemies:newEnemies()};
+  const n={...fresh,...s,version:8,ammo:18,journey:{stage:0,rewarded:false},camp:s.version<5?fresh.camp:(s.camp??fresh.camp),loadout:s.version>=4?s.loadout:'machete',dog:{...s.dog,cooldown:s.dog?.cooldown??0},crates:newCrates(),enemies:newEnemies()};
   if(s.version<3){n.wallHealth={};n.threat=0;n.raid=fresh.raid;n.defender=fresh.defender;n.restockAt=Math.max(300,(s.time??0)+300);}
   if(s.version>=4){if(!Array.isArray(s.enemies)||s.enemies.length!==enemyLayout.length)return null;n.crates=s.crates;n.enemies=s.enemies.map((e,i)=>({...fresh.enemies[i],...e,kind:fresh.enemies[i].kind}));if(s.version===4)n.raid={...s.raid,enemies:s.raid.enemies.map(e=>({...e,kind:e.kind??'infected'}))};}
   if(s.version>1&&s.version<4){
@@ -167,7 +168,8 @@ export function migrateSave(s) {
     for(let i=0;i<Math.min(s.enemies?.length??0,4);i++)n.enemies[i].hp=s.enemies[i].hp;
   }
   if(s.version<4&&n.zone==='street'){n.player={...n.player,...streetEntry};n.dog={...n.dog,...streetEntry};}
-  n.enemies=n.enemies.map((e,i)=>{
+  if(s.version===7){n.enemies=s.enemies;n.raid=s.raid;}
+  else n.enemies=n.enemies.map((e,i)=>{
     const f=fresh.enemies[i],spawn=positioned({x:e.spawnX,y:e.spawnY},streetWalls)?{x:e.spawnX,y:e.spawnY}:{x:f.spawnX,y:f.spawnY};
     return {...e,spawnX:spawn.x,spawnY:spawn.y,patrol:patrolPoints(spawn.x,spawn.y,i),patrolIdx:0,respawnAt:e.hp>0?null:finite(e.respawnAt)?e.respawnAt:n.time+ENEMY_RESPAWN_DELAY};
   });

@@ -1,5 +1,5 @@
-import {ENEMY_RESPAWN_DELAY,streetWalls} from './world.js?v=0.6.1';
-import {followSmooth} from './motion.js?v=0.6.1';
+import {ENEMY_RESPAWN_DELAY,streetWalls} from './world.js?v=0.8';
+import {followSmooth} from './motion.js?v=0.8';
 
 export function registerCityKill(s,e){
   if(s.zone!=='street'||e.hp>0||e.respawnAt!=null)return false;

@@ -5,7 +5,7 @@ from pathlib import Path
 import json
 root=Path(__file__).resolve().parents[1]
 atlases={}
-for name,file in [('machete','hero-atlas.png'),('sabre','hero-sabre.png'),('hatchet','hero-hatchet.png'),('infected','infected.png'),('brute','brute.png'),('echo','echo.png')]:
+for name,file in [('machete','hero-atlas.png'),('sabre','hero-sabre.png'),('hatchet','hero-hatchet.png'),('infected','infected.png'),('brute','brute.png'),('echo','echo.png'),('dog','dog.png'),('pistol','hero-pistol.png')]:
  im=Image.open(root/'assets'/file);w,h=im.size;alpha=im.getchannel('A');raw=alpha.tobytes();mask=bytearray(v>127 for v in raw);parts=[]
  for i in range(w*h):
   if not mask[i]:continue
@@ -26,7 +26,7 @@ for name,file in [('machete','hero-atlas.png'),('sabre','hero-sabre.png'),('hatc
    anchor=sum(x*a for x,a in feet)/sum(a for x,a in feet)
    frames.append({'x':max(0,x0-2),'y':max(0,y0-2),'w':min(w,x1+2)-max(0,x0-2),'h':min(h,y1+2)-max(0,y0-2),'anchorX':anchor-max(0,x0-2),'anchorY':y1-max(0,y0-2)})
   rows.append(frames)
- atlases[name]={'file':file,'width':w,'height':h,'scale':.49 if name=='brute' else .43,'rows':rows}
+ atlases[name]={'file':file,'width':w,'height':h,'scale':.49 if name=='brute' else .32 if name=='dog' else .43,'rows':rows}
  print(name,w,h,len(parts))
 (root/'assets'/'atlas.json').write_text(json.dumps(atlases,indent=2)+'\n')
 (root/'src'/'atlas-data.js').write_text('export const heroAtlases = '+json.dumps(atlases,separators=(',',':'))+';\n')

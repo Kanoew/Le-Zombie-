@@ -1,19 +1,21 @@
-# Le Zombie · Les Cendres — alpha 0.4
+# Le Zombie · Les Cendres — alpha 0.8
 
-Survival cyberpunk en JavaScript / Canvas 2D natif, sans dépendance. Première boucle d'expédition du projet Android de Kanoew. Aucun asset tiers : décor et personnages sont dessinés par le code, encore provisoires.
+Survival cyberpunk en JavaScript / Canvas 2D natif, sans dépendance de jeu. Exploration, collecte, aménagement et défense d'un refuge, avec des personnages chibi animés et des décors générés pour le projet. Jouable dans le navigateur du téléphone.
 
 ## Jouer sur téléphone
 
 Site prévu : https://kanoew.github.io/Le-Zombie-/ (GitHub Pages doit être activé sur main, dossier /docs ou racine). L'interface s'adapte au portrait et au paysage. Bouton plein écran si le navigateur le permet.
 
 - Rejoindre la sortie à l'est du refuge, puis Interagir pour partir.
-- Fouiller les cinq caisses du quartier (sac limité à 12). Un sac plein laisse le surplus dans la caisse.
-- Combattre les quatre infectés avec la machette, ou les éviter. Un cercle annonce leur attaque ; l'esquive consomme de l'endurance. La nuit accroît vitesse et dégâts.
+- Fouiller les huit caisses du quartier (sac limité à 12). Un sac plein laisse le surplus dans la caisse.
+- Suivre le journal et son repère doré : partir, collecter 4 ferrailles, les déposer, aménager, puis défendre.
+- Combattre les huit infectés avec une arme de l'arsenal, ou les éviter. Un cercle annonce leur attaque ; l'esquive consomme de l'endurance. La nuit accroît vitesse et dégâts.
+- Toucher l'arme équipée pour choisir parmi quatre armes de mêlée et quatre armes à feu. Le tir suit l'orientation du personnage ; maintenir le bouton pour enchaîner. Maison → Cartouches fabrique 6 cartouches pour 2 ferrailles, hors raid.
 - Revenir par l'entrée ouest du quartier. Au noyau du refuge, Interagir dépose le sac et restaure la vie.
-- Renforcer la machette à l'atelier (10 ferrailles, dégâts 30 → 45), puis construire des murs (2 ferrailles). Bâtir active la grille : toucher une case pour poser ou démonter.
+- Renforcer les armes à l'atelier (10 ferrailles, dégâts 30 → 45), puis construire des murs (2 ferrailles). Bâtir active la grille : toucher une case pour poser ou démonter.
 - Le chien suit et contourne les murs. La minicarte montre position, obstacles, accès et caches.
 
-Clavier : ZQSD / WASD / flèches, espace pour frapper, Maj pour esquiver, E pour interagir. Sur téléphone, joystick et boutons fonctionnent avec des pointeurs distincts.
+Clavier : ZQSD / WASD / flèches, espace pour frapper ou tirer, Maj pour esquiver, E pour interagir. Sur téléphone, joystick et boutons fonctionnent avec des pointeurs distincts.
 
 ## Progression et limites
 
@@ -124,3 +126,42 @@ Conserve l’évolution de Claude Code (patrouilles et délai individuel de 90 s
 `src/city-ai.js` regroupe les morts, retours et patrouilles pour les vérifier sans navigateur. Les recherches de navigation dans la ville utilisent des collisions en ensemble pour éviter de parcourir toute la liste des bâtiments à chaque case testée.
 
 Vérifications : 30 tests Node, dont les régressions des trois problèmes ; `python3 test/city_mobile.py` exerce une mort réelle, le délai, un changement de carte après cinq minutes, le retour et le rechargement, en portrait et paysage. Les parcours d’exploration et de raid restent vérifiés. Les URL source sont versionnées en 0.6.1 pour éviter le mélange de fichiers d’anciennes versions.
+
+## Alpha 0.7 — parcours guidé, tir et compagnon
+
+Le journal présente cinq objectifs avec une indication concrète et un repère doré dans la scène. L’alerte et le raid prennent la priorité sur l’exploration. Après le premier dépôt d’au moins 4 ferrailles et le premier aménagement (installation ou Écho), une récompense unique ajoute 6 ferrailles et 12 cartouches. Le progrès et la récompense sont sauvegardés.
+
+Le pistolet est disponible dans l’arsenal : 24 dégâts de base, portée 380, une cartouche par tir, maintien tactile pour enchaîner. Le rayon s’arrête au premier ennemi ou au premier obstacle ; les murs bloquent les tirs. Flash de bouche, traînée brève, étincelles d’impact et nombres de dégâts donnent un retour visible. Le renforcement d’atelier s’applique aussi au pistolet. Départ avec 18 cartouches ; fabrication au refuge, hors raid : 2 ferrailles pour 6 cartouches, limite de 90.
+
+Le chien possède une planche originale de 64 poses : berger chibi, foulard rouge et harnais, quatre directions de marche et animation d’intervention. Son rôle reste d’interrompre un infecté accessible, sans dégâts supplémentaires. Le refuge reçoit un fond industriel illustré ; noyau, atelier, installations construites et murs restent des éléments jouables distincts.
+
+**Historique 0.7 :** le remplacement Yeji était en attente des fichiers. Les planches ont depuis été récupérées dans le dépôt et intégrées en 0.8 ci-dessous.
+
+Sauvegardes en version 8, migration des versions 1 à 7. Une partie v7 conserve ses ressources, camp, équipement, patrouilles, positions, échéances de réapparition et raid ; seules les munitions et le parcours guidé sont initialisés.
+
+Validation : 35 tests Node, vérification syntaxique, build Pages et HTML autonome. Les parcours mobiles exploration, raid, camp, graphismes et design restent vérifiés. `python3 test/guided-firearms-mobile.py` couvre les étapes initiales, la récompense unique, le tir maintenu, les dégâts et la reprise des munitions en 390×844 et 844×390. Tests Chromium émulés ; confort et performances Android réels restent à mesurer.
+
+## Alpha 0.8 — Yeji et son arsenal
+
+Les neuf PNG fournis sur `claude/lucid-knuth-35kw5v` (commit `b630ec2`) sont importés sans modification. Yeji remplace la survivante précédente dans la scène, le menu, l’arsenal et les traînées d’esquive. La planche `compagnon.png` est utilisée pour le personnage contrôlé ; le chien garde son propre design et son rôle.
+
+Le lecteur distingue la planche de personnage (11 lignes, 73 poses) des huit planches d’armes (4 directions × 6 poses, 192 poses). Course liée à la distance parcourue, attente et clignements, salutation au menu, saut d’esquive et réaction à un coup sont raccordés aux actions du jeu. La course fournie existe uniquement de profil : les déplacements verticaux conservent le dernier profil, tandis que les attaques utilisent bien droite, gauche, face et dos. Les autres expressions sont indexées et disponibles, sans déclenchement artificiel pendant les combats.
+
+L’arsenal sépare les quatre armes de mêlée et les quatre armes à feu :
+
+| Arme | Dégâts de base | Portée | Coût par action |
+| --- | ---: | ---: | --- |
+| Katana | 30 | 78 | 18 endurance |
+| Batte cloutée | 48 | 58 | 28 endurance |
+| Faucheuse | 38 | 104 | 26 endurance |
+| Faucilles | 22 | 92 | 15 endurance |
+| Pistolet | 24 | 380 | 1 cartouche |
+| Mitraillette | 12 | 290 | 1 cartouche |
+| Fusil à pompe | 5 × 12 | 220 | 1 cartouche pour les cinq plombs |
+| Fusil d’assaut | 28 | 460 | 1 cartouche |
+
+Le tir maintenu fonctionne au tactile et avec espace. Les cadences sont distinctes ; les plombs du fusil à pompe suivent un cône et sont bloqués séparément par les murs. Une cible touchée par plusieurs plombs ne compte qu’une mort. Les flashs, traînées et impacts sont partagés par les quatre armes. Le renforcement ajoute 50 % aux dégâts de chacune. Les anciens identifiants machette/sabre/hachette restent chargeables avec leurs statistiques d’origine ; leur représentation utilise les nouvelles planches Yeji. Aucun changement de format de sauvegarde après v8.
+
+Les ancrages sont recalculés à partir des bottes pour les coups, et de la cellule pour les mouvements, afin de conserver l’élévation des sauts. `python3 scripts/yeji-metadata.py` régénère ces métadonnées sans retoucher les images. Au chargement, les planches Yeji sont décodées deux à la fois et réduites à 1024 pixels sur leur grand côté via `createImageBitmap` quand disponible. Les neuf textures prennent environ 24 Mio de pixels décodés contre environ 313 Mio à pleine résolution ; les autres visuels et le coût du navigateur s’y ajoutent. Les PNG restent intacts et leur téléchargement reste nécessaire.
+
+Validation : 40 tests Node, vérifications syntaxiques et build. `python3 test/yeji_mobile.py` vérifie les sprites réellement dessinés pour la course et les huit attaques, les dégâts, les munitions, la sélection et la reprise des armes en portrait et paysage. Il contrôle aussi la taille des textures et l’absence de chargement des anciens sprites joueur. Les scénarios d’exploration, raid, graphismes, HTML autonome, parcours guidé et mise en page restent utilisés. Tests sur Chromium émulé ; performances Android réelles à mesurer.

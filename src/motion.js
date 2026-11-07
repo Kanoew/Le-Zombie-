@@ -1,4 +1,4 @@
-import {canStand,pathTo} from './world.js?v=0.6.1';
+import {canStand,pathTo} from './world.js?v=0.8';
 export function slideActor(walls,a,dx,dy){
  const steps=Math.max(1,Math.ceil(Math.hypot(dx,dy)/4));const start={x:a.x,y:a.y};
  for(let i=0;i<steps;i++){

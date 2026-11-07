@@ -1,6 +1,6 @@
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
-from browser_support import install_routes
+from browser_support import install_routes, BASE
 root=Path(__file__).resolve().parents[1]
 with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
@@ -14,14 +14,14 @@ with sync_playwright() as p:
   page.locator('#play').tap()
   assert not page.locator('#camp-tools').is_visible()
   page.locator('#arsenal-open').tap()
-  page.locator('[data-weapon="sabre"]').tap();expect(page.locator('#weapon')).to_have_text('Sabre')
-  page.locator('[data-weapon="hatchet"]').tap();expect(page.locator('#weapon')).to_have_text('Hachette')
+  page.locator('[data-weapon="katana"]').tap();expect(page.locator('#weapon')).to_have_text('Katana')
+  page.locator('[data-weapon="spiked-bat"]').tap();expect(page.locator('#weapon')).to_have_text('Batte cloutée')
   page.wait_for_timeout(100)
   assert page.locator('#hero-preview').evaluate('c=>c.getContext("2d").getImageData(0,0,240,180).data.some((v,i)=>i%4===3&&v>127)')
   page.screenshot(path=f'/tmp/le-zombie-art-arsenal-{w}.png')
   page.locator('#arsenal-close').tap();page.locator('#pause').tap()
   state=page.evaluate('JSON.parse(localStorage.getItem("zombie.save"))')
-  assert state['loadout']=='hatchet'
+  assert state['loadout']=='spiked-bat'
   state['zone']='street';state['player'].update(x=960,y=608);state['dog'].update(x=928,y=608)
   for enemy in state['enemies']:enemy.update(hp=0,respawnAt=state['time']+1000)
   state['enemies'][0].update(x=1008,y=608,hp=90,cooldown=0,windup=0,respawnAt=None)
@@ -37,13 +37,16 @@ with sync_playwright() as p:
   page.locator('#map-open').tap();expect(page.locator('#world-view')).to_be_visible()
   page.screenshot(path=f'/tmp/le-zombie-art-map-{w}.png');page.locator('#map-close').tap()
   assert not errors,errors
-  print(f'OK art {w}x{h}: images décodées, 3 armes, aperçu animé, frappe au milieu du cycle, carte générale')
+  print(f'OK art {w}x{h}: images décodées, armes Yeji, aperçu animé, frappe au milieu du cycle, carte générale')
   page.close()
  # The downloadable HTML must not request any external asset.
- page=browser.new_page();requests=[]
- page.route('https://standalone.test/**',lambda r:(requests.append(r.request.url),r.fulfill(body=(root/'dist/le-zombie.html').read_text(),content_type='text/html')))
- page.goto('https://standalone.test/')
+ page=browser.new_page();requests=[];errors=[]
+ page.on('request',lambda r:requests.append(r.url))
+ page.on('pageerror',lambda e:errors.append(str(e)))
+ # Serve the large embedded file directly instead of moving base64 through RPC.
+ page.goto(BASE+'/root/Le-Zombie-/dist/le-zombie.html')
  expect(page.locator('#asset-status')).to_have_text('Ton équipement est prêt.')
  assert len(requests)==1,requests
+ assert not errors,errors
  print('OK standalone : toutes les images sont intégrées au HTML')
  browser.close()

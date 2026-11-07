@@ -45,7 +45,7 @@ with sync_playwright() as p:
    expect(page.locator('#bag')).to_contain_text('Sac 0/12')
    expect(page.locator('#stock')).to_contain_text('Réserve 12')
    page.locator('#refuge-menu').tap();page.locator('#forge').tap()
-   expect(page.locator('#weapon')).to_contain_text('Machette +')
+   expect(page.locator('#weapon')).to_contain_text('Katana +')
    expect(page.locator('#stock')).to_contain_text('Réserve 2')
    # Exercise two real simultaneous touch points (movement + attack).
    if source=='docs' and w==390:
